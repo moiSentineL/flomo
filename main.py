@@ -1,8 +1,15 @@
 #! /bin/env python3
-from datetime import datetime
-start = datetime.now()
-while True:
-    now = datetime.now()
-    print("\r"+str(now-start), end="")
+import time
 
-# Source: https://gist.github.com/dzamlo/9debd3284750f3eed2a4654f0ec908e8
+start_time = time.time()
+print("Started flow!")
+
+while True:
+    input()
+    time_elapsed = round(time.time() - start_time, 2)
+    print("Time elapsed: ", time_elapsed)
+
+    time_for_break = time_elapsed/5
+    print("Time for break: ", time_for_break)
+
+    break
