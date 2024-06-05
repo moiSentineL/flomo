@@ -9,7 +9,7 @@ while True:
     time_elapsed = round(time.time() - start_time, 2)
     print("Time elapsed: ", time_elapsed)
 
-    time_for_break = time_elapsed/5
+    time_for_break = round(time_elapsed/5, 2)
     print("Time for break: ", time_for_break)
 
     break
