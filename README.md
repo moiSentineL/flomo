@@ -29,6 +29,4 @@ It works fairly simply:
 
 This calls for extensive amount of discipline. Which means that you must have at least some amount of natural focus. If not, I encourage you to check the Pomodoro Technique out.
 
-## Footnotes:
-
 [^1]: : Csikszentmihalyi, M. (1990). _Flow: The Psychology of Optimal Experience_. New York: Harper and Row. p. 15 [ISBN](<https://en.wikipedia.org/wiki/ISBN_(identifier)> "ISBN (identifier)") [0-06-092043-2](https://en.wikipedia.org/wiki/Special:BookSources/0-06-092043-2 "Special:BookSources/0-06-092043-2")
