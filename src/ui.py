@@ -6,13 +6,23 @@ import threading
 first_name = " First Name: "
 tag = " Tag: "
 stopwatch = 0
-status = 1
+status = 1  # debug
 size = 50
+stop_timer = False
+
+# Platform-specific imports
+if os.name == 'nt':  # For Windows
+    import msvcrt
+else:  # For Unix-like systems
+    import sys
+    import termios
+    import tty
 
 
 def format_time(seconds):
-    mins, secs = divmod(seconds, 60)
-    return f"{mins:02}:{secs:02}"
+    hours, remainder = divmod(seconds, 3600)
+    mins, secs = divmod(remainder, 60)
+    return f"{hours:02}:{mins:02}:{secs:02}"
 
 
 def print_empty_rectangle(width, height, first_name="", tag="", stopwatch=""):
@@ -27,7 +37,7 @@ def print_empty_rectangle(width, height, first_name="", tag="", stopwatch=""):
 
     elif status == 2:
         print(" " * left_padding + "+" +
-              "----Flomo - BREAK" + "-"*(size-19) + "+")
+              "----Flomo - BREAK" + "-"*(size-17) + "+")
 
     for i in range(7):
         if i == 1 and first_name:
@@ -50,7 +60,8 @@ def update_stopwatch():
     global stopwatch
     while True:
         time.sleep(1)
-        stopwatch += 1
+        if not stop_timer:
+            stopwatch += 1
 
 
 def get_terminal_size():
@@ -58,16 +69,38 @@ def get_terminal_size():
     return columns, lines
 
 
+def user_input():
+    global stop_timer
+    global status
+    global stop_timer
+    while True:
+        if os.name == 'nt':  # For Windows
+            if msvcrt.kbhit():
+                key = msvcrt.getch().decode()
+                if key == 'q':
+                    stop_timer = True
+                    status = 2
+                    break
+        else:  # For Unix-like systems
+            tty.setcbreak(sys.stdin.fileno())
+            key = sys.stdin.read(1)
+            if key == 'q':
+                stop_timer = True
+                status = 2
+                break
+
+
 def main():
     threading.Thread(target=update_stopwatch, daemon=True).start()
+    threading.Thread(target=user_input, daemon=True).start()
 
     while True:
         clear_terminal()
         width, height = get_terminal_size()
-        # print(width, height) # remove this
+
         print_empty_rectangle(width, height, first_name,
                               tag, format_time(stopwatch))
-        time.sleep(1)
+        time.sleep(0.01)
 
 
 if __name__ == "__main__":
