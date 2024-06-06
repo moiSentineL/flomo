@@ -1,4 +1,4 @@
-from logic import Flow
+from src.logic import Flow
 
 flow = Flow()
 flow.initialize_flow()
