@@ -69,10 +69,19 @@ def get_terminal_size():
     return columns, lines
 
 
-def user_input():
+# def user_input():
+#     global stop_timer
+#     global status
+#     while True:
+        
+
+
+def main():
     global stop_timer
     global status
-    global stop_timer
+
+    threading.Thread(target=update_stopwatch, daemon=True).start()
+
     while True:
         if os.name == 'nt':  # For Windows
             if msvcrt.kbhit():
@@ -80,28 +89,21 @@ def user_input():
                 if key == 'q':
                     stop_timer = True
                     status = 2
-                    break
         else:  # For Unix-like systems
             tty.setcbreak(sys.stdin.fileno())
             key = sys.stdin.read(1)
             if key == 'q':
                 stop_timer = True
                 status = 2
-                break
 
-
-def main():
-    threading.Thread(target=update_stopwatch, daemon=True).start()
-    threading.Thread(target=user_input, daemon=True).start()
-
-    while True:
         clear_terminal()
         width, height = get_terminal_size()
 
         print_empty_rectangle(width, height, first_name,
                               tag, format_time(stopwatch))
-        time.sleep(0.01)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
     main()
+    # user_input()
