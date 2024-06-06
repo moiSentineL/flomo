@@ -24,7 +24,7 @@ def print_empty_rectangle(width, height, first_name="", tag="", stopwatch=""):
         print(" " * left_padding + "+" + "----Flomo - WORKING" + "-"*(size-19) + "+")
     
     elif status == 2 :
-        print(" " * left_padding + "+" + "----Flomo - BREANK" + "-"*(size-19) + "+")
+        print(" " * left_padding + "+" + "----Flomo - BREAK" + "-"*(size-19) + "+")
     
     for i in range(7):
         if i == 1 and first_name:
