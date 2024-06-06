@@ -1,4 +1,5 @@
 import click
+import src.ui as ui
 # from src.logic import Flow
 
 # flow = Flow()
@@ -30,9 +31,10 @@ def hello():
 @click.option('-n', '--name', default='Work',
               help='Session Name')
 def start(tag, name):
-    click.echo("started")
-    click.echo(f"tag: {tag}")
-    click.echo(f"name: {name}")
+    # click.echo("started")
+    # click.echo(f"tag: {tag}")
+    # click.echo(f"name: {name}")
+    ui.main(tag, name)
 
 
 if __name__ == '__main__':

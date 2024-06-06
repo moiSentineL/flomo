@@ -3,8 +3,6 @@ import os
 import time
 import threading
 
-first_name = " First Name: "
-tag = " Tag: "
 stopwatch = 0
 status = 1  # debug
 size = 50
@@ -25,7 +23,7 @@ def format_time(seconds):
     return f"{hours:02}:{mins:02}:{secs:02}"
 
 
-def print_empty_rectangle(width, height, first_name="", tag="", stopwatch=""):
+def print_empty_rectangle(width, height, name , tag , stopwatch=""):
     left_padding = (width - size) // 2
     top_padding = (height - 7) // 2
 
@@ -40,8 +38,8 @@ def print_empty_rectangle(width, height, first_name="", tag="", stopwatch=""):
               "----Flomo - BREAK" + "-"*(size-17) + "+")
 
     for i in range(7):
-        if i == 1 and first_name:
-            print(" " * left_padding + "|" + first_name.center(size) + "|")
+        if i == 1 and name:
+            print(" " * left_padding + "|" + name.center(size) + "|")
         elif i == 2 and tag:
             print(" " * left_padding + "|" + tag.center(size) + "|")
         elif i == 3 and stopwatch:
@@ -84,10 +82,11 @@ def unix():
         if key == 'q':
             stop_timer = True
             status = 2
+            print(stopwatch)
         
 
 
-def main():
+def main(name, tag):
     global stop_timer
     global status
 
@@ -104,14 +103,14 @@ def main():
                 if key == 'q':
                     stop_timer = True
                     status = 2
+                    print(stopwatch)
         else:  # For Unix-like systems
             pass
 
         clear_terminal()
         width, height = get_terminal_size()
 
-        print_empty_rectangle(width, height, first_name,
-                              tag, format_time(stopwatch))
+        print_empty_rectangle(width, height, name, tag, format_time(stopwatch))
         time.sleep(1)
 
 
