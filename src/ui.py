@@ -57,7 +57,7 @@ def main():
     while True:
         clear_terminal()
         width, height = get_terminal_size()
-        print(width, height) # remove this
+        # print(width, height) # remove this
         print_empty_rectangle(width, height, first_name, tag, format_time(stopwatch))
         time.sleep(1)
 
