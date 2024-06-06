@@ -73,6 +73,17 @@ def get_terminal_size():
 #     global stop_timer
 #     global status
 #     while True:
+
+def unix():
+    global stop_timer
+    global status
+    while True:
+        tty.setcbreak(sys.stdin.fileno())
+        key = sys.stdin.read(1)
+        # print("hit")
+        if key == 'q':
+            stop_timer = True
+            status = 2
         
 
 
@@ -81,6 +92,10 @@ def main():
     global status
 
     threading.Thread(target=update_stopwatch, daemon=True).start()
+    if os.name == 'nt':  # For Windows
+        pass
+    else:  # For Unix-like systems
+        threading.Thread(target=unix, daemon=True).start()
 
     while True:
         if os.name == 'nt':  # For Windows
@@ -90,11 +105,7 @@ def main():
                     stop_timer = True
                     status = 2
         else:  # For Unix-like systems
-            tty.setcbreak(sys.stdin.fileno())
-            key = sys.stdin.read(1)
-            if key == 'q':
-                stop_timer = True
-                status = 2
+            pass
 
         clear_terminal()
         width, height = get_terminal_size()
