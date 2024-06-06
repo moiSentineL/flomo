@@ -6,8 +6,9 @@ import threading
 first_name = " First Name: "
 tag = " Tag: "
 stopwatch = 0
-
+status = 1
 size = 50
+
 
 def format_time(seconds):
     mins, secs = divmod(seconds, 60)
@@ -18,7 +19,12 @@ def print_empty_rectangle(width, height, first_name="", tag="", stopwatch=""):
     top_padding = (height - 7) // 2
     
     print("\n" * top_padding, end="")
-    print(" " * left_padding + "+" + "----FLOMO" + "-"*(size-9) + "+")
+
+    if status == 1 :
+        print(" " * left_padding + "+" + "----Flomo - WORKING" + "-"*(size-19) + "+")
+    
+    elif status == 2 :
+        print(" " * left_padding + "+" + "----Flomo - BREANK" + "-"*(size-19) + "+")
     
     for i in range(7):
         if i == 1 and first_name:
@@ -51,6 +57,7 @@ def main():
     while True:
         clear_terminal()
         width, height = get_terminal_size()
+        print(width, height) # remove this
         print_empty_rectangle(width, height, first_name, tag, format_time(stopwatch))
         time.sleep(1)
 
