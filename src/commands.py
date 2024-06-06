@@ -1,11 +1,12 @@
 import click
 
 
+
 @click.command()
-@click.option('--count', default=1, help='Number of greetings.')
-@click.option('--name', prompt='Your name',
-              help='The person to greet.')
-def hello(count, name):
+@click.option('-t', '--tag', default='Default', help='Session tag name.')
+@click.option('-n', '--name', default='Work',
+              help='Session Name')
+def hello(t, n):
     """Simple program that greets NAME for a total of COUNT times."""
     for x in range(count):
         click.echo(f"Hello {name}!")
