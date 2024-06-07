@@ -13,13 +13,23 @@ console = Console()
 # table.add_row("Bru")
 
 # console.print(table)
+status = int(input("Enter 1 for WORKING and 2 for BREAK: ")) #This is the main val to chagne break time and working also the color (Degub- Remove this)
 
+
+
+if status == 1 :
+    text = "WORKING"
+    color_plot = "bold blue"
+elif status == 2:
+    text = "BREAK"
+    color_plot = "bold red"
+    
 content = "Content of the panel, to be done later with formatting"
-title = "Flomo - WORKING"
+title = "Flomo - " + text 
 
 
 panel = Panel(content, expand=False, title=title,
-              border_style="bold blue", title_align="left")
+              border_style=color_plot, title_align="left")
 
 
 center_panel = Align.center(panel)
