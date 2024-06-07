@@ -104,4 +104,4 @@ def main(name, tag):
 
 
 if __name__ == "__main__":
-    main()
+    main("Test Name", "TestTag")
