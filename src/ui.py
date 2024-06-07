@@ -23,7 +23,7 @@ def format_time(seconds):
     return f"{hours:02}:{mins:02}:{secs:02}"
 
 
-def print_empty_rectangle(width, height, name , tag , stopwatch=""):
+def print_empty_rectangle(width, height, name, tag, stopwatch=""):
     left_padding = (width - size) // 2
     top_padding = (height - 7) // 2
 
@@ -67,23 +67,16 @@ def get_terminal_size():
     return columns, lines
 
 
-# def user_input():
-#     global stop_timer
-#     global status
-#     while True:
-
 def unix():
     global stop_timer
     global status
     while True:
         tty.setcbreak(sys.stdin.fileno())
         key = sys.stdin.read(1)
-        # print("hit")
         if key == 'q':
             stop_timer = True
             status = 2
             print(stopwatch)
-        
 
 
 def main(name, tag):
@@ -91,9 +84,7 @@ def main(name, tag):
     global status
 
     threading.Thread(target=update_stopwatch, daemon=True).start()
-    if os.name == 'nt':  # For Windows
-        pass
-    else:  # For Unix-like systems
+    if os.name != 'nt':  # For Unix-like systems
         threading.Thread(target=unix, daemon=True).start()
 
     while True:
@@ -104,8 +95,6 @@ def main(name, tag):
                     stop_timer = True
                     status = 2
                     print(stopwatch)
-        else:  # For Unix-like systems
-            pass
 
         clear_terminal()
         width, height = get_terminal_size()
@@ -115,5 +104,4 @@ def main(name, tag):
 
 
 if __name__ == "__main__":
-    main()
-    # user_input()
+    main("Test Name", "TestTag")
