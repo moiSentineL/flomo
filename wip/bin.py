@@ -9,6 +9,9 @@ import time
 
 console = Console()
 
+height = 10
+width = 50
+
 
 def rich_panel(status):
     global stopwatch
@@ -48,9 +51,9 @@ def rich_panel(status):
         content = Text(format_time(stopwatch))
         stopwatch += 1
         panel = Panel(content, expand=False, title=title,
-                      border_style=color_plot, title_align="left")
+                      border_style=color_plot, title_align="left", height=height, width=width)
         # stopwatch += 1
-        return panel
+        return Align.center(panel)
 
     with Live(generate_panel(), refresh_per_second=4) as thislivethingie:
         # stop_timer = False -> can be used as a failsafe?
