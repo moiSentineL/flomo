@@ -1,107 +1,66 @@
-import shutil
-import os
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.align import Align
+from rich.live import Live
+from rich.text import Text
 import time
-import threading
-
-stopwatch = 0
-status = 1  # debug
-size = 50
-stop_timer = False
-
-# Platform-specific imports
-if os.name == 'nt':  # For Windows
-    import msvcrt
-else:  # For Unix-like systems
-    import sys
-    import termios
-    import tty
 
 
-def format_time(seconds):
-    hours, remainder = divmod(seconds, 3600)
-    mins, secs = divmod(remainder, 60)
-    return f"{hours:02}:{mins:02}:{secs:02}"
+console = Console()
+
+height = 10
+width = 50
 
 
-def print_empty_rectangle(width, height, name, tag, stopwatch=""):
-    left_padding = (width - size) // 2
-    top_padding = (height - 7) // 2
+def rich_panel(status):
+    global stopwatch
+    stopwatch = 0
 
-    print("\n" * top_padding, end="")
+    # status = int(input("Enter 1 for WORKING and 2 for BREAK: ")) #This is the main val to chagne break time and working also the color (Degub- Remove this)
+    # < redundant, passed on as parameter in main funtion
 
     if status == 1:
-        print(" " * left_padding + "+" +
-              "----Flomo - WORKING" + "-"*(size-19) + "+")
-
+        text = "WORKING"
+        color_plot = "bold blue"
     elif status == 2:
-        print(" " * left_padding + "+" +
-              "----Flomo - BREAK" + "-"*(size-17) + "+")
+        text = "BREAK"
+        color_plot = "bold red"
 
-    for i in range(7):
-        if i == 1 and name:
-            print(" " * left_padding + "|" + name.center(size) + "|")
-        elif i == 2 and tag:
-            print(" " * left_padding + "|" + tag.center(size) + "|")
-        elif i == 3 and stopwatch:
-            print(" " * left_padding + "|" + stopwatch.center(size) + "|")
-        else:
-            print(" " * left_padding + "|" + " " * size + "|")
+    content = "Content of the panel, to be done later with formatting"
+    title = "Flomo - " + text
 
-    print(" " * left_padding + "+" + "-" * size + "+")
+    def format_time(seconds):
+        hours, remainder = divmod(seconds, 3600)
+        mins, secs = divmod(remainder, 60)
+        return f"{hours:02}:{mins:02}:{secs:02}"
 
+    def update_stopwatch():  # for now redudant ...
 
-def clear_terminal():
-    os.system("cls" if os.name == "nt" else "clear")
+        global stopwatch
+        stopwatch = 0
 
-
-def update_stopwatch():
-    global stopwatch
-    while True:
-        time.sleep(1)
-        if not stop_timer:
+        while True:
+            time.sleep(1)
+            # if not stop_timer:
             stopwatch += 1
 
+    def generate_panel() -> Panel:
 
-def get_terminal_size():
-    columns, lines = shutil.get_terminal_size()
-    return columns, lines
+        global stopwatch
+        content = Text(format_time(stopwatch))
+        stopwatch += 1
+        panel = Panel(content, expand=False, title=title,
+                      border_style=color_plot, title_align="left", height=height, width=width)
+        # stopwatch += 1
+        return Align.center(panel)
 
-
-def unix():
-    global stop_timer
-    global status
-    while True:
-        tty.setcbreak(sys.stdin.fileno())
-        key = sys.stdin.read(1)
-        if key == 'q':
-            stop_timer = True
-            status = 2
-            print(stopwatch)
-
-
-def main(name, tag):
-    global stop_timer
-    global status
-
-    threading.Thread(target=update_stopwatch, daemon=True).start()
-    if os.name != 'nt':  # For Unix-like systems
-        threading.Thread(target=unix, daemon=True).start()
-
-    while True:
-        if os.name == 'nt':  # For Windows
-            if msvcrt.kbhit():
-                key = msvcrt.getch().decode()
-                if key == 'q':
-                    stop_timer = True
-                    status = 2
-                    print(stopwatch)
-
-        clear_terminal()
-        width, height = get_terminal_size()
-
-        print_empty_rectangle(width, height, name, tag, format_time(stopwatch))
-        time.sleep(1)
+    with Live(generate_panel(), refresh_per_second=4) as thislivethingie:
+        # stop_timer = False -> can be used as a failsafe?
+        for n in range(5):
+            time.sleep(1)
+            Live.update(thislivethingie, generate_panel())
 
 
 if __name__ == "__main__":
-    main("Test Name", "TestTag")
+    rich_panel(1)
