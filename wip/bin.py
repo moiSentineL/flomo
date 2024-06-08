@@ -58,7 +58,7 @@ def rich_panel(status):
     with Live(generate_panel(), refresh_per_second=4) as thislivethingie:
         # stop_timer = False -> can be used as a failsafe?
         for n in range(5):
-            time.sleep(0.4)
+            time.sleep(1)
             Live.update(thislivethingie, generate_panel())
 
 
