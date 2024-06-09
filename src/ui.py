@@ -29,7 +29,7 @@ class UI:
             while True:
                 time.sleep(1)
                 self.stopwatch += 1
-                Live.update(_live, self.generate_panel())
+                _live.update(self.generate_panel())
 
 
 if __name__ == "__main__":
