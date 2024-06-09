@@ -1,6 +1,7 @@
 from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
+from rich.align import Align
 import time
 
 
@@ -22,10 +23,11 @@ class UI:
         content = Text(self.format_time(self.stopwatch))
         panel = Panel(content, expand=False, title=self.title,
                       border_style=self.border_style, title_align="left")
+        # return Align.center(panel)
         return panel
 
     def show_live_panel(self):
-        with Live(self.generate_panel(), refresh_per_second=4) as _live:
+        with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
             while not self.close_live_panel:
                 time.sleep(1)
                 self.stopwatch += 1
