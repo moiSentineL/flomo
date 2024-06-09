@@ -6,7 +6,7 @@ import time
 
 
 class UI:
-    def __init__(self, status: int):
+    def __init__(self, status: int, tag: str, name: str):
         self.console = Console()
         self.stopwatch = 0
 
@@ -35,7 +35,9 @@ class UI:
 
 
 if __name__ == "__main__":
-    workingUI = UI(0)
+    tag, name = "Coding", "Work on Flomo"
+
+    workingUI = UI(0, tag, name)
     workingUI.show_live_panel()
 
     # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
@@ -44,7 +46,7 @@ if __name__ == "__main__":
     #     print("hello")
     #     workingUI.close_live_panel = True
 
-    # breakUI = UI(1)
+    # breakUI = UI(1, tag, name)
     # breakUI.show_live_panel()
     # if breakUI.stopwatch >= 2:
     #     breakUI.close_live_panel = True
