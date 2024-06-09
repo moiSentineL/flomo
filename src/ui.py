@@ -10,8 +10,10 @@ class UI:
         self.console = Console()
         self.stopwatch = 0
 
-        self.title = "Flomo - " + ("WORKING" if status == 1 else "BREAK")
-        self.border_style = "bold blue" if status == 1 else "bold red"
+        self.title = "Flomo - " + ("WORKING" if status == 0 else "BREAK")
+        self.border_style = "bold blue" if status == 0 else "bold red"
+
+        self.close_live_panel = False
 
     def format_time(self, seconds: int):
         hours, remainder = divmod(seconds, 3600)
@@ -26,12 +28,23 @@ class UI:
 
     def show_live_panel(self):
         with Live(self.generate_panel(), refresh_per_second=4) as _live:
-            while True:
+            while not self.close_live_panel:
                 time.sleep(1)
                 self.stopwatch += 1
                 _live.update(self.generate_panel())
 
 
 if __name__ == "__main__":
-    ui = UI(1)
-    ui.show_live_panel()
+    workingUI = UI(0)
+    workingUI.show_live_panel()
+
+    # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
+
+    # if workingUI.stopwatch >= 5:
+    #     print("hello")
+    #     workingUI.close_live_panel = True
+
+    # breakUI = UI(1)
+    # breakUI.show_live_panel()
+    # if breakUI.stopwatch >= 2:
+    #     breakUI.close_live_panel = True
