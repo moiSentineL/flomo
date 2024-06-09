@@ -1,4 +1,3 @@
-from rich.console import Console
 from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
@@ -7,7 +6,6 @@ import time
 
 class UI:
     def __init__(self, status: int, tag: str, name: str):
-        self.console = Console()
         self.stopwatch = 0
 
         self.title = "Flomo - " + ("WORKING" if status == 0 else "BREAK")
