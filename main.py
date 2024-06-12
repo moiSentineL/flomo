@@ -15,6 +15,8 @@ def start(tag, name):
     workingUI = ui.UI(0, tag, name)
     workingUI.show_live_panel()
 
+    # TODO: Implement the Break shit in a function in ui.py
+
 
 if __name__ == '__main__':
     flomo()
