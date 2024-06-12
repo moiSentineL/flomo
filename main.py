@@ -6,12 +6,14 @@ import src.ui as ui
 def flomo():
     pass
 
+
 @flomo.command()
 @click.option('-t', '--tag', default='Default', help='Session tag name.')
 @click.option('-n', '--name', default='Work',
               help='Session Name')
 def start(tag, name):
-    ui.main(name, f"#{tag}")
+    workingUI = ui.UI(0, tag, name)
+    workingUI.show_live_panel()
 
 
 if __name__ == '__main__':

@@ -14,6 +14,9 @@ class UI:
 
         self.close_live_panel = False
 
+        self.tag = f"#{tag}"
+        self.name = name
+
     def format_time(self, seconds: int):
         hours, remainder = divmod(seconds, 3600)
         mins, secs = divmod(remainder, 60)
