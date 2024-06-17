@@ -1,7 +1,6 @@
 from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
-from rich.align import Align
 import time
 import threading
 import blessed
@@ -10,15 +9,13 @@ import sys
 
 class UI:
     def __init__(self, status: int, tag: str, name: str):
-        self.stopwatch = 0
-
-        self.title = "Flomo - " + ("WORKING" if status == 0 else "BREAK")
-        self.border_style = "bold blue" if status == 0 else "bold red"
-
-        self.close_live_panel = False
-
         self.tag = f"#{tag}"
         self.name = name
+
+        self.stopwatch = 0
+        self.status = status
+
+        self.close_live_panel = False
 
         self.terminal = blessed.Terminal()
 
@@ -28,11 +25,12 @@ class UI:
         return f"{hours:02}:{mins:02}:{secs:02}"
 
     def generate_panel(self):
+        title = "Flomo - " + ("WORKING" if self.status == 0 else "BREAK")
+        border_style = "bold blue" if self.status == 0 else "bold red"
+
         content = Text(self.format_time(self.stopwatch))
-        panel = Panel(content, expand=False, title=self.title,
-                      border_style=self.border_style, title_align="left")
-        # return Align.center(panel)
-        return panel
+        return Panel(content, expand=False, title=title,
+                     border_style=border_style, title_align="left")
 
     def show_live_panel(self):
         with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
@@ -44,10 +42,6 @@ class UI:
     def get_input(self):
         with self.terminal.cbreak(), self.terminal.hidden_cursor():
             return self.terminal.inkey()
-            # if inp := self.terminal.inkey() == "q":
-            #     self.close_live_panel = True
-            # else:
-            #     pass
 
 
 if __name__ == "__main__":
@@ -56,16 +50,18 @@ if __name__ == "__main__":
     workingUI = UI(0, tag, name)
     t1 = threading.Thread(target=workingUI.show_live_panel, daemon=True)
 
-    t1.start()
-
-    while True:
-        inp = workingUI.get_input()
-        if inp == "q":
-            workingUI.close_live_panel = True
-            t1.join()
-            sys.exit()
-        else:
-            pass
+    try:
+        t1.start()
+        while True:
+            inp = workingUI.get_input()
+            if inp == "q":
+                workingUI.status = 1
+            else:
+                pass
+    except KeyboardInterrupt:
+        workingUI.close_live_panel = True
+        t1.join()
+        sys.exit()
 
     # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
 
