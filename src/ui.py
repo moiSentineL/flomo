@@ -3,6 +3,7 @@ from rich.live import Live
 from rich.text import Text
 from rich.align import Align
 import time
+import threading
 
 
 class UI:
@@ -41,7 +42,17 @@ if __name__ == "__main__":
     tag, name = "Coding", "Work on Flomo"
 
     workingUI = UI(0, tag, name)
-    workingUI.show_live_panel()
+    t1 = threading.Thread(target=workingUI.show_live_panel, daemon=True)
+
+    t1.start()
+
+    # while True:
+    #     with term.cbreak(), term.hidden_cursor():
+    #         inp = term.inkey()
+    #         if inp == "q":
+    #             sys.exit() # to debug if the keypress thingy works or not.
+    #         else:
+    #             pass
 
     # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
 
