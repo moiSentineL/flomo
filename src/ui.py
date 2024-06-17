@@ -61,3 +61,14 @@ if __name__ == "__main__":
         workingUI.close_live_panel = True
         t1.join()
         sys.exit()
+
+    # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
+
+    # if workingUI.stopwatch >= 5:
+    #     print("hello")
+    #     workingUI.close_live_panel = True
+
+    # breakUI = UI(1, tag, name)
+    # breakUI.show_live_panel()
+    # if breakUI.stopwatch >= 2:
+    #     breakUI.close_live_panel = True
