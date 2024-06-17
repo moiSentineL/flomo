@@ -4,6 +4,8 @@ from rich.text import Text
 from rich.align import Align
 import time
 import threading
+import blessed
+import sys
 
 
 class UI:
@@ -17,6 +19,8 @@ class UI:
 
         self.tag = f"#{tag}"
         self.name = name
+
+        self.terminal = blessed.Terminal()
 
     def format_time(self, seconds: int):
         hours, remainder = divmod(seconds, 3600)
@@ -37,6 +41,14 @@ class UI:
                 self.stopwatch += 1
                 _live.update(self.generate_panel())
 
+    def get_input(self):
+        with self.terminal.cbreak(), self.terminal.hidden_cursor():
+            return self.terminal.inkey()
+            # if inp := self.terminal.inkey() == "q":
+            #     self.close_live_panel = True
+            # else:
+            #     pass
+
 
 if __name__ == "__main__":
     tag, name = "Coding", "Work on Flomo"
@@ -46,13 +58,14 @@ if __name__ == "__main__":
 
     t1.start()
 
-    # while True:
-    #     with term.cbreak(), term.hidden_cursor():
-    #         inp = term.inkey()
-    #         if inp == "q":
-    #             sys.exit() # to debug if the keypress thingy works or not.
-    #         else:
-    #             pass
+    while True:
+        inp = workingUI.get_input()
+        if inp == "q":
+            workingUI.close_live_panel = True
+            t1.join()
+            sys.exit()
+        else:
+            pass
 
     # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
 
