@@ -16,6 +16,9 @@ class UI:
         self.stopwatch = 0
         self.close_live_panel = False
 
+        self.title = "Flomo - " + ("WORKING" if self.status == 0 else "BREAK")
+        self.border_style = "bold blue" if self.status == 0 else "bold red"
+
         self.terminal = blessed.Terminal()
 
     def format_time(self, seconds: int):
@@ -24,12 +27,9 @@ class UI:
         return f"{hours:02}:{mins:02}:{secs:02}"
 
     def generate_panel(self):
-        title = "Flomo - " + ("WORKING" if self.status == 0 else "BREAK")
-        border_style = "bold blue" if self.status == 0 else "bold red"
-
         content = Text(self.format_time(self.stopwatch))
-        return Panel(content, expand=False, title=title,
-                     border_style=border_style, title_align="left")
+        return Panel(content, expand=False, title=self.title,
+                     border_style=self.border_style, title_align="left")
 
     def show_live_panel(self):
         with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
@@ -43,24 +43,23 @@ class UI:
             return self.terminal.inkey()
 
 
-if __name__ == "__main__":
-    tag, name = "Coding", "Work on Flomo"
+def main(tag: str, name: str):
+    while True:
+        workingUI = UI(0, tag, name)
+        t1 = threading.Thread(target=workingUI.show_live_panel, daemon=True)
 
-    workingUI = UI(0, tag, name)
-    t1 = threading.Thread(target=workingUI.show_live_panel, daemon=True)
-
-    try:
-        t1.start()
-        while True:
-            inp = workingUI.get_input()
-            if inp == "q":
-                workingUI.status = 1
-            else:
-                pass
-    except KeyboardInterrupt:
-        workingUI.close_live_panel = True
-        t1.join()
-        sys.exit()
+        try:
+            t1.start()
+            while True:
+                inp = workingUI.get_input()
+                if inp == "q":
+                    pass
+                else:
+                    pass
+        except KeyboardInterrupt:
+            workingUI.close_live_panel = True
+            t1.join()
+            sys.exit()
 
     # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
 
@@ -72,3 +71,7 @@ if __name__ == "__main__":
     # breakUI.show_live_panel()
     # if breakUI.stopwatch >= 2:
     #     breakUI.close_live_panel = True
+
+
+if __name__ == "__main__":
+    main("Coding", "Work on Flomo")
