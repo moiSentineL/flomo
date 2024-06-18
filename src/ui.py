@@ -8,11 +8,12 @@ import sys
 
 
 class UI:
-    def __init__(self, status: int, tag: str, name: str):
+    def __init__(self, status: int, tag: str, name: str, break_time: int = None):
         self.tag = f"#{tag}"
         self.name = name
         self.status = status
 
+        self.break_time = break_time
         self.stopwatch = 0
         self.close_live_panel = False
 
@@ -27,7 +28,8 @@ class UI:
         return f"{hours:02}:{mins:02}:{secs:02}"
 
     def generate_panel(self):
-        content = Text(self.format_time(self.stopwatch))
+        content = Text(self.format_time(
+            self.stopwatch if self.status == 0 else self.break_time))
         return Panel(content, expand=False, title=self.title,
                      border_style=self.border_style, title_align="left")
 
@@ -35,7 +37,11 @@ class UI:
         with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
             while not self.close_live_panel:
                 time.sleep(1)
-                self.stopwatch += 1
+                if self.status == 0:
+                    self.stopwatch += 1
+                elif self.status == 1:
+                    # Solve Bug
+                    self.break_time -= 1
                 _live.update(self.generate_panel())
 
     def get_input(self):
@@ -44,33 +50,33 @@ class UI:
 
 
 def main(tag: str, name: str):
-    while True:
-        workingUI = UI(0, tag, name)
-        t1 = threading.Thread(target=workingUI.show_live_panel, daemon=True)
+    # Thinking of doing it Recursively
+    working_ui = UI(0, tag, name)
+    working_panel_thread = threading.Thread(
+        target=working_ui.show_live_panel, daemon=True)
 
-        try:
-            t1.start()
-            while True:
-                inp = workingUI.get_input()
-                if inp == "q":
-                    pass
-                else:
-                    pass
-        except KeyboardInterrupt:
-            workingUI.close_live_panel = True
-            t1.join()
-            sys.exit()
+    try:
+        working_panel_thread.start()
+        while True:
+            inp = working_ui.get_input()
+            if inp == "q":
+                # break
 
-    # HERE IS THE IDEA: Use Threading (sigh) to run the workingUI.show_live_panel() in parallel while another is taking input but... it will end up in a lot of threads (unclossed) when multiple cycles are done
+                # the below code shouldnt be here! wip
+                break_time = working_ui.stopwatch / 5
+                working_ui.close_live_panel = True
+                working_panel_thread.join()
 
-    # if workingUI.stopwatch >= 5:
-    #     print("hello")
-    #     workingUI.close_live_panel = True
-
-    # breakUI = UI(1, tag, name)
-    # breakUI.show_live_panel()
-    # if breakUI.stopwatch >= 2:
-    #     breakUI.close_live_panel = True
+                break_ui = UI(1, tag, name, break_time)
+                break_panel_thread = threading.Thread(
+                    target=break_ui.show_live_panel, daemon=True)
+                break_panel_thread.start()
+    except KeyboardInterrupt:
+        working_ui.close_live_panel = True
+        break_ui.close_live_panel = True
+        working_panel_thread.join()
+        break_panel_thread.join()
+        sys.exit()
 
 
 if __name__ == "__main__":

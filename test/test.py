@@ -1,5 +1,10 @@
-from rich import print
-from rich.layout import Layout
+try:
+    while True:
+        print("break breaks try catch?")
+        break
 
-layout = Layout()
-print(layout)
+    print("works!")
+except:
+    pass
+
+print("tf?")
