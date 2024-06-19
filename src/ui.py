@@ -1,7 +1,9 @@
+from src.debug import debug_print
 from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
 import time
+import datetime
 import threading
 import blessed
 import sys
@@ -52,30 +54,39 @@ class UI:
 
 def main(tag: str, name: str):
     try:
-        working_ui = UI(0, tag, name)
-        break_ui = None
-        working_panel_thread = threading.Thread(
-            target=working_ui.show_live_panel, daemon=True)
-        working_panel_thread.start()
+        while True:
+            working_ui = UI(0, tag, name)
+            break_ui = None
+            working_panel_thread = threading.Thread(
+                target=working_ui.show_live_panel, daemon=True)
+            working_panel_thread.start()
 
-        inp = ""
-        while inp != "q":
-            inp = working_ui.get_input()
+            inp = ""
+            while working_ui.stopwatch == 0 or not (working_ui.stopwatch != 0 and inp == "q"):
+                inp = working_ui.get_input()
 
-        break_time = working_ui.stopwatch / 5
-        working_ui.close_live_panel = True
-        working_panel_thread.join()
+            break_time = working_ui.stopwatch / 5
 
-        break_ui = UI(1, tag, name, break_time)
-        break_ui.show_live_panel()
-        break_ui.close_live_panel = True
+            working_ui.close_live_panel = True
+            working_panel_thread.join()
 
-        main(tag, name)
-    except (KeyboardInterrupt, Exception):
-        working_ui.close_live_panel = True
-        if break_ui:
+            del working_ui
+
+            break_ui = UI(1, tag, name, break_time)
+            break_ui.show_live_panel()
             break_ui.close_live_panel = True
-        working_panel_thread.join()
+
+            del break_ui
+    except (KeyboardInterrupt, Exception) as e:
+        if 'working_ui' in locals() and working_ui is not None:
+            working_ui.close_live_panel = True
+        if 'break_ui' in locals() and break_ui is not None:
+            break_ui.close_live_panel = True
+        if 'working_panel_thread' in locals() and working_panel_thread.is_alive():
+            working_panel_thread.join()
+
+        debug_print(f"{datetime.datetime.now()} - Error: {e}")
+    finally:
         sys.exit()
 
 
