@@ -2,6 +2,7 @@ from src.debug import debug_print
 from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
+from rich.align import Align
 import time
 import datetime
 import threading
@@ -30,13 +31,15 @@ class UI:
         return f"{hours:02}:{mins:02}:{secs:02}"
 
     def generate_panel(self):
-        content = Text(self.format_time(
-            self.stopwatch if (self.status == 0) else self.break_time))
+        stuff = f"{self.name}\n{self.tag}\n{self.format_time(
+            self.stopwatch if (self.status == 0) else self.break_time)}"
+        content = Text(stuff, justify="center")
         return Panel(content, expand=False, title=self.title,
                      border_style=self.border_style, title_align="left")
 
     def show_live_panel(self):
-        with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
+        
+        with Live(Align.center(self.generate_panel(), vertical="middle",), refresh_per_second=4, screen=True) as _live:
             while not self.close_live_panel:
                 time.sleep(1)
                 if self.status == 0:
@@ -45,7 +48,7 @@ class UI:
                     if not (self.break_time > 1):
                         break
                     self.break_time -= 1
-                _live.update(self.generate_panel())
+                _live.update(Align.center(self.generate_panel(), vertical="middle"))
 
     def get_input(self):
         with self.terminal.cbreak(), self.terminal.hidden_cursor():
