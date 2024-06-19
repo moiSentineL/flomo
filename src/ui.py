@@ -48,6 +48,8 @@ class UI:
         with self.terminal.cbreak(), self.terminal.hidden_cursor():
             return self.terminal.inkey()
 
+# Here is the Idea: We call the main function with the tag and name of the task, which will start the working_ui and the break_ui when the user presses "q". After the break is over, we will call the main function again recursively.
+
 
 def main(tag: str, name: str):
     # Thinking of doing it Recursively
