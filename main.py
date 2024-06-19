@@ -12,10 +12,7 @@ def flomo():
 @click.option('-n', '--name', default='Work',
               help='Session Name')
 def start(tag, name):
-    workingUI = ui.UI(0, tag, name)
-    workingUI.show_live_panel()
-
-    # TODO: Implement the Break shit in a function in ui.py
+    ui.main(tag, name)
 
 
 if __name__ == '__main__':
