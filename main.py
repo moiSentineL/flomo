@@ -11,7 +11,7 @@ def flomo():
 @click.option('-t', '--tag', default='Default', help='Session tag name.')
 @click.option('-n', '--name', default='Work',
               help='Session Name')
-def start(tag, name):
+def start(tag: str, name: str):
     ui.main(tag.lower(), name)
 
 
