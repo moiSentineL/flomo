@@ -17,7 +17,7 @@ class UI:
         self.status = status
 
         self.break_time = round(break_time) if break_time else None
-        self.stopwatch = 30
+        self.stopwatch = 0
         self.close_live_panel = False
 
         self.title = "Flomo - " + \
@@ -32,9 +32,9 @@ class UI:
         return f"{hours:02}:{mins:02}:{secs:02}"
 
     def generate_panel(self):
-        stuff = f"{self.name}\n{self.tag}\n\n{self.format_time(
-            self.stopwatch if (self.status == 0) else self.break_time)}\n\n[q] - {'break' if self.status == 0 else 'skip '}    [Ctrl+C] - quit"
-        content = Text(stuff, justify="center")
+        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{self.format_time(
+            self.stopwatch if (self.status == 0) else self.break_time)}\n\n\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
+        content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
             Panel(content, expand=False, title=self.title,
                   border_style=self.border_style, title_align="center", padding=(1, 2)),
