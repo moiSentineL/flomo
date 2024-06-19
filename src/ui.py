@@ -1,66 +1,83 @@
-from rich.console import Console
 from rich.panel import Panel
-from rich.table import Table
-from rich.align import Align
 from rich.live import Live
 from rich.text import Text
 import time
+import threading
+import blessed
+import sys
 
 
-console = Console()
+class UI:
+    def __init__(self, status: int, tag: str, name: str, break_time: int = None):
+        self.tag = f"#{tag}"
+        self.name = name
+        self.status = status
 
-height = 10
-width = 50
+        self.break_time = round(break_time) if break_time else None
+        self.stopwatch = 0
+        self.close_live_panel = False
 
+        self.title = "Flomo - " + ("WORKING" if self.status == 0 else "BREAK")
+        self.border_style = "bold blue" if self.status == 0 else "bold red"
 
-def rich_panel(status):
-    global stopwatch
-    stopwatch = 0
+        self.terminal = blessed.Terminal()
 
-    # status = int(input("Enter 1 for WORKING and 2 for BREAK: ")) #This is the main val to chagne break time and working also the color (Degub- Remove this)
-    # < redundant, passed on as parameter in main funtion
-
-    if status == 1:
-        text = "WORKING"
-        color_plot = "bold blue"
-    elif status == 2:
-        text = "BREAK"
-        color_plot = "bold red"
-
-    content = "Content of the panel, to be done later with formatting"
-    title = "Flomo - " + text
-
-    def format_time(seconds):
+    def format_time(self, seconds: int):
         hours, remainder = divmod(seconds, 3600)
         mins, secs = divmod(remainder, 60)
         return f"{hours:02}:{mins:02}:{secs:02}"
 
-    def update_stopwatch():  # for now redudant ...
+    def generate_panel(self):
+        content = Text(self.format_time(
+            self.stopwatch if (self.status == 0) else self.break_time))
+        return Panel(content, expand=False, title=self.title,
+                     border_style=self.border_style, title_align="left")
 
-        global stopwatch
-        stopwatch = 0
+    def show_live_panel(self):
+        with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
+            while not self.close_live_panel:
+                time.sleep(1)
+                if self.status == 0:
+                    self.stopwatch += 1
+                elif self.status == 1:
+                    if not (self.break_time > 1):
+                        break
+                    self.break_time -= 1
+                _live.update(self.generate_panel())
 
-        while True:
-            time.sleep(1)
-            # if not stop_timer:
-            stopwatch += 1
+    def get_input(self):
+        with self.terminal.cbreak(), self.terminal.hidden_cursor():
+            return self.terminal.inkey()
 
-    def generate_panel() -> Panel:
 
-        global stopwatch
-        content = Text(format_time(stopwatch))
-        stopwatch += 1
-        panel = Panel(content, expand=False, title=title,
-                      border_style=color_plot, title_align="left", height=height, width=width)
-        # stopwatch += 1
-        return Align.center(panel)
+def main(tag: str, name: str):
+    try:
+        working_ui = UI(0, tag, name)
+        break_ui = None
+        working_panel_thread = threading.Thread(
+            target=working_ui.show_live_panel, daemon=True)
+        working_panel_thread.start()
 
-    with Live(generate_panel(), refresh_per_second=4) as thislivethingie:
-        # stop_timer = False -> can be used as a failsafe?
-        for n in range(5):
-            time.sleep(1)
-            Live.update(thislivethingie, generate_panel())
+        inp = ""
+        while inp != "q":
+            inp = working_ui.get_input()
+
+        break_time = working_ui.stopwatch / 5
+        working_ui.close_live_panel = True
+        working_panel_thread.join()
+
+        break_ui = UI(1, tag, name, break_time)
+        break_ui.show_live_panel()
+        break_ui.close_live_panel = True
+
+        main(tag, name)
+    except (KeyboardInterrupt, Exception):
+        working_ui.close_live_panel = True
+        if break_ui:
+            break_ui.close_live_panel = True
+        working_panel_thread.join()
+        sys.exit()
 
 
 if __name__ == "__main__":
-    rich_panel(1)
+    main("Coding", "Work on Flomo")
