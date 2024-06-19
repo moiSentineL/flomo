@@ -63,7 +63,6 @@ def main(tag: str, name: str):
     try:
         while True:
             working_ui = UI(0, tag, name)
-            break_ui = None
             working_panel_thread = threading.Thread(
                 target=working_ui.show_live_panel, daemon=True)
             working_panel_thread.start()
