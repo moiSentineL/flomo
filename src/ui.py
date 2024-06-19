@@ -38,6 +38,7 @@ class UI:
             Panel(content, expand=False, title=self.title,
                   border_style=self.border_style, title_align="center", padding=(1, 2)),
             vertical="middle",
+            height=self.terminal.height
         )
 
     def show_live_panel(self):
