@@ -13,7 +13,7 @@ class UI:
         self.name = name
         self.status = status
 
-        self.break_time = break_time
+        self.break_time = round(break_time) if break_time else None
         self.stopwatch = 0
         self.close_live_panel = False
 
@@ -29,7 +29,7 @@ class UI:
 
     def generate_panel(self):
         content = Text(self.format_time(
-            self.stopwatch if self.status == 0 else self.break_time))
+            self.stopwatch if (self.status == 0) else self.break_time))
         return Panel(content, expand=False, title=self.title,
                      border_style=self.border_style, title_align="left")
 
@@ -40,7 +40,8 @@ class UI:
                 if self.status == 0:
                     self.stopwatch += 1
                 elif self.status == 1:
-                    # Solve Bug
+                    if not (self.break_time > 1):
+                        break
                     self.break_time -= 1
                 _live.update(self.generate_panel())
 
@@ -48,36 +49,31 @@ class UI:
         with self.terminal.cbreak(), self.terminal.hidden_cursor():
             return self.terminal.inkey()
 
-# Here is the Idea: We call the main function with the tag and name of the task, which will start the working_ui and the break_ui when the user presses "q". After the break is over, we will call the main function again recursively.
-
 
 def main(tag: str, name: str):
-    # Thinking of doing it Recursively
-    working_ui = UI(0, tag, name)
-    working_panel_thread = threading.Thread(
-        target=working_ui.show_live_panel, daemon=True)
-
     try:
+        working_ui = UI(0, tag, name)
+        working_panel_thread = threading.Thread(
+            target=working_ui.show_live_panel, daemon=True)
         working_panel_thread.start()
+
         while True:
             inp = working_ui.get_input()
             if inp == "q":
-                # break
+                break
 
-                # the below code shouldnt be here! wip
-                break_time = working_ui.stopwatch / 5
-                working_ui.close_live_panel = True
-                working_panel_thread.join()
+        break_time = working_ui.stopwatch / 5
+        working_ui.close_live_panel = True
+        working_panel_thread.join()
 
-                break_ui = UI(1, tag, name, break_time)
-                break_panel_thread = threading.Thread(
-                    target=break_ui.show_live_panel, daemon=True)
-                break_panel_thread.start()
+        break_ui = UI(1, tag, name, break_time)
+        break_ui.show_live_panel()
+
+        main(tag, name)
     except KeyboardInterrupt:
         working_ui.close_live_panel = True
         break_ui.close_live_panel = True
         working_panel_thread.join()
-        break_panel_thread.join()
         sys.exit()
 
 
