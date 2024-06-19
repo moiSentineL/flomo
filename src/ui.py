@@ -17,11 +17,11 @@ class UI:
         self.status = status
 
         self.break_time = round(break_time) if break_time else None
-        self.stopwatch = 0
+        self.stopwatch = 30
         self.close_live_panel = False
 
         self.title = "Flomo - " + \
-            ("FLOWING" if self.status == 0 else "BREAKING")
+            ("FLOWING" if self.status == 0 else "CHILLIN")
         self.border_style = "bold blue" if self.status == 0 else "bold red"
 
         self.terminal = blessed.Terminal()
@@ -33,7 +33,7 @@ class UI:
 
     def generate_panel(self):
         stuff = f"{self.name}\n{self.tag}\n\n{self.format_time(
-            self.stopwatch if (self.status == 0) else self.break_time)}\n\n{'[q] - break    ' if self.status == 0 else ''}[Ctrl+C] - quit"
+            self.stopwatch if (self.status == 0) else self.break_time)}\n\n[q] - {'break' if self.status == 0 else 'skip '}    [Ctrl+C] - quit"
         content = Text(stuff, justify="center")
         return Align.center(
             Panel(content, expand=False, title=self.title,
