@@ -36,8 +36,8 @@ class UI:
         content = Text(stuff, justify="center")
         return Align.center(
             Panel(content, expand=False, title=self.title,
-                  border_style=self.border_style, title_align="left"),
-            vertical="middle"
+                  border_style=self.border_style, title_align="center"),
+            vertical="middle",
         )
 
     def show_live_panel(self):
