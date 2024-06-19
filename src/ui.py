@@ -90,6 +90,7 @@ def main(tag: str, name: str):
         if 'working_panel_thread' in locals() and working_panel_thread.is_alive():
             working_panel_thread.join()
 
-        debug_print(f"{datetime.datetime.now()} - Error: {e}")
+        if isinstance(e, Exception):
+            debug_print(f"{datetime.datetime.now()} - Error: {e}")
     finally:
         sys.exit()
