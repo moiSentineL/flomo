@@ -79,16 +79,21 @@ def main(tag: str, name: str):
             del working_ui
 
             break_ui = UI(1, tag, name, break_time)
-            breaking_panel_thread = threading.Thread(
-                target=break_ui.show_live_panel, daemon=True)
-            breaking_panel_thread.start()
+            break_ui.show_live_panel()
+            # breaking_panel_thread = threading.Thread(
+            #     target=break_ui.show_live_panel, daemon=True)
+            # breaking_panel_thread.start()
 
-            inp = ""
-            while break_ui.break_time > 0 and inp != "q":
-                inp = break_ui.get_input()
+            # while True:
+            #     if break_ui.break_time == 1:
+            #         break
+            #     debug_print(str(break_ui.break_time))
+            #     inp = break_ui.get_input()
+            #     if inp == "q":
+            #         break
 
             break_ui.close_live_panel = True
-            breaking_panel_thread.join()
+            # breaking_panel_thread.join()
 
             del break_ui
     except (KeyboardInterrupt, Exception) as e:
@@ -98,8 +103,8 @@ def main(tag: str, name: str):
             break_ui.close_live_panel = True
         if 'working_panel_thread' in locals() and working_panel_thread.is_alive():
             working_panel_thread.join()
-        if 'breaking_panel_thread' in locals() and breaking_panel_thread.is_alive():
-            breaking_panel_thread.join()
+        # if 'breaking_panel_thread' in locals() and breaking_panel_thread.is_alive():
+        #     breaking_panel_thread.join()
 
         if isinstance(e, Exception):
             debug_print(f"{datetime.datetime.now()} - Error: {e}")
