@@ -53,6 +53,7 @@ class UI:
 def main(tag: str, name: str):
     try:
         working_ui = UI(0, tag, name)
+        break_ui = None
         working_panel_thread = threading.Thread(
             target=working_ui.show_live_panel, daemon=True)
         working_panel_thread.start()
@@ -68,11 +69,13 @@ def main(tag: str, name: str):
 
         break_ui = UI(1, tag, name, break_time)
         break_ui.show_live_panel()
+        break_ui.close_live_panel = True
 
         main(tag, name)
     except KeyboardInterrupt:
         working_ui.close_live_panel = True
-        break_ui.close_live_panel = True
+        if break_ui:
+            break_ui.close_live_panel = True
         working_panel_thread.join()
         sys.exit()
 
