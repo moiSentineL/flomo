@@ -93,7 +93,3 @@ def main(tag: str, name: str):
         debug_print(f"{datetime.datetime.now()} - Error: {e}")
     finally:
         sys.exit()
-
-
-if __name__ == "__main__":
-    main("Coding", "Work on Flomo")
