@@ -58,10 +58,9 @@ def main(tag: str, name: str):
             target=working_ui.show_live_panel, daemon=True)
         working_panel_thread.start()
 
-        while True:
+        inp = ""
+        while inp != "q":
             inp = working_ui.get_input()
-            if inp == "q":
-                break
 
         break_time = working_ui.stopwatch / 5
         working_ui.close_live_panel = True
@@ -72,7 +71,7 @@ def main(tag: str, name: str):
         break_ui.close_live_panel = True
 
         main(tag, name)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, Exception):
         working_ui.close_live_panel = True
         if break_ui:
             break_ui.close_live_panel = True
