@@ -20,7 +20,8 @@ class UI:
         self.stopwatch = 0
         self.close_live_panel = False
 
-        self.title = "Flomo - " + ("WORKING" if self.status == 0 else "BREAK")
+        self.title = "Flomo - " + \
+            ("FLOWING" if self.status == 0 else "BREAKING")
         self.border_style = "bold blue" if self.status == 0 else "bold red"
 
         self.terminal = blessed.Terminal()

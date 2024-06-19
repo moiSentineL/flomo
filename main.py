@@ -12,7 +12,7 @@ def flomo():
 @click.option('-n', '--name', default='Work',
               help='Session Name')
 def start(tag, name):
-    ui.main(tag, name)
+    ui.main(tag.lower(), name)
 
 
 if __name__ == '__main__':
