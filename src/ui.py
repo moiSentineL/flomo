@@ -31,12 +31,12 @@ class UI:
         return f"{hours:02}:{mins:02}:{secs:02}"
 
     def generate_panel(self):
-        stuff = f"{self.name}\n{self.tag}\n{self.format_time(
+        stuff = f"{self.name}\n{self.tag}\n\n{self.format_time(
             self.stopwatch if (self.status == 0) else self.break_time)}"
         content = Text(stuff, justify="center")
         return Align.center(
             Panel(content, expand=False, title=self.title,
-                  border_style=self.border_style, title_align="center"),
+                  border_style=self.border_style, title_align="center", padding=(1, 2)),
             vertical="middle",
         )
 
