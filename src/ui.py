@@ -17,7 +17,7 @@ class UI:
         self.status = status
 
         self.break_time = round(break_time) if break_time else None
-        self.stopwatch = 30
+        self.stopwatch = 0
         self.close_live_panel = False
 
         self.title = "Flomo - " + \
@@ -79,8 +79,16 @@ def main(tag: str, name: str):
             del working_ui
 
             break_ui = UI(1, tag, name, break_time)
-            break_ui.show_live_panel()
+            breaking_panel_thread = threading.Thread(
+                target=break_ui.show_live_panel, daemon=True)
+            breaking_panel_thread.start()
+
+            inp = ""
+            while inp != "q":
+                inp = break_ui.get_input()
+
             break_ui.close_live_panel = True
+            breaking_panel_thread.join()
 
             del break_ui
     except (KeyboardInterrupt, Exception) as e:
@@ -90,6 +98,8 @@ def main(tag: str, name: str):
             break_ui.close_live_panel = True
         if 'working_panel_thread' in locals() and working_panel_thread.is_alive():
             working_panel_thread.join()
+        if 'breaking_panel_thread' in locals() and breaking_panel_thread.is_alive():
+            breaking_panel_thread.join()
 
         if isinstance(e, Exception):
             debug_print(f"{datetime.datetime.now()} - Error: {e}")
