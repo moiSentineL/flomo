@@ -41,7 +41,7 @@ class UI:
         )
 
     def show_live_panel(self):
-        with Live(Align.center(self.generate_panel(), vertical="middle",), refresh_per_second=4, screen=True) as _live:
+        with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
             while not self.close_live_panel:
                 time.sleep(1)
                 if self.status == 0:
