@@ -5,7 +5,9 @@ VERSION = "0.0.1"
 SHORT_DESCRIPTION = "A CLI Flomodoro Timer"
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
-INSTALL_REQUIRES = [i.strip() for i in open("requirements.txt").readlines()]
+# exclude setuptools from requirements
+INSTALL_REQUIRES = [i.strip() for i in open(
+    "requirements.txt").readlines() if "setuptools" not in i]
 PROJECT_URLS = {
     "Documentation": "https://github.com/moiSentineL/flomo#flomo",
     "Issue tracker": "https://github.com/moiSentineL/flomo/issues",
