@@ -12,12 +12,12 @@ import sys
 
 
 class UI:
-    def __init__(self, status: int, tag: str, name: str, break_time: int = None):
+    def __init__(self, status: int, tag: str, name: str, chilling_time: int = None):
         self.tag = f"#{tag}"
         self.name = name
         self.status = status
 
-        self.break_time = round(break_time) if break_time else None
+        self.chilling_time = round(chilling_time) if chilling_time else None
         self.stopwatch = 0
         self.close_live_panel = False
 
@@ -34,7 +34,7 @@ class UI:
 
     def generate_panel(self):
         stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{self.format_time(
-            self.stopwatch if (self.status == 0) else self.break_time)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
+            self.stopwatch if (self.status == 0) else self.chilling_time)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
             Panel(content, expand=False, title=self.title,
@@ -50,9 +50,9 @@ class UI:
                 if self.status == 0:
                     self.stopwatch += 1
                 elif self.status == 1:
-                    if not (self.break_time > 1):
+                    if not (self.chilling_time > 1):
                         break
-                    self.break_time -= 1
+                    self.chilling_time -= 1
                 _live.update(self.generate_panel())
 
     def get_input(self):
@@ -63,49 +63,49 @@ class UI:
 def main(tag: str, name: str):
     try:
         while True:
-            working_ui = UI(0, tag, name)
-            working_panel_thread = threading.Thread(
-                target=working_ui.show_live_panel, daemon=True)
-            working_panel_thread.start()
+            flowing_ui = UI(0, tag, name)
+            flowing_panel_thread = threading.Thread(
+                target=flowing_ui.show_live_panel, daemon=True)
+            flowing_panel_thread.start()
 
             inp = ""
-            while working_ui.stopwatch == 0 or not (working_ui.stopwatch != 0 and inp == "q"):
-                inp = working_ui.get_input()
+            while flowing_ui.stopwatch == 0 or not (flowing_ui.stopwatch != 0 and inp == "q"):
+                inp = flowing_ui.get_input()
 
-            break_time = working_ui.stopwatch / 5
+            chilling_time = flowing_ui.stopwatch / 5
 
-            working_ui.close_live_panel = True
-            working_panel_thread.join()
+            flowing_ui.close_live_panel = True
+            flowing_panel_thread.join()
 
-            del working_ui
+            del flowing_ui
 
-            break_ui = UI(1, tag, name, break_time)
-            break_ui.show_live_panel()
-            # breaking_panel_thread = threading.Thread(
-            #     target=break_ui.show_live_panel, daemon=True)
-            # breaking_panel_thread.start()
+            chilling_ui = UI(1, tag, name, chilling_time)
+            chilling_ui.show_live_panel()
+            # chilling_panel_thread = threading.Thread(
+            #     target=chilling_ui.show_live_panel, daemon=True)
+            # chilling_panel_thread.start()
 
             # while True:
-            #     if break_ui.break_time == 1:
+            #     if chilling_ui.chilling_time == 1:
             #         break
-            #     debug_print(str(break_ui.break_time))
-            #     inp = break_ui.get_input()
+            #     debug_print(str(chilling_ui.chilling_time))
+            #     inp = chilling_ui.get_input()
             #     if inp == "q":
             #         break
 
-            break_ui.close_live_panel = True
-            # breaking_panel_thread.join()
+            chilling_ui.close_live_panel = True
+            # chilling_panel_thread.join()
 
-            del break_ui
+            del chilling_ui
     except (KeyboardInterrupt, Exception) as e:
-        if 'working_ui' in locals() and working_ui is not None:
-            working_ui.close_live_panel = True
-        if 'break_ui' in locals() and break_ui is not None:
-            break_ui.close_live_panel = True
-        if 'working_panel_thread' in locals() and working_panel_thread.is_alive():
-            working_panel_thread.join()
-        # if 'breaking_panel_thread' in locals() and breaking_panel_thread.is_alive():
-        #     breaking_panel_thread.join()
+        if 'flowing_ui' in locals() and flowing_ui is not None:
+            flowing_ui.close_live_panel = True
+        if 'chilling_ui' in locals() and chilling_ui is not None:
+            chilling_ui.close_live_panel = True
+        if 'flowing_panel_thread' in locals() and flowing_panel_thread.is_alive():
+            flowing_panel_thread.join()
+        # if 'chilling_panel_thread' in locals() and chilling_panel_thread.is_alive():
+        #     chilling_panel_thread.join()
 
         if isinstance(e, Exception):
             debug_print(f"{datetime.datetime.now()} - Error: {e}")
