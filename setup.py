@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 AUTHOR = "Dark Circles"
 VERSION = "0.0.1"
-SHORT_DESCRIPTION = ""  # TODO: Add short description
+SHORT_DESCRIPTION = "A CLI Flomodoro Timer"
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
 INSTALL_REQUIRES = [i.strip() for i in open("requirements.txt").readlines()]
