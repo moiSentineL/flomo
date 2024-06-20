@@ -1,5 +1,5 @@
 import click
-import src.ui as ui
+import flomo.ui as ui
 
 
 @click.group()

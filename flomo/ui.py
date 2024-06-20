@@ -1,4 +1,5 @@
-from src.debug import debug_print
+from flomo.debug import debug_print
+
 from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
