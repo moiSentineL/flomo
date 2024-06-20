@@ -7,5 +7,6 @@ markdown-it-py==3.0.0
 mdurl==0.1.2
 Pygments==2.18.0
 rich==13.7.1
+setuptools==70.1.0
 six==1.16.0
 wcwidth==0.2.13
