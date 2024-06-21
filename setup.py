@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 AUTHOR = "Dark Circles"
-VERSION = "0.0.1"
-SHORT_DESCRIPTION = "A CLI Flomodoro Timer"
+VERSION = "0.0.1.0a1"
+SHORT_DESCRIPTION = "A Flowmodoro CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
 # exclude setuptools from requirements
@@ -13,7 +13,7 @@ PROJECT_URLS = {
 }
 KEYWORDS = ["cli", "productivity", "cli-application"]
 CLASSIFIERS = [
-    "Development Status :: 1 - Development/Planning",
+    "Development Status :: 1 - Planning",
     'License :: OSI Approved :: MIT License',
     "Natural Language :: English",
     "Operating System :: OS Independent",
