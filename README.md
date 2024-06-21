@@ -37,7 +37,7 @@ This calls for extensive amount of discipline. Which means that you must have at
 ## Installation
 
 ```bash
-pip install -e flomodoro
+pip install flomodoro
 ```
 
 ### Source
