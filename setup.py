@@ -5,7 +5,6 @@ VERSION = "0.0.1.0a1"
 SHORT_DESCRIPTION = "A Flowmodoro CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
-# exclude setuptools from requirements
 INSTALL_REQUIRES = ["click", "blessed", "rich"]
 PROJECT_URLS = {
     "Documentation": "https://github.com/moiSentineL/flomo#flomo",
