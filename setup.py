@@ -25,7 +25,7 @@ with open("README.md", "r") as fh:
 
 if __name__ == "__main__":
     setup(
-        name="flomo",
+        name="flomodoro",
         version=VERSION,
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
