@@ -1,14 +1,17 @@
-## Still in-the-making
+<p align="center">
+    <img src="https://github.com/moiSentineL/flomo/blob/main/assets/flomo-speed.gif" width="500">
+</p>
 
 # flomo
 
-`flomo` is a TUI/CLI for using the Flowtime Technique a.k.a. **Flowmodoro** Technique. It is a task execution helper, or in other words, productivity booster. `flomo` allows you to work on tasks in a flow state, track and manage your work/break time. 
+`flomo` is a TUI/CLI for using the Flowtime Technique a.k.a. **Flowmodoro** Technique. It is a task execution helper, or in other words, productivity booster. `flomo` allows you to work on tasks in a flow state, track and manage your work/break time.
 
 ## Background
 
-`flomo` was started as a Hackathon ([livestream](https://www.youtube.com/live/xyqQgPEozv0)) on 6 June, 2024 with [@Jonak-Adipta-Kalita](https://github.com/Jonak-Adipta-Kalita) and [@AnubhavSC](https://github.com/AnubhavSC). We wanted to create a small scale project which was fun to make and possibly helped others as well. Moreover, we all are productivity fanatics. This is a project *heavily* inspired by [pomo](https://github.com/kevinschoon/pomo).
+`flomo` was started as a Hackathon ([livestream](https://www.youtube.com/live/xyqQgPEozv0)) on 6 June, 2024 with [@Jonak-Adipta-Kalita](https://github.com/Jonak-Adipta-Kalita) and [@AnubhavSC](https://github.com/AnubhavSC). We wanted to create a small scale project which was fun to make and possibly helped others as well. Moreover, we all are productivity fanatics. This is a project _heavily_ inspired by [pomo](https://github.com/kevinschoon/pomo).
 
 And when we were 2 hours in, we realised that it was harder than we thought. We spent a lot of time debugging and refactoring. And we're still working on it.
+
 ## Flow and Flowtime Technique
 
 [Mihaly Csikszentmihalyi](https://en.wikipedia.org/wiki/Mihaly_Csikszentmihalyi) was known for his work on **Flow Theory**. He describes "flow" as[^1]:
@@ -18,6 +21,7 @@ And when we were 2 hours in, we realised that it was harder than we thought. We 
 And as developers/creators/romantics, we experience that state of "flow" often. This "flow" can **vary** at times, meaning that it can increase _or_ decrease.
 
 This can easily be shown with a graph:
+
 <p align="center">
     <img src="https://github.com/moiSentineL/flomo/blob/main/assets/flow-graph.png" width="500">
 </p>
@@ -30,46 +34,51 @@ It works fairly simply:
 
 This calls for extensive amount of discipline. Which means that you must have at least some amount of natural focus. If not, I encourage you to check the Pomodoro Technique out.
 
-<!--
 ## Installation
+
 ```bash
-pip install -e flomo
+pip install -e flomodoro
 ```
+
 ### Source
 
- ```bash
+```bash
 git clone https://github.com/moiSentineL/flomo.git
 cd flomo
 pip install -r requirements.txt
 
-# copy pomo somewhere on your $PATH
-cp bin/flomo ~/bin/
- ```
-
-## Usage
-### Getting Started
-
-Once `flomo` is installed you need to initialize it's database.
-
-``` bash
-flomo init
+pip install -e .
 ```
 
+## Usage
+
+### Getting Started
+
 Start a flow with tag "work" and "write some code" as session name:
+
 ```bash
 flomo start -t work -n "write some code"
 ```
+
 ### Commands
+
 ```bash
 flomo --help
 	start, s       starts a flow session
+```
+
+<!--
 	init           initialises database
 	track, t       track statistics
 	config, cf     display current configuration
-```
 -->
 
 ## Roadmap
+
+-   Add sound on timer/stopwatch start
+-   Tracking data / time studied
+-   Configure colors
+
 Check our [Kanban Board](https://github.com/users/moiSentineL/projects/2)
 
 [^1]: : Csikszentmihalyi, M. (1990). _Flow: The Psychology of Optimal Experience_. New York: Harper and Row. p. 15 [ISBN](<https://en.wikipedia.org/wiki/ISBN_(identifier)> "ISBN (identifier)") [0-06-092043-2](https://en.wikipedia.org/wiki/Special:BookSources/0-06-092043-2 "Special:BookSources/0-06-092043-2")
