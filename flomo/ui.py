@@ -75,6 +75,10 @@ class UI:
 def main(tag: str, name: str):
     try:
         while True:
+            play_sound_thread = threading.Thread(
+                target=play_sound, daemon=True)
+            play_sound_thread.start()
+
             flowing_ui = UI(0, tag, name)
             flowing_panel_thread = threading.Thread(
                 target=flowing_ui.show_live_panel, daemon=True)
@@ -88,6 +92,7 @@ def main(tag: str, name: str):
 
             flowing_ui.close_live_panel = True
             flowing_panel_thread.join()
+            play_sound_thread.join()
 
             del flowing_ui
 
@@ -109,13 +114,6 @@ def main(tag: str, name: str):
             # chilling_panel_thread.join()
 
             del chilling_ui
-
-            play_sound_thread = threading.Thread(
-                target=play_sound, daemon=True)
-            play_sound_thread.start()
-
-            time.sleep(1)
-            play_sound_thread.join()
     except (KeyboardInterrupt, Exception) as e:
         if 'flowing_ui' in locals() and flowing_ui is not None:
             flowing_ui.close_live_panel = True
