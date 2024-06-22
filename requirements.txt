@@ -5,8 +5,10 @@ colorama==0.4.6
 jinxed==1.2.1
 markdown-it-py==3.0.0
 mdurl==0.1.2
+playsound==1.2.2
 Pygments==2.18.0
 rich==13.7.1
 setuptools==70.1.0
 six==1.16.0
 wcwidth==0.2.13
+wheel==0.43.0
