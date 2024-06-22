@@ -109,6 +109,7 @@ def main(tag: str, name: str):
             # chilling_panel_thread.join()
 
             del chilling_ui
+
             play_sound_thread = threading.Thread(
                 target=play_sound, daemon=True)
             play_sound_thread.start()
