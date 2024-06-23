@@ -4,11 +4,23 @@ from rich.panel import Panel
 from rich.live import Live
 from rich.text import Text
 from rich.align import Align
+from playsound import playsound
+
 import time
 import datetime
 import threading
 import blessed
 import sys
+import os
+import platform
+
+
+def play_sound():
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file = "\\beep.mp3" if platform.system().lower() == "windows" else "/beep.mp3"
+    path = os.path.join(dir_path + file)
+
+    playsound(path)
 
 
 class UI:
@@ -63,6 +75,10 @@ class UI:
 def main(tag: str, name: str):
     try:
         while True:
+            play_sound_thread = threading.Thread(
+                target=play_sound, daemon=True)
+            play_sound_thread.start()
+
             flowing_ui = UI(0, tag, name)
             flowing_panel_thread = threading.Thread(
                 target=flowing_ui.show_live_panel, daemon=True)
@@ -76,6 +92,7 @@ def main(tag: str, name: str):
 
             flowing_ui.close_live_panel = True
             flowing_panel_thread.join()
+            play_sound_thread.join()
 
             del flowing_ui
 
@@ -104,6 +121,8 @@ def main(tag: str, name: str):
             chilling_ui.close_live_panel = True
         if 'flowing_panel_thread' in locals() and flowing_panel_thread.is_alive():
             flowing_panel_thread.join()
+        if 'play_sound_thread' in locals() and play_sound_thread.is_alive():
+            play_sound_thread.join()
         # if 'chilling_panel_thread' in locals() and chilling_panel_thread.is_alive():
         #     chilling_panel_thread.join()
 
