@@ -13,7 +13,7 @@ PROJECT_URLS = {
 KEYWORDS = ["cli", "productivity", "cli-application"]
 CLASSIFIERS = [
     "Development Status :: 1 - Planning",
-    'License :: OSI Approved :: MIT License',
+    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
