@@ -42,4 +42,6 @@ if __name__ == "__main__":
                 "flomo = flomo.cli:flomo",
             ],
         },
+        include_package_data=True,
+        package_data={"flomo": ["flomo/beep.mp3"]},
     )

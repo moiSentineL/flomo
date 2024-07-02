@@ -1,2 +1,3 @@
 include README.md
 include LICENSE
+include flomo/beep.mp3
