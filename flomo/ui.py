@@ -1,18 +1,18 @@
-from flomo.debug import debug_print
-
-from rich.panel import Panel
-from rich.live import Live
-from rich.text import Text
-from rich.align import Align
-from playsound import playsound
-
-import time
 import datetime
-import threading
-import blessed
-import sys
 import os
 import platform
+import sys
+import threading
+import time
+
+import blessed
+from playsound import playsound
+from rich.align import Align
+from rich.live import Live
+from rich.panel import Panel
+from rich.text import Text
+
+from flomo.debug import debug_print
 
 
 def play_sound():

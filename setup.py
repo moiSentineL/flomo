@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 AUTHOR = "Dark Circles"
 VERSION = "1.0.0"
