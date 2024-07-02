@@ -1,18 +1,18 @@
-from flomo.debug import debug_print
-
-from rich.panel import Panel
-from rich.live import Live
-from rich.text import Text
-from rich.align import Align
-from playsound import playsound
-
-import time
 import datetime
-import threading
-import blessed
-import sys
 import os
 import platform
+import sys
+import threading
+import time
+
+import blessed
+from playsound import playsound
+from rich.align import Align
+from rich.live import Live
+from rich.panel import Panel
+from rich.text import Text
+
+from flomo.debug import debug_print
 
 
 def play_sound():
@@ -33,8 +33,7 @@ class UI:
         self.stopwatch = 0
         self.close_live_panel = False
 
-        self.title = "Flomo - " + \
-            ("FLOWING" if self.status == 0 else "CHILLIN")
+        self.title = "Flomo - " + ("FLOWING" if self.status == 0 else "CHILLIN")
         self.border_style = "bold blue" if self.status == 0 else "bold red"
 
         self.terminal = blessed.Terminal()
@@ -49,10 +48,16 @@ class UI:
             self.stopwatch if (self.status == 0) else self.chilling_time)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
-            Panel(content, expand=False, title=self.title,
-                  border_style=self.border_style, title_align="center", padding=(1, 2)),
+            Panel(
+                content,
+                expand=False,
+                title=self.title,
+                border_style=self.border_style,
+                title_align="center",
+                padding=(1, 2),
+            ),
             vertical="middle",
-            height=self.terminal.height
+            height=self.terminal.height,
         )
 
     def show_live_panel(self):
@@ -75,17 +80,19 @@ class UI:
 def main(tag: str, name: str):
     try:
         while True:
-            play_sound_thread = threading.Thread(
-                target=play_sound, daemon=True)
+            play_sound_thread = threading.Thread(target=play_sound, daemon=True)
             play_sound_thread.start()
 
             flowing_ui = UI(0, tag, name)
             flowing_panel_thread = threading.Thread(
-                target=flowing_ui.show_live_panel, daemon=True)
+                target=flowing_ui.show_live_panel, daemon=True
+            )
             flowing_panel_thread.start()
 
             inp = ""
-            while flowing_ui.stopwatch == 0 or not (flowing_ui.stopwatch != 0 and inp == "q"):
+            while flowing_ui.stopwatch == 0 or not (
+                flowing_ui.stopwatch != 0 and inp == "q"
+            ):
                 inp = flowing_ui.get_input()
 
             chilling_time = flowing_ui.stopwatch / 5
@@ -115,13 +122,13 @@ def main(tag: str, name: str):
 
             del chilling_ui
     except (KeyboardInterrupt, Exception) as e:
-        if 'flowing_ui' in locals() and flowing_ui is not None:
+        if "flowing_ui" in locals() and flowing_ui is not None:
             flowing_ui.close_live_panel = True
-        if 'chilling_ui' in locals() and chilling_ui is not None:
+        if "chilling_ui" in locals() and chilling_ui is not None:
             chilling_ui.close_live_panel = True
-        if 'flowing_panel_thread' in locals() and flowing_panel_thread.is_alive():
+        if "flowing_panel_thread" in locals() and flowing_panel_thread.is_alive():
             flowing_panel_thread.join()
-        if 'play_sound_thread' in locals() and play_sound_thread.is_alive():
+        if "play_sound_thread" in locals() and play_sound_thread.is_alive():
             play_sound_thread.join()
         # if 'chilling_panel_thread' in locals() and chilling_panel_thread.is_alive():
         #     chilling_panel_thread.join()

@@ -1,4 +1,5 @@
 import click
+
 import flomo.ui as ui
 
 
@@ -8,12 +9,11 @@ def flomo():
 
 
 @flomo.command()
-@click.option('-t', '--tag', default='Default', help='Session tag name.')
-@click.option('-n', '--name', default='Work',
-              help='Session Name')
+@click.option("-t", "--tag", default="Default", help="Session tag name.")
+@click.option("-n", "--name", default="Work", help="Session Name")
 def start(tag: str, name: str):
     ui.main(tag.lower(), name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     flomo()
