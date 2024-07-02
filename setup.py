@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 AUTHOR = "Dark Circles"
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 SHORT_DESCRIPTION = "A Flowmodoro CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
