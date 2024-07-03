@@ -1,11 +1,12 @@
 from setuptools import find_packages, setup
 
 AUTHOR = "Dark Circles"
-VERSION = "0.1.0"
+VERSION = "0.1.1"
 SHORT_DESCRIPTION = "A Flowmodoro CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
-INSTALL_REQUIRES = ["click", "blessed", "rich", "playsound==1.2.2", "click-aliases"]
+INSTALL_REQUIRES = ["click", "blessed", "rich",
+                    "playsound==1.2.2", "click-aliases"]
 PROJECT_URLS = {
     "Documentation": "https://github.com/moiSentineL/flomo#flomo",
     "Issue tracker": "https://github.com/moiSentineL/flomo/issues",

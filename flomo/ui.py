@@ -22,7 +22,7 @@ def play_sound():
 
     if not platform.system().lower() in ["windows", "darwin"]:
         os.system(
-            "notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + file
+            "notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + path
         )
     else:
         playsound(path)
@@ -38,7 +38,8 @@ class UI:
         self.stopwatch = 0
         self.close_live_panel = False
 
-        self.title = "Flomo - " + ("FLOWING" if self.status == 0 else "CHILLIN")
+        self.title = "Flomo - " + \
+            ("FLOWING" if self.status == 0 else "CHILLIN")
         self.border_style = "bold blue" if self.status == 0 else "bold red"
 
         self.terminal = blessed.Terminal()
@@ -85,7 +86,8 @@ class UI:
 def main(tag: str, name: str):
     try:
         while True:
-            play_sound_thread = threading.Thread(target=play_sound, daemon=True)
+            play_sound_thread = threading.Thread(
+                target=play_sound, daemon=True)
             play_sound_thread.start()
 
             flowing_ui = UI(0, tag, name)
