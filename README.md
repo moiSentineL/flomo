@@ -75,9 +75,10 @@ flomo --help
 
 ## Roadmap
 
--   Add sound on timer/stopwatch start
--   Tracking data / time studied
--   Configure colors
+- [x]  Add sound on timer/stopwatch start
+- [x]  Notification (only Linux for now)
+- [ ]  Tracking data / time studied
+- [ ]  Configure colors
 
 Check our [Kanban Board](https://github.com/users/moiSentineL/projects/2)
 
