@@ -52,6 +52,11 @@ pip install -e .
 
 ## Usage
 
+### Known Issues
+
+-   Skip doesn't work while on break (you can just make another session).
+-   Might not work if you have attention span of a goldfish.
+
 ### Getting Started
 
 Start a flow with tag "work" and "write some code" as session name:
@@ -64,7 +69,15 @@ flomo start -t work -n "write some code"
 
 ```bash
 flomo --help
-	start, s       starts a flow session
+	Usage: flomo [OPTIONS] COMMAND [ARGS]...
+
+    A Flowmodoro CLI for productivity enthusiasts.
+
+	Options:
+ 		--help  Show this message and exit.
+
+	Commands:
+  		start (s)  Start a Flowmodoro session.
 ```
 
 <!--
@@ -75,10 +88,10 @@ flomo --help
 
 ## Roadmap
 
-- [x]  Add sound on timer/stopwatch start
-- [x]  Notification (only Linux for now)
-- [ ]  Tracking data / time studied
-- [ ]  Configure colors
+-   [x] Add sound on timer/stopwatch start
+-   [x] Notification (only Linux for now)
+-   [ ] Tracking data / time studied
+-   [ ] Configure colors
 
 Check our [Kanban Board](https://github.com/users/moiSentineL/projects/2)
 

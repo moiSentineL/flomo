@@ -21,7 +21,9 @@ def play_sound():
     path = os.path.join(dir_path + file)
 
     if not platform.system().lower() in ["windows", "darwin"]:
-        os.system("notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + file)
+        os.system(
+            "notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + file
+        )
     else:
         playsound(path)
 
