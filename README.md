@@ -52,10 +52,6 @@ pip install -e .
 
 ## Usage
 
-### Known Issues:
-
--   Audio isn't working properly in certain OSes
-
 ### Getting Started
 
 Start a flow with tag "work" and "write some code" as session name:
