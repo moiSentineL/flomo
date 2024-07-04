@@ -12,8 +12,6 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-from flomo.debug import debug_print
-
 
 def play_sound():
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -26,6 +24,15 @@ def play_sound():
         )
     else:
         playsound(path)
+
+
+def debug_print(message: str):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file = "\\debug.log" if platform.system().lower() == "windows" else "/debug.log"
+    path = os.path.join(dir_path + file)
+
+    with open(path, "a") as f:
+        f.write(message + "\n")
 
 
 class UI:
