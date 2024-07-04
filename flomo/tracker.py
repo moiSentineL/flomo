@@ -1,6 +1,5 @@
 import sqlite3
 import datetime
-import typing
 
 import flomo.helpers as helpers
 
@@ -18,7 +17,7 @@ class Tracker:
         )
         self.conn.commit()
 
-    def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> str:
+    def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> float:
         session_id = start_time.timestamp()
         self.cursor.execute(
             "INSERT INTO sessions (id, tag, name, start_time) VALUES (?, ?, ?, ?)",
@@ -27,11 +26,17 @@ class Tracker:
         self.conn.commit()
         return session_id
 
-    def update_session(self, session_id: str, end_time: datetime.datetime, total_time: str):
+    def end_session(self, session_id: float, end_time: datetime.datetime):
+        total_time = end_time - datetime.datetime.fromtimestamp(session_id)
         self.cursor.execute(
             "UPDATE sessions SET end_time = ?, total_time = ? WHERE id = ?",
-            (end_time.strftime("%Y-%m-%d %H:%M:%S"),
-             total_time, session_id),
+            (
+                end_time.strftime("%Y-%m-%d %H:%M:%S"),
+                helpers.format_time(
+                    round(total_time.total_seconds())
+                ),
+                session_id
+            ),
         )
         self.conn.commit()
 
@@ -45,14 +50,18 @@ if __name__ == "__main__":
     tracker.create_table()
 
     session_id = tracker.create_session(
-        "study", "work", datetime.datetime.now())
+        "study",
+        "work",
+        datetime.datetime.now()
+    )
 
     import time
     time.sleep(5)
 
-    tracker.update_session(
-        session_id, datetime.datetime.now(), "gotta do calc")
+    tracker.end_session(
+        session_id,
+        datetime.datetime.now()
+    )
 
     print(tracker.get_sessions())
-
     tracker.conn.close()
