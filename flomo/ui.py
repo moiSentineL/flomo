@@ -17,7 +17,7 @@ from flomo.debug import debug_print
 
 def play_sound():
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = "\\beep.mp3" if platform.system().lower() == "windows" else "flomo/beep.mp3"
+    file = "\\beep.mp3" if platform.system().lower() == "windows" else "/beep.mp3"
     path = os.path.join(dir_path + file)
 
     if not platform.system().lower() in ["windows", "darwin"]:
