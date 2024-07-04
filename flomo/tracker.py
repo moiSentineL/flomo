@@ -17,7 +17,9 @@ class Tracker:
         )
         self.conn.commit()
 
-    def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> float:
+    def create_session(
+        self, tag: str, name: str, start_time: datetime.datetime
+    ) -> float:
         session_id = start_time.timestamp()
         self.cursor.execute(
             "INSERT INTO sessions (id, tag, name, start_time) VALUES (?, ?, ?, ?)",
@@ -32,10 +34,8 @@ class Tracker:
             "UPDATE sessions SET end_time = ?, total_time = ? WHERE id = ?",
             (
                 end_time.strftime("%Y-%m-%d %H:%M:%S"),
-                helpers.format_time(
-                    round(total_time.total_seconds())
-                ),
-                session_id
+                helpers.format_time(round(total_time.total_seconds())),
+                session_id,
             ),
         )
         self.conn.commit()
@@ -49,19 +49,13 @@ if __name__ == "__main__":
     tracker = Tracker()
     tracker.create_table()
 
-    session_id = tracker.create_session(
-        "study",
-        "work",
-        datetime.datetime.now()
-    )
+    session_id = tracker.create_session("study", "work", datetime.datetime.now())
 
     import time
+
     time.sleep(5)
 
-    tracker.end_session(
-        session_id,
-        datetime.datetime.now()
-    )
+    tracker.end_session(session_id, datetime.datetime.now())
 
     print(tracker.get_sessions())
     tracker.conn.close()

@@ -6,8 +6,9 @@ from playsound import playsound
 
 def get_path(file_name: str):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = f"\\{file_name}" if platform.system(
-    ).lower() == "windows" else f"/{file_name}"
+    file = (
+        f"\\{file_name}" if platform.system().lower() == "windows" else f"/{file_name}"
+    )
     return os.path.join(dir_path + file)
 
 
