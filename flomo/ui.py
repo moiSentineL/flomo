@@ -1,38 +1,15 @@
 import datetime
-import os
-import platform
 import sys
 import threading
 import time
 
 import blessed
-from playsound import playsound
 from rich.align import Align
 from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-
-def play_sound():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = "\\beep.mp3" if platform.system().lower() == "windows" else "/beep.mp3"
-    path = os.path.join(dir_path + file)
-
-    if not platform.system().lower() in ["windows", "darwin"]:
-        os.system(
-            "notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + path
-        )
-    else:
-        playsound(path)
-
-
-def message_log(message: str):
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = "\\message.log" if platform.system().lower() == "windows" else "/message.log"
-    path = os.path.join(dir_path + file)
-
-    with open(path, "a") as f:
-        f.write(message + "\n")
+from flomo.helpers import message_log, play_sound
 
 
 class UI:
