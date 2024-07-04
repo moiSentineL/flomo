@@ -26,9 +26,9 @@ def play_sound():
         playsound(path)
 
 
-def debug_print(message: str):
+def message_log(message: str):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = "\\debug.log" if platform.system().lower() == "windows" else "/debug.log"
+    file = "\\message.log" if platform.system().lower() == "windows" else "/debug.log"
     path = os.path.join(dir_path + file)
 
     with open(path, "a") as f:
@@ -126,7 +126,7 @@ def main(tag: str, name: str):
             # while True:
             #     if chilling_ui.chilling_time == 1:
             #         break
-            #     debug_print(str(chilling_ui.chilling_time))
+            #     message_log(str(chilling_ui.chilling_time))
             #     inp = chilling_ui.get_input()
             #     if inp == "q":
             #         break
@@ -148,6 +148,6 @@ def main(tag: str, name: str):
         #     chilling_panel_thread.join()
 
         if isinstance(e, Exception):
-            debug_print(f"{datetime.datetime.now()} - Error: {e}")
+            message_log(f"{datetime.datetime.now()} - Error: {e}")
     finally:
         sys.exit()
