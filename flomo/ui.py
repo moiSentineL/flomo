@@ -28,7 +28,7 @@ def play_sound():
 
 def message_log(message: str):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = "\\message.log" if platform.system().lower() == "windows" else "/debug.log"
+    file = "\\message.log" if platform.system().lower() == "windows" else "/message.log"
     path = os.path.join(dir_path + file)
 
     with open(path, "a") as f:
