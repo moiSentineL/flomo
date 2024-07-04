@@ -6,7 +6,7 @@ import flomo.helpers as helpers
 
 class Tracker:
     def __init__(self):
-        path = helpers.get_path("sessions.db")
+        path = helpers.get_path("sessions.db", True)
 
         self.conn = sqlite3.connect(path)
         self.cursor = self.conn.cursor()
@@ -49,7 +49,8 @@ if __name__ == "__main__":
     tracker = Tracker()
     tracker.create_table()
 
-    session_id = tracker.create_session("study", "work", datetime.datetime.now())
+    session_id = tracker.create_session(
+        "study", "work", datetime.datetime.now())
 
     import time
 

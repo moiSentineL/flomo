@@ -4,11 +4,17 @@ import platform
 from playsound import playsound
 
 
-def get_path(file_name: str):
+def get_path(file_name: str, in_data: bool = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = (
-        f"\\{file_name}" if platform.system().lower() == "windows" else f"/{file_name}"
-    )
+
+    sign = "\\" if platform.system().lower() == "windows" else "/"
+    data_folder = f"{sign}data" if in_data else ""
+
+    if in_data and not os.path.exists(dir_path + data_folder):
+        os.makedirs(dir_path + data_folder)
+
+    file = f"{data_folder}{sign}{file_name}"
+
     return os.path.join(dir_path + file)
 
 
@@ -24,7 +30,7 @@ def play_sound():
 
 
 def message_log(message: str):
-    path = get_path("message.log")
+    path = get_path("message.log", True)
 
     with open(path, "a") as f:
         f.write(message + "\n")
@@ -33,4 +39,5 @@ def message_log(message: str):
 def format_time(seconds: int) -> str:
     hours, remainder = divmod(seconds, 3600)
     mins, secs = divmod(remainder, 60)
+
     return f"{hours:02}:{mins:02}:{secs:02}"
