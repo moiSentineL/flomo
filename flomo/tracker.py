@@ -49,8 +49,7 @@ if __name__ == "__main__":
     tracker = Tracker()
     tracker.create_table()
 
-    session_id = tracker.create_session(
-        "study", "work", datetime.datetime.now())
+    session_id = tracker.create_session("study", "work", datetime.datetime.now())
 
     import time
 
