@@ -27,3 +27,9 @@ def message_log(message: str):
 
     with open(path, "a") as f:
         f.write(message + "\n")
+
+
+def format_time(seconds: int) -> str:
+    hours, remainder = divmod(seconds, 3600)
+    mins, secs = divmod(remainder, 60)
+    return f"{hours:02}:{mins:02}:{secs:02}"

@@ -9,7 +9,7 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-from flomo.helpers import message_log, play_sound
+from flomo.helpers import message_log, play_sound, format_time
 
 
 class UI:
@@ -28,13 +28,8 @@ class UI:
 
         self.terminal = blessed.Terminal()
 
-    def format_time(self, seconds: int):
-        hours, remainder = divmod(seconds, 3600)
-        mins, secs = divmod(remainder, 60)
-        return f"{hours:02}:{mins:02}:{secs:02}"
-
     def generate_panel(self):
-        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{self.format_time(
+        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{format_time(
             self.stopwatch if (self.status == 0) else self.chilling_time)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
