@@ -2,6 +2,7 @@ import click
 import click_aliases
 
 import flomo.ui as ui
+import flomo.tracker as tracker
 
 
 @click.group(cls=click_aliases.ClickAliasedGroup)
@@ -10,6 +11,16 @@ def flomo():
     A Flowmodoro CLI for productivity enthusiasts.
     """
     pass
+
+
+@flomo.command(aliases=["i"])
+def init():
+    """
+    Initialize the database.
+    """
+    db = tracker.Tracker()
+    db.create_table()
+    db.conn.close()
 
 
 @flomo.command(aliases=["s"])
