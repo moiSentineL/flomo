@@ -15,7 +15,7 @@ import flomo.tracker as tracker
 
 
 class UI:
-    def __init__(self, status: int, tag: str, name: str, chilling_time: int = None):
+    def __init__(self, status: int, tag: str, name: str, chilling_time: int | None = None):
         self.tag = f"#{tag}"
         self.name = name
         self.status = status
@@ -31,7 +31,7 @@ class UI:
 
     def generate_panel(self):
         stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{format_time(
-            self.stopwatch if (self.status == 0) else self.chilling_time)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
+            self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
             Panel(
@@ -52,7 +52,7 @@ class UI:
                 time.sleep(1)
                 if self.status == 0:
                     self.stopwatch += 1
-                elif self.status == 1:
+                elif self.status == 1 and self.chilling_time:
                     if not (self.chilling_time > 1):
                         break
                     self.chilling_time -= 1
@@ -90,7 +90,7 @@ def main(tag: str, name: str, session_id: float):
 
             del flowing_ui
 
-            chilling_ui = UI(1, tag, name, chilling_time)
+            chilling_ui = UI(1, tag, name, int(chilling_time))
             chilling_ui.show_live_panel()
             # chilling_panel_thread = threading.Thread(
             #     target=chilling_ui.show_live_panel, daemon=True)
@@ -109,6 +109,7 @@ def main(tag: str, name: str, session_id: float):
 
             del chilling_ui
     except (KeyboardInterrupt, Exception) as e:
+        #TODO:  Fix Type Checking Errors
         if "flowing_ui" in locals() and flowing_ui is not None:
             flowing_ui.close_live_panel = True
         if "chilling_ui" in locals() and chilling_ui is not None:
