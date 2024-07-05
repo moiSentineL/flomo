@@ -44,18 +44,6 @@ class Tracker:
         self.cursor.execute("SELECT * FROM sessions")
         return self.cursor.fetchall()
 
-
-if __name__ == "__main__":
-    tracker = Tracker()
-    tracker.create_table()
-
-    session_id = tracker.create_session("study", "work", datetime.datetime.now())
-
-    import time
-
-    time.sleep(5)
-
-    tracker.end_session(session_id, datetime.datetime.now())
-
-    print(tracker.get_sessions())
-    tracker.conn.close()
+    def get_session(self, session_id: float):
+        self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
+        return self.cursor.fetchone()
