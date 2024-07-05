@@ -1,5 +1,6 @@
 import click
 import click_aliases
+import datetime
 
 import flomo.ui as ui
 import flomo.tracker as tracker
@@ -30,7 +31,11 @@ def start(tag: str, name: str):
     """
     Start a Flowmodoro session.
     """
-    ui.main(tag.lower(), name)
+    db = tracker.Tracker()
+    db.create_table()
+    session_id = db.create_session(tag, name, datetime.datetime.now())
+    db.conn.close()
+    ui.main(tag.lower(), name, session_id)
 
 
 if __name__ == "__main__":
