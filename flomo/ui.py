@@ -2,6 +2,7 @@ import datetime
 import sys
 import threading
 import time
+import datetime
 
 import blessed
 from rich.align import Align
@@ -10,6 +11,7 @@ from rich.panel import Panel
 from rich.text import Text
 
 from flomo.helpers import message_log, play_sound, format_time
+import flomo.tracker as tracker
 
 
 class UI:
@@ -61,10 +63,11 @@ class UI:
             return self.terminal.inkey().lower()
 
 
-def main(tag: str, name: str):
+def main(tag: str, name: str, session_id: float):
     try:
         while True:
-            play_sound_thread = threading.Thread(target=play_sound, daemon=True)
+            play_sound_thread = threading.Thread(
+                target=play_sound, daemon=True)
             play_sound_thread.start()
 
             flowing_ui = UI(0, tag, name)
@@ -119,5 +122,10 @@ def main(tag: str, name: str):
 
         if isinstance(e, Exception):
             message_log(f"{datetime.datetime.now()} - Error: {e}")
+
+        if isinstance(e, KeyboardInterrupt):
+            db = tracker.Tracker()
+            db.end_session(session_id, datetime.datetime.now())
+            db.conn.close()
     finally:
         sys.exit()
