@@ -1,5 +1,5 @@
-import sqlite3
 import datetime
+import sqlite3
 
 import flomo.helpers as helpers
 

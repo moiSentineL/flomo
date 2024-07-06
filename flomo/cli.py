@@ -1,9 +1,10 @@
-import click
-import click_aliases
 import datetime
 
-import flomo.ui as ui
+import click
+import click_aliases
+
 import flomo.tracker as tracker
+import flomo.ui as ui
 
 
 @click.group(cls=click_aliases.ClickAliasedGroup)

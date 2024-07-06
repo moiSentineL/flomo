@@ -1,6 +1,6 @@
+import datetime
 import os
 import platform
-import datetime
 
 from playsound import playsound
 

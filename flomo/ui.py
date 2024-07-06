@@ -2,9 +2,8 @@ import datetime
 import sys
 import threading
 import time
-import datetime
-import blessed
 
+import blessed
 from rich.align import Align
 from rich.live import Live
 from rich.panel import Panel
@@ -12,8 +11,11 @@ from rich.text import Text
 
 import flomo.helpers as helpers
 
+
 class UI:
-    def __init__(self, status: int, tag: str, name: str, chilling_time: int | None = None):
+    def __init__(
+        self, status: int, tag: str, name: str, chilling_time: int | None = None
+    ):
         self.tag = f"#{tag}"
         self.name = name
         self.status = status
@@ -64,8 +66,7 @@ class UI:
 def main(tag: str, name: str, session_id: float):
     try:
         while True:
-            play_sound_thread = threading.Thread(
-                target=helpers.play_sound, daemon=True)
+            play_sound_thread = threading.Thread(target=helpers.play_sound, daemon=True)
             play_sound_thread.start()
 
             flowing_ui = UI(0, tag, name)
