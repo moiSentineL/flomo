@@ -1,7 +1,10 @@
 import os
 import platform
+import datetime
 
 from playsound import playsound
+
+import flomo.tracker as tracker
 
 
 def get_path(file_name: str, in_data: bool = False):
@@ -41,3 +44,9 @@ def format_time(seconds: int) -> str:
     mins, secs = divmod(remainder, 60)
 
     return f"{hours:02}:{mins:02}:{secs:02}"
+
+
+def end_session(session_id: float):
+    db = tracker.Tracker()
+    db.end_session(session_id, datetime.datetime.now())
+    db.conn.close()

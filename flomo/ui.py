@@ -3,16 +3,14 @@ import sys
 import threading
 import time
 import datetime
-
 import blessed
+
 from rich.align import Align
 from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-from flomo.helpers import message_log, play_sound, format_time
-import flomo.tracker as tracker
-
+import flomo.helpers as helpers
 
 class UI:
     def __init__(self, status: int, tag: str, name: str, chilling_time: int | None = None):
@@ -30,7 +28,7 @@ class UI:
         self.terminal = blessed.Terminal()
 
     def generate_panel(self):
-        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{format_time(
+        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{helpers.format_time(
             self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
@@ -67,7 +65,7 @@ def main(tag: str, name: str, session_id: float):
     try:
         while True:
             play_sound_thread = threading.Thread(
-                target=play_sound, daemon=True)
+                target=helpers.play_sound, daemon=True)
             play_sound_thread.start()
 
             flowing_ui = UI(0, tag, name)
@@ -99,7 +97,7 @@ def main(tag: str, name: str, session_id: float):
             # while True:
             #     if chilling_ui.chilling_time == 1:
             #         break
-            #     message_log(str(chilling_ui.chilling_time))
+            #     helpers.message_log(str(chilling_ui.chilling_time))
             #     inp = chilling_ui.get_input()
             #     if inp == "q":
             #         break
@@ -109,7 +107,6 @@ def main(tag: str, name: str, session_id: float):
 
             del chilling_ui
     except (KeyboardInterrupt, Exception) as e:
-        #TODO:  Fix Type Checking Errors
         if "flowing_ui" in locals() and flowing_ui is not None:
             flowing_ui.close_live_panel = True
         if "chilling_ui" in locals() and chilling_ui is not None:
@@ -122,11 +119,8 @@ def main(tag: str, name: str, session_id: float):
         #     chilling_panel_thread.join()
 
         if isinstance(e, Exception):
-            message_log(f"{datetime.datetime.now()} - Error: {e}")
-
+            helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
         if isinstance(e, KeyboardInterrupt):
-            db = tracker.Tracker()
-            db.end_session(session_id, datetime.datetime.now())
-            db.conn.close()
+            helpers.end_session(session_id)
     finally:
         sys.exit()
