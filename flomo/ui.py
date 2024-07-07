@@ -11,7 +11,6 @@ from rich.text import Text
 
 import flomo.helpers as helpers
 
-
 class UI:
     def __init__(
         self, status: int, tag: str, name: str, chilling_time: int | None = None
