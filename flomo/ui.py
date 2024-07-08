@@ -1,35 +1,20 @@
 import datetime
-import os
-import platform
 import sys
 import threading
 import time
 
 import blessed
-from playsound import playsound
 from rich.align import Align
 from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-from flomo.debug import debug_print
-
-
-def play_sound():
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    file = "\\beep.mp3" if platform.system().lower() == "windows" else "flomo/beep.mp3"
-    path = os.path.join(dir_path + file)
-
-    if not platform.system().lower() in ["windows", "darwin"]:
-        os.system(
-            "notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + path
-        )
-    else:
-        playsound(path)
-
+import flomo.helpers as helpers
 
 class UI:
-    def __init__(self, status: int, tag: str, name: str, chilling_time: int = None):
+    def __init__(
+        self, status: int, tag: str, name: str, chilling_time: int | None = None
+    ):
         self.tag = f"#{tag}"
         self.name = name
         self.status = status
@@ -38,20 +23,14 @@ class UI:
         self.stopwatch = 0
         self.close_live_panel = False
 
-        self.title = "Flomo - " + \
-            ("FLOWING" if self.status == 0 else "CHILLIN")
+        self.title = "Flomo - " + ("FLOWING" if self.status == 0 else "CHILLIN")
         self.border_style = "bold blue" if self.status == 0 else "bold red"
 
         self.terminal = blessed.Terminal()
 
-    def format_time(self, seconds: int):
-        hours, remainder = divmod(seconds, 3600)
-        mins, secs = divmod(remainder, 60)
-        return f"{hours:02}:{mins:02}:{secs:02}"
-
     def generate_panel(self):
-        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{self.format_time(
-            self.stopwatch if (self.status == 0) else self.chilling_time)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
+        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{helpers.format_time(
+            self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
             Panel(
@@ -72,7 +51,7 @@ class UI:
                 time.sleep(1)
                 if self.status == 0:
                     self.stopwatch += 1
-                elif self.status == 1:
+                elif self.status == 1 and self.chilling_time:
                     if not (self.chilling_time > 1):
                         break
                     self.chilling_time -= 1
@@ -83,11 +62,10 @@ class UI:
             return self.terminal.inkey().lower()
 
 
-def main(tag: str, name: str):
+def main(tag: str, name: str, session_id: float):
     try:
         while True:
-            play_sound_thread = threading.Thread(
-                target=play_sound, daemon=True)
+            play_sound_thread = threading.Thread(target=helpers.play_sound, daemon=True)
             play_sound_thread.start()
 
             flowing_ui = UI(0, tag, name)
@@ -110,7 +88,7 @@ def main(tag: str, name: str):
 
             del flowing_ui
 
-            chilling_ui = UI(1, tag, name, chilling_time)
+            chilling_ui = UI(1, tag, name, int(chilling_time))
             chilling_ui.show_live_panel()
             # chilling_panel_thread = threading.Thread(
             #     target=chilling_ui.show_live_panel, daemon=True)
@@ -119,7 +97,7 @@ def main(tag: str, name: str):
             # while True:
             #     if chilling_ui.chilling_time == 1:
             #         break
-            #     debug_print(str(chilling_ui.chilling_time))
+            #     helpers.message_log(str(chilling_ui.chilling_time))
             #     inp = chilling_ui.get_input()
             #     if inp == "q":
             #         break
@@ -141,6 +119,8 @@ def main(tag: str, name: str):
         #     chilling_panel_thread.join()
 
         if isinstance(e, Exception):
-            debug_print(f"{datetime.datetime.now()} - Error: {e}")
+            helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
+        if isinstance(e, KeyboardInterrupt):
+            helpers.end_session(session_id)
     finally:
         sys.exit()

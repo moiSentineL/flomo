@@ -219,4 +219,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+*.db
+flomo/data/*
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,python,visualstudiocode
