@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/moiSentineL/flomo/blob/main/assets/flomo-speed.gif" width="500">
+    <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/assets/flomo-speed.gif" width="500">
 </p>
 
 # flomo
@@ -23,7 +23,7 @@ And as developers/creators/romantics, we experience that state of "flow" often. 
 This can easily be shown with a graph:
 
 <p align="center">
-    <img src="https://github.com/moiSentineL/flomo/blob/main/assets/flow-graph.png" width="500">
+    <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/assets/flow-graph.png" width="500">
 </p>
 
 However, we can exploit that to our advantage and work efficiently, by finding the **right time** to take a break. And that right time is when the "flow" is depleting.
