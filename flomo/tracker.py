@@ -28,7 +28,7 @@ class Tracker:
         self.conn.commit()
         return session_id
 
-    def end_session(self, session_id: float, end_time: datetime.datetime):
+    def update_session(self, session_id: float, end_time: datetime.datetime):
         total_time = end_time - datetime.datetime.fromtimestamp(session_id)
         self.cursor.execute(
             "UPDATE sessions SET end_time = ?, total_time = ? WHERE id = ?",
