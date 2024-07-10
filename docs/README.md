@@ -91,7 +91,7 @@ flomo s -t work -n "math"
 
 ### Commands
 
-```bash
+```
 flomo --help
 	Usage: flomo [OPTIONS] COMMAND [ARGS]...
 
