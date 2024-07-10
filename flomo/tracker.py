@@ -60,7 +60,8 @@ def show_sessions():
     print(
         tabulate.tabulate(
             df,
-            headers=["id", "tag", "name", "start_time", "end_time", "total_time"],
+            headers=["ID", "Tag", "Name", "Start Time", "End Time", "Total Time"],
             tablefmt="psql",
+            showindex=False,
         )
     )
