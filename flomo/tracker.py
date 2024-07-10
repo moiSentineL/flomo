@@ -1,5 +1,6 @@
 import datetime
 import sqlite3
+import pandas
 
 import flomo.helpers as helpers
 
@@ -47,3 +48,14 @@ class Tracker:
     def get_session(self, session_id: float):
         self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
         return self.cursor.fetchone()
+
+
+def show_sessions():
+    db = Tracker()
+    sessions = db.get_sessions()
+    db.conn.close()
+
+    df = pandas.DataFrame(
+        sessions, columns=["id", "tag", "name", "start_time", "end_time", "total_time"]
+    )
+    print(df)
