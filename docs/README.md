@@ -83,7 +83,7 @@ Start a flow by:
 flomo s
 ```
 
-Start a flow with tag "work" and "math" as session name:
+Start a flow with tag `work` and `math` as session name:
 
 ```bash
 flomo s -t work -n "math"
@@ -103,6 +103,12 @@ flomo --help
 	Commands:
   		start (s)  Start a Flowmodoro session.
 ```
+
+#### Pro Tip for Linux Users
+
+If you have to repeat working on certain tags (or sessions) and don't want to keep typing the commands every time, you can create a simple script like [study.sh](https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/study.sh), and set an alias to that script.
+
+For example, with _that_ script, I can simply enter `study math` (I've set "study" as the alias) in my terminal and it will start a session with the tag `study` (in my case) with `math` as the session name.
 
 ## Roadmap
 
