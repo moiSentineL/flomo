@@ -1,6 +1,7 @@
 import datetime
 import sqlite3
 import pandas
+import tabulate
 
 import flomo.helpers as helpers
 
@@ -55,7 +56,11 @@ def show_sessions():
     sessions = db.get_sessions()
     db.conn.close()
 
-    df = pandas.DataFrame(
-        sessions, columns=["id", "tag", "name", "start_time", "end_time", "total_time"]
+    df = pandas.DataFrame(sessions)
+    print(
+        tabulate.tabulate(
+            df,
+            headers=["id", "tag", "name", "start_time", "end_time", "total_time"],
+            tablefmt="psql",
+        )
     )
-    print(df)
