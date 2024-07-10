@@ -59,7 +59,7 @@ def show_sessions():
     df = pandas.DataFrame(sessions)
     print(
         tabulate.tabulate(
-            df,
+            df,  # type: ignore
             headers=["ID", "Tag", "Name", "Start Time", "End Time", "Total Time"],
             tablefmt="psql",
             showindex=False,
