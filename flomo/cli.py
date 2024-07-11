@@ -47,7 +47,7 @@ def tracking():
     """
     try:
         tracker.show_sessions()
-    except sqlite3.OperationalError as e:
+    except sqlite3.OperationalError:
         print("No sessions were found.")
 
 

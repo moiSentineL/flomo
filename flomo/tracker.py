@@ -56,10 +56,9 @@ def show_sessions():
     sessions = db.get_sessions()
     db.conn.close()
 
-    df = pandas.DataFrame(sessions)
     print(
         tabulate.tabulate(
-            df,  # type: ignore
+            pandas.DataFrame(sessions),  # type: ignore
             headers=["ID", "Tag", "Name", "Start Time", "End Time", "Total Time"],
             tablefmt="psql",
             showindex=False,
