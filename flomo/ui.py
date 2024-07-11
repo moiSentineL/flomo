@@ -11,6 +11,7 @@ from rich.text import Text
 
 import flomo.helpers as helpers
 
+
 class UI:
     def __init__(
         self, status: int, tag: str, name: str, chilling_time: int | None = None
@@ -63,7 +64,7 @@ class UI:
 
 
 def main(tag: str, name: str, session_id: float):
-    #TODO: Do something with the Terminal close issue
+    # TODO: Do something with the Terminal close issue
     try:
         while True:
             play_sound_thread = threading.Thread(target=helpers.play_sound, daemon=True)
