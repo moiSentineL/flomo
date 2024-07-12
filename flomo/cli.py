@@ -16,16 +16,6 @@ def flomo():
     pass
 
 
-@flomo.command(aliases=["i"])
-def init():
-    """
-    Initialize the database.
-    """
-    db = tracker.Tracker()
-    db.create_table()
-    db.conn.close()
-
-
 @flomo.command(aliases=["s"])
 @click.option("-t", "--tag", default="Default", help="Session tag name.")
 @click.option("-n", "--name", default="Work", help="Session Name")
