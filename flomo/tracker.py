@@ -16,7 +16,7 @@ class Tracker:
 
     def create_table(self):
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS sessions (id FLOAT PRIMARY KEY, tag TEXT, name TEXT, start_time TEXT, end_time TEXT, total_time TEXT)"
+            "CREATE TABLE IF NOT EXISTS sessions (id FLOAT PRIMARY KEY, date_time, tag TEXT, name TEXT, total_time TEXT)"
         )
         self.conn.commit()
 
@@ -25,8 +25,8 @@ class Tracker:
     ) -> float:
         session_id = start_time.timestamp()
         self.cursor.execute(
-            "INSERT INTO sessions (id, tag, name, start_time) VALUES (?, ?, ?, ?)",
-            (session_id, tag, name, start_time.strftime("%Y-%m-%d %H:%M:%S")),
+            "INSERT INTO sessions (id, date_time, tag, name) VALUES (?, ?, ?, ?)",
+            (session_id, start_time.strftime("%Y-%m-%d %H:%M:%S"), tag, name),
         )
         self.conn.commit()
         return session_id
@@ -34,9 +34,8 @@ class Tracker:
     def update_session(self, session_id: float, end_time: datetime.datetime):
         total_time = end_time - datetime.datetime.fromtimestamp(session_id)
         self.cursor.execute(
-            "UPDATE sessions SET end_time = ?, total_time = ? WHERE id = ?",
+            "UPDATE sessions SET total_time = ? WHERE id = ?",
             (
-                end_time.strftime("%Y-%m-%d %H:%M:%S"),
                 helpers.format_time(round(total_time.total_seconds())),
                 session_id,
             ),
@@ -60,7 +59,7 @@ def show_sessions():
     print(
         tabulate.tabulate(
             pandas.DataFrame(sessions),  # type: ignore
-            headers=["ID", "Tag", "Name", "Start Time", "End Time", "Total Time"],
+            headers=["ID", "Session Date & Time", "Tag", "Name", "Total Time"],
             tablefmt="psql",
             showindex=False,
         )
