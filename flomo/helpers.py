@@ -46,7 +46,7 @@ def format_time(seconds: int) -> str:
     return f"{hours:02}:{mins:02}:{secs:02}"
 
 
-def end_session(session_id: float):
+def update_session(session_id: float):
     db = tracker.Tracker()
-    db.end_session(session_id, datetime.datetime.now())
+    db.update_session(session_id, datetime.datetime.now())
     db.conn.close()
