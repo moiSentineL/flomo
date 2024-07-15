@@ -1,5 +1,4 @@
 import datetime
-import sqlite3
 
 import click
 import click_aliases
