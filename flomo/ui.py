@@ -64,7 +64,7 @@ class UI:
             return self.terminal.inkey().lower()
 
 
-def main(tag: str, name: str, session_id: float):
+def main(tag: str, name: str, session_id: int):
     # TODO: Do something with the Terminal close issue
     try:
         while True:

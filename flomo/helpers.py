@@ -31,7 +31,7 @@ def play_sound():
 
 
 def message_log(message: str):
-    path = get_path("message.log", True)
+    path = get_path("message.log", in_data=True)
 
     with open(path, "a") as f:
         f.write(message + "\n")

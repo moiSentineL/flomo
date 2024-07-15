@@ -5,14 +5,22 @@ import pandas
 import tabulate
 
 import flomo.helpers as helpers
+import flomo.errors as errors
 
 
 class Tracker:
-    def __init__(self):
-        path = helpers.get_path("sessions.db", True)
+    def __init__(self, initializing: bool = False):
+        path = helpers.get_path("sessions.db", in_data=True)
 
         self.conn = sqlite3.connect(path)
         self.cursor = self.conn.cursor()
+
+        if not initializing and not self.db_file_exists():
+            raise errors.DBFileNotFoundError()
+
+    def db_file_exists(self):
+        self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        return bool(self.cursor.fetchall())
 
     def create_table(self):
         self.cursor.execute(
@@ -20,10 +28,8 @@ class Tracker:
         )
         self.conn.commit()
 
-    def create_session(
-        self, tag: str, name: str, start_time: datetime.datetime
-    ) -> float:
-        session_id = start_time.timestamp() % 1000000
+    def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> int:
+        session_id = int(start_time.timestamp() % 1000000)
         self.cursor.execute(
             "INSERT INTO sessions (id, date_time, tag, name) VALUES (?, ?, ?, ?)",
             (session_id, start_time.strftime("%Y-%m-%d %H:%M:%S"), tag, name),
@@ -31,7 +37,7 @@ class Tracker:
         self.conn.commit()
         return session_id
 
-    def update_session(self, session_id: float, end_time: datetime.datetime):
+    def update_session(self, session_id: int, end_time: datetime.datetime):
         date_time = self.get_session(session_id)[1]
         total_time = end_time - datetime.datetime.strptime(
             date_time, "%Y-%m-%d %H:%M:%S"
@@ -49,16 +55,18 @@ class Tracker:
         self.cursor.execute("SELECT * FROM sessions")
         return self.cursor.fetchall()
 
-    def get_session(self, session_id: float):
+    def get_session(self, session_id: int):
         self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
         return self.cursor.fetchone()
 
-    def delete_session(self, session_id: float):
+    def delete_session(self, session_id: int):
+        if not self.get_session(session_id):
+            raise errors.NoSessionError(session_id)
         self.cursor.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
         self.conn.commit()
 
 
-def update_session(session_id: float):
+def update_session(session_id: int):
     db = Tracker()
     db.update_session(session_id, datetime.datetime.now())
     db.conn.close()
