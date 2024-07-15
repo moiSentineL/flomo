@@ -4,8 +4,6 @@ import platform
 
 from playsound import playsound
 
-import flomo.tracker as tracker
-
 
 def get_path(file_name: str, in_data: bool = False):
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -33,7 +31,7 @@ def play_sound():
 
 
 def message_log(message: str):
-    path = get_path("message.log", True)
+    path = get_path("message.log", in_data=True)
 
     with open(path, "a") as f:
         f.write(message + "\n")
@@ -44,9 +42,3 @@ def format_time(seconds: int) -> str:
     mins, secs = divmod(remainder, 60)
 
     return f"{hours:02}:{mins:02}:{secs:02}"
-
-
-def update_session(session_id: float):
-    db = tracker.Tracker()
-    db.update_session(session_id, datetime.datetime.now())
-    db.conn.close()
