@@ -10,6 +10,7 @@ from rich.panel import Panel
 from rich.text import Text
 
 import flomo.helpers as helpers
+import flomo.tracker as tracker
 
 
 class UI:
@@ -123,5 +124,5 @@ def main(tag: str, name: str, session_id: float):
         if isinstance(e, Exception):
             helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
     finally:
-        helpers.update_session(session_id)
+        tracker.update_session(session_id)
         sys.exit()

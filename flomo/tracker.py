@@ -58,6 +58,12 @@ class Tracker:
         self.conn.commit()
 
 
+def update_session(session_id: float):
+    db = Tracker()
+    db.update_session(session_id, datetime.datetime.now())
+    db.conn.close()
+
+
 def show_sessions():
     db = Tracker()
     sessions = db.get_sessions()
