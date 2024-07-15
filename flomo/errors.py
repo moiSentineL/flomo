@@ -11,3 +11,8 @@ class NoSessionsError(Exception):
 class NoSessionError(Exception):
     def __init__(self, session_id):
         super().__init__(f"No session with ID {session_id} was found.")
+
+
+class NoConfigError(Exception):
+    def __init__(self):
+        super().__init__("No config file found. Please run `flomo init`.")

@@ -7,6 +7,7 @@ import click_aliases
 import flomo.tracker as tracker
 import flomo.ui as ui
 import flomo.errors as errors
+import flomo.config as config
 
 
 @click.group(cls=click_aliases.ClickAliasedGroup)
@@ -26,7 +27,7 @@ def init():
     db.create_table()
     db.conn.close()
 
-    # Initialize Config
+    config.Config().create_config()
 
 
 @flomo.command(aliases=["s"])
