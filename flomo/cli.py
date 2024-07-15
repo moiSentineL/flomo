@@ -1,4 +1,5 @@
 import datetime
+import os
 import sqlite3
 
 import click
@@ -6,6 +7,7 @@ import click_aliases
 
 import flomo.tracker as tracker
 import flomo.ui as ui
+import flomo.helpers as helpers
 
 
 @click.group(cls=click_aliases.ClickAliasedGroup)
@@ -23,8 +25,13 @@ def start(tag: str, name: str):
     """
     Start a Flowmodoro session.
     """
+    create_db_file = False
+    if not os.path.exists(helpers.get_path("sessions.db", True)):
+        create_db_file = True
+
     db = tracker.Tracker()
-    db.create_table()
+    if create_db_file:
+        db.create_table()
     session_id = db.create_session(tag, name, datetime.datetime.now())
     db.conn.close()
     ui.main(tag.lower(), name, session_id)
@@ -36,6 +43,8 @@ def tracking():
     Show the tracking history.
     """
     try:
+        if not os.path.exists(helpers.get_path("sessions.db", True)):
+            raise sqlite3.OperationalError
         tracker.show_sessions()
     except sqlite3.OperationalError:
         print("No sessions were found.")
@@ -47,9 +56,14 @@ def delete(session_id: str):
     """
     Delete a session.
     """
-    db = tracker.Tracker()
-    db.delete_session(float(session_id))
-    db.conn.close()
+    try:
+        if not os.path.exists(helpers.get_path("sessions.db", True)):
+            raise sqlite3.OperationalError
+        db = tracker.Tracker()
+        db.delete_session(float(session_id))
+        db.conn.close()
+    except sqlite3.OperationalError:
+        print("No sessions were found.")
 
 
 if __name__ == "__main__":
