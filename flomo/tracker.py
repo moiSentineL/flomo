@@ -4,8 +4,8 @@ import sqlite3
 import pandas
 import tabulate
 
-import flomo.helpers as helpers
 import flomo.errors as errors
+import flomo.helpers as helpers
 
 
 class Tracker:
@@ -15,10 +15,10 @@ class Tracker:
         self.conn = sqlite3.connect(path)
         self.cursor = self.conn.cursor()
 
-        if not initializing and not self.db_file_exists():
+        if not initializing and not self._db_file_exists():
             raise errors.DBFileNotFoundError()
 
-    def db_file_exists(self):
+    def _db_file_exists(self):
         self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         return bool(self.cursor.fetchall())
 
