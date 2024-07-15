@@ -14,5 +14,5 @@ class NoSessionsError(Exception):
 
 
 class NoSessionError(Exception):
-    def __init__(self, session_id):
+    def __init__(self, session_id: int):
         super().__init__(f"No session with ID {session_id} was found.")
