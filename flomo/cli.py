@@ -41,5 +41,16 @@ def tracking():
         print("No sessions were found.")
 
 
+@flomo.command(aliases=["d"])
+@click.argument("session_id")
+def delete(session_id: str):
+    """
+    Delete a session.
+    """
+    db = tracker.Tracker()
+    db.delete_session(float(session_id))
+    db.conn.close()
+
+
 if __name__ == "__main__":
     flomo()

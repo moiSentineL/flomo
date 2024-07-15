@@ -53,6 +53,10 @@ class Tracker:
         self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
         return self.cursor.fetchone()
 
+    def delete_session(self, session_id: float):
+        self.cursor.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
+        self.conn.commit()
+
 
 def show_sessions():
     db = Tracker()
