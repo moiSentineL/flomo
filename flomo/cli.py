@@ -9,6 +9,9 @@ import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
 
+# TODO: Ability for users to see message.log file.
+# TODO: Change Config data from a Command
+
 
 @click.group(cls=click_aliases.ClickAliasedGroup)
 def flomo():
@@ -31,6 +34,7 @@ def init():
     conf.create_config()
 
 
+# TODO: default_session_data from Config.
 @flomo.command(aliases=["s"])
 @click.option(
     "-t",
