@@ -16,6 +16,7 @@ class Config:
         return os.path.exists(self.path) and self._config_data_check()
 
     def _config_data_check(self):
+        # TODO: Fix: if config file is improper, it overrides changes made by the user.
         with open(self.path, "r") as f:
             data = json.load(f)
 
