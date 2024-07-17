@@ -8,6 +8,7 @@ import flomo.errors as errors
 
 
 def get_path(file_name: str, in_data: bool = False):
+    # TODO: Change data folder to documents folder (and the equivalent in other OSes).
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     sign = "\\" if platform.system().lower() == "windows" else "/"
