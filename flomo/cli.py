@@ -101,7 +101,7 @@ def delete(session_id: str):
         print(e)
 
 
-@flomo.command(aliases=["c"])
+@flomo.command(aliases=["ch"])
 @click.argument("session_id")
 @click.option("-t", "--tag", help="Session tag name.")
 @click.option("-n", "--name", help="Session Name")
