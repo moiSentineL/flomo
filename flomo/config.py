@@ -45,6 +45,10 @@ class Config:
             json.dump(data, f, indent=4)
 
     def get_config(self, key: str):
-        with open(self.path, "r") as f:
-            data = json.load(f)
-            return data[key]
+        try:
+            with open(self.path, "r") as f:
+                data = json.load(f)
+
+                return data[key]
+        except KeyError:
+            raise errors.InvalidConfigKeyError(key)

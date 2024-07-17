@@ -9,6 +9,7 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
+import flomo.config as config
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 
@@ -26,9 +27,23 @@ class UI:
         self.close_live_panel = False
 
         self.title = "Flomo - " + ("FLOWING" if self.status == 0 else "CHILLIN")
-        self.border_style = "bold blue" if self.status == 0 else "bold red"
+        self.border_style = (
+            f"bold {self._border_color()}" if self.status == 0 else "bold red"
+        )
 
         self.terminal = blessed.Terminal()
+
+    def _border_color(self):
+        tag = self.tag.split("#")[1].lower()
+        tag_colors: dict[str, str] = {
+            k.lower(): v.lower()
+            for k, v in config.Config().get_config("tag_colors").items()
+        }
+
+        if tag in [i.lower() for i in tag_colors.keys()]:
+            return tag_colors[tag]
+
+        return "blue"
 
     def generate_panel(self):
         stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{helpers.format_time(
