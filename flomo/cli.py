@@ -31,8 +31,18 @@ def init():
 
 
 @flomo.command(aliases=["s"])
-@click.option("-t", "--tag", help="Session tag name.")
-@click.option("-n", "--name", help="Session Name")
+@click.option(
+    "-t",
+    "--tag",
+    help="Session tag name.",
+    # default=default_session_data["tag"],
+)
+@click.option(
+    "-n",
+    "--name",
+    help="Session Name",
+    # default=default_session_data["name"],
+)
 def start(tag: str, name: str):
     """
     Start a Flowmodoro session.

@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 import flomo.errors as errors
 import flomo.helpers as helpers
@@ -13,7 +13,21 @@ class Config:
             raise errors.NoConfigError()
 
     def _config_file_exists(self):
-        return os.path.exists(self.path)  # TODO: Check if file contents are proper.
+        return os.path.exists(self.path) and self._config_data_check()
+
+    def _config_data_check(self):
+        with open(self.path, "r") as f:
+            data = json.load(f)
+
+            if not all(
+                key in data
+                for key in [
+                    "default_session_data",
+                    "notification_priority",
+                    "tag_colors",
+                ]
+            ):
+                return False
 
     def create_config(self):
         if self._config_file_exists():
@@ -30,3 +44,8 @@ class Config:
             }
 
             json.dump(data, f, indent=4)
+
+    def get_config(self, key: str):
+        with open(self.path, "r") as f:
+            data = json.load(f)
+            return data[key]
