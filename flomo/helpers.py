@@ -1,8 +1,10 @@
-import datetime
 import os
 import platform
 
 from playsound import playsound
+
+import flomo.config as config
+import flomo.errors as errors
 
 
 def get_path(file_name: str, in_data: bool = False):
@@ -20,14 +22,27 @@ def get_path(file_name: str, in_data: bool = False):
 
 
 def play_sound():
-    path = get_path("beep.mp3")
+    try:
+        path = get_path("beep.mp3")
+        conf = config.Config()
 
-    if not platform.system().lower() in ["windows", "darwin"]:
-        os.system(
-            "notify-send 'Flomo' 'Time to start flowing!' -u normal && paplay " + path
-        )
-    else:
-        playsound(path)
+        notification_priority: str = conf.get_config("notification_priority")
+
+        if notification_priority.lower() == "off":
+            return
+
+        if not platform.system().lower() in ["windows", "darwin"]:
+            priority = (
+                "critical" if notification_priority.lower() == "high" else "normal"
+            )
+            os.system(
+                f"notify-send 'Flomo' 'Time to start flowing!' -u {priority} && paplay "
+                + path
+            )
+        else:
+            playsound(path)
+    except errors.NoConfigError:
+        message_log("Config file not found.")
 
 
 def message_log(message: str):

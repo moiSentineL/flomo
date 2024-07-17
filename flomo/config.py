@@ -19,15 +19,14 @@ class Config:
         with open(self.path, "r") as f:
             data = json.load(f)
 
-            if not all(
+            return all(
                 key in data
                 for key in [
                     "default_session_data",
                     "notification_priority",
                     "tag_colors",
                 ]
-            ):
-                return False
+            ) and data["notification_priority"].lower() in ["off", "normal", "high"]
 
     def create_config(self):
         if self._config_file_exists():
