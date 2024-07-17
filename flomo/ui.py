@@ -46,6 +46,7 @@ class UI:
         return "blue"
 
     def generate_panel(self):
+        #TODO: Fix UI resize issue?
         stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{helpers.format_time(
             self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
@@ -108,6 +109,7 @@ def main(tag: str, name: str, session_id: int):
 
             chilling_ui = UI(1, tag, name, int(chilling_time))
             chilling_ui.show_live_panel()
+            #TODO: Fix skipping break issue
             # chilling_panel_thread = threading.Thread(
             #     target=chilling_ui.show_live_panel, daemon=True)
             # chilling_panel_thread.start()
