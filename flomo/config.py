@@ -1,4 +1,5 @@
 import os
+import json
 
 import flomo.errors as errors
 import flomo.helpers as helpers
@@ -19,4 +20,13 @@ class Config:
             return
 
         with open(self.path, "w") as f:
-            f.write("{}")
+            data = {
+                "default_session_data": {
+                    "tag": "Work",
+                    "name": "Working",
+                },
+                "notification_priority": "normal",
+                "tag_colors": {"Work": "blue", "Study": "red", "Exercise": "green"},
+            }
+
+            json.dump(data, f, indent=4)
