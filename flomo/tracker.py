@@ -37,7 +37,7 @@ class Tracker:
         self.conn.commit()
         return session_id
 
-    def update_session(self, session_id: int, end_time: datetime.datetime):
+    def end_session(self, session_id: int, end_time: datetime.datetime):
         date_time = self.get_session(session_id)[1]
         total_time = end_time - datetime.datetime.strptime(
             date_time, "%Y-%m-%d %H:%M:%S"
@@ -65,10 +65,26 @@ class Tracker:
         self.cursor.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
         self.conn.commit()
 
+    def update_session(self, session_id: int, tag: str | None, name: str | None):
+        if not self.get_session(session_id):
+            raise errors.NoSessionError(session_id)
 
-def update_session(session_id: int):
+        if tag:
+            self.cursor.execute(
+                "UPDATE sessions SET tag = ? WHERE id = ?", (tag, session_id)
+            )
+            print(f"Tag updated to {tag} for session {session_id}")
+        if name:
+            self.cursor.execute(
+                "UPDATE sessions SET name = ? WHERE id = ?", (name, session_id)
+            )
+            print(f"Name updated to {name} for session {session_id}")
+        self.conn.commit()
+
+
+def end_session(session_id: int):
     db = Tracker()
-    db.update_session(session_id, datetime.datetime.now())
+    db.end_session(session_id, datetime.datetime.now())
     db.conn.close()
 
 

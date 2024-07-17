@@ -15,4 +15,8 @@ class Config:
         return os.path.exists(self.path)  # TODO: Check if file contents are proper.
 
     def create_config(self):
-        pass
+        if self._config_file_exists():
+            return
+
+        with open(self.path, "w") as f:
+            f.write("{}")

@@ -124,5 +124,5 @@ def main(tag: str, name: str, session_id: int):
         if isinstance(e, Exception):
             helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
     finally:
-        tracker.update_session(session_id)
+        tracker.end_session(session_id)
         sys.exit()

@@ -31,8 +31,8 @@ def init():
 
 
 @flomo.command(aliases=["s"])
-@click.option("-t", "--tag", default="Default", help="Session tag name.")
-@click.option("-n", "--name", default="Work", help="Session Name")
+@click.option("-t", "--tag", help="Session tag name.")
+@click.option("-n", "--name", help="Session Name")
 def start(tag: str, name: str):
     """
     Start a Flowmodoro session.
@@ -71,6 +71,25 @@ def delete(session_id: str):
     try:
         db = tracker.Tracker()
         db.delete_session(int(session_id))
+        db.conn.close()
+    except (
+        errors.DBFileNotFoundError,
+        errors.NoSessionError,
+    ) as e:
+        print(e)
+
+
+@flomo.command(aliases=["c"])
+@click.argument("session_id")
+@click.option("-t", "--tag", help="Session tag name.")
+@click.option("-n", "--name", help="Session Name")
+def change(session_id: str, tag: str | None, name: str | None):
+    """
+    Change session data.
+    """
+    try:
+        db = tracker.Tracker()
+        db.update_session(int(session_id), tag, name)
         db.conn.close()
     except (
         errors.DBFileNotFoundError,
