@@ -89,6 +89,7 @@ def end_session(session_id: int):
 
 
 def show_sessions():
+    # TODO: Use a proper UI to show the sessions
     db = Tracker()
     sessions = db.get_sessions()
     db.conn.close()
