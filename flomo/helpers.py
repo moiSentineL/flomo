@@ -8,18 +8,32 @@ import flomo.errors as errors
 
 
 def get_path(file_name: str, in_data: bool = False):
-    # TODO: Change data folder to documents folder (and the equivalent in other OSes).
+    is_windows = platform.system().lower() == "windows"
+    is_mac = platform.system().lower() == "darwin"
+
+    conf_path = (
+        str(os.getenv("APPDATA")) or str(os.getenv("LOCALAPPDATA"))
+        if is_windows
+        else (
+            os.path.expanduser("~/Library/Application Support")
+            if is_mac
+            else os.path.expanduser("~/.config")
+        )
+    )
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
-    sign = "\\" if platform.system().lower() == "windows" else "/"
-    data_folder = f"{sign}data" if in_data else ""
+    sign = "\\" if is_windows else "/"
+    data_folder = f"{sign}{'Flomo' if is_windows else 'flomo'}" if in_data else ""
 
-    if in_data and not os.path.exists(dir_path + data_folder):
-        os.makedirs(dir_path + data_folder)
+    if in_data and not os.path.exists(conf_path + data_folder):
+        os.makedirs(conf_path + data_folder)
 
     file = f"{data_folder}{sign}{file_name}"
 
-    return os.path.join(dir_path + file)
+    if in_data:
+        return os.path.join(conf_path + file)
+    else:
+        return os.path.join(dir_path + file)
 
 
 def play_sound():
