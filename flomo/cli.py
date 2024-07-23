@@ -124,6 +124,7 @@ def change(session_id: str, tag: str | None, name: str | None):
         helpers.message_log(str(e))
         print(e)
 
+
 @flomo.command(aliases=["cf"])
 def config():
     """
@@ -131,12 +132,9 @@ def config():
     """
     try:
         print(helpers.get_path("config.json", True))
-    except (
-        errors.NoConfigError
-    ) as e:
+    except errors.NoConfigError as e:
         helpers.message_log(str(e))
         print(e)
-
 
 
 if __name__ == "__main__":

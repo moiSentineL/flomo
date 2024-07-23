@@ -8,8 +8,12 @@ import flomo.errors as errors
 
 
 def get_path(file_name: str, in_data: bool = False):
-        
-    conf_path = os.path.expanduser("~/Documents") if platform.system().lower() == "windows" else os.path.expanduser("~/.config")
+
+    conf_path = (
+        os.path.expanduser("~/Documents")
+        if platform.system().lower() == "windows"
+        else os.path.expanduser("~/.config")
+    )
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -22,9 +26,9 @@ def get_path(file_name: str, in_data: bool = False):
     file = f"{data_folder}{sign}{file_name}"
 
     if in_data:
-        return (os.path.join(conf_path + file))
+        return os.path.join(conf_path + file)
     else:
-        return (os.path.join(dir_path + file))
+        return os.path.join(dir_path + file)
 
 
 def play_sound():
