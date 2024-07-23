@@ -71,14 +71,14 @@ class Tracker:
 
         if tag:
             self.cursor.execute(
-                "UPDATE sessions SET tag = ? WHERE id = ?", (tag, session_id)
+                "UPDATE sessions SET tag = ? WHERE id = ?", (tag.lower(), session_id)
             )
-            print(f"Tag updated to {tag} for session {session_id}")
+            print(f'Tag updated to "{tag.lower()}" for session {session_id}')
         if name:
             self.cursor.execute(
                 "UPDATE sessions SET name = ? WHERE id = ?", (name, session_id)
             )
-            print(f"Name updated to {name} for session {session_id}")
+            print(f'Name updated to "{name}" for session {session_id}')
         self.conn.commit()
 
 
