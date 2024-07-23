@@ -41,7 +41,7 @@ default_tag, default_name = config.get_default_session_data()
 @click.option(
     "-t",
     "--tag",
-    help="Session tag name.",
+    help="Session Tag",
     default=default_tag,
 )
 @click.option(
@@ -107,7 +107,7 @@ def delete(session_id: str):
 
 @flomo.command(aliases=["ch"])
 @click.argument("session_id")
-@click.option("-t", "--tag", help="Session tag name.")
+@click.option("-t", "--tag", help="Session Tag")
 @click.option("-n", "--name", help="Session Name")
 def change(session_id: str, tag: str | None, name: str | None):
     """
