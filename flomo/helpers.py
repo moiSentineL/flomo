@@ -8,17 +8,17 @@ import flomo.errors as errors
 
 
 def get_path(file_name: str, in_data: bool = False):
+    is_windows = platform.system().lower() == "windows"
 
     conf_path = (
         os.path.expanduser("~/Documents")
-        if platform.system().lower() == "windows"
+        if is_windows
         else os.path.expanduser("~/.config")
     )
-
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
-    sign = "\\" if platform.system().lower() == "windows" else "/"
-    data_folder = f"{sign}flomo" if in_data else ""
+    sign = "\\" if is_windows else "/"
+    data_folder = f"{sign}{'Flomo' if is_windows else 'flomo'}" if in_data else ""
 
     if in_data and not os.path.exists(conf_path + data_folder):
         os.makedirs(conf_path + data_folder)
