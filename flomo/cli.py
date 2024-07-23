@@ -3,7 +3,7 @@ import datetime
 import click
 import click_aliases
 
-import flomo.config as config
+import flomo.conf as conf
 import flomo.errors as errors
 import flomo.helpers as helpers
 import flomo.tracker as tracker
@@ -30,11 +30,11 @@ def init():
     db.create_table()
     db.conn.close()
 
-    conf = config.Config(initializing=True)
-    conf.create_config()
+    config = conf.Config(initializing=True)
+    config.create_config()
 
 
-default_tag, default_name = config.get_default_session_data()
+default_tag, default_name = conf.get_default_session_data()
 
 
 @flomo.command(aliases=["s"])
@@ -123,6 +123,20 @@ def change(session_id: str, tag: str | None, name: str | None):
     ) as e:
         helpers.message_log(str(e))
         print(e)
+
+@flomo.command(aliases=["cf"])
+def config():
+    """
+    Print config file path
+    """
+    try:
+        print(helpers.get_path("config.json", True))
+    except (
+        errors.NoConfigError
+    ) as e:
+        helpers.message_log(str(e))
+        print(e)
+
 
 
 if __name__ == "__main__":
