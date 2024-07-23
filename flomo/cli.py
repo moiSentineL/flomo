@@ -67,8 +67,8 @@ def start(tag: str, name: str):
         errors.NoConfigError,
         errors.InvalidConfigKeyError,
     ) as e:
-        helpers.message_log(str(e))
         # TODO: print(e) isnt printing anything
+        print(e)
 
 
 @flomo.command(aliases=["t"])

@@ -43,7 +43,7 @@ def play_sound():
         else:
             playsound(path)
     except errors.NoConfigError:
-        message_log("Config file not found.")
+        pass  # Error is already getting logged from ui.py
 
 
 def message_log(message: str):

@@ -11,8 +11,6 @@ default_session_data = {
 
 tag_colors = {"Work": "red", "Study": "blue", "Exercise": "green"}
 
-# TODO: Fix: if config file is improper, it overrides changes made by the user.
-
 
 class Config:
     def __init__(
@@ -54,22 +52,20 @@ class Config:
 
     def create_config(self):
         file_exists, missing_keys = self._config_file_exists()
-        print(file_exists, missing_keys)
         if file_exists and missing_keys == []:
             return
 
-        with open(self.path, "w") as f:
-            data = {}
+        with open(self.path, "r+") as f:
+            data = json.load(f)
             for missing_key in missing_keys:
                 if missing_key == "default_session_data":
                     data[missing_key] = default_session_data
-                elif missing_key == "notification_priority":
+                if missing_key == "notification_priority":
                     data[missing_key] = "normal"
-                elif missing_key == "tag_colors":
+                if missing_key == "tag_colors":
                     data[missing_key] = tag_colors
 
-            # TODO: If one key is missing, the rest of the keys are not added to the config file
-
+            f.seek(0)
             json.dump(data, f, indent=4)
 
     def get_config(self, key: str):
