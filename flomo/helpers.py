@@ -11,7 +11,7 @@ def get_path(file_name: str, in_data: bool = False):
     is_windows = platform.system().lower() == "windows"
 
     conf_path = (
-        os.path.expanduser("~/Documents")
+        os.path.expanduser("~\\Documents")
         if is_windows
         else os.path.expanduser("~/.config")
     )
