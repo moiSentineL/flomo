@@ -3,7 +3,7 @@ import platform
 
 from playsound import playsound
 
-import flomo.conf as config
+import flomo.config as config
 import flomo.errors as errors
 
 

@@ -9,7 +9,7 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-import flomo.conf as config
+import flomo.config as config
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 
