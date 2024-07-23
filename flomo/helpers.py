@@ -63,6 +63,3 @@ def format_time(seconds: int) -> str:
     mins, secs = divmod(remainder, 60)
 
     return f"{hours:02}:{mins:02}:{secs:02}"
-
-if __name__ == "__main__":
-    get_path("bruh", True)
