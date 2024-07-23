@@ -86,6 +86,7 @@ def tracking():
         print(e)
 
 
+# TODO: delete multiple sessions at once
 @flomo.command(aliases=["d"])
 @click.argument("session_id")
 def delete(session_id: str):
