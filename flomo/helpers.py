@@ -3,23 +3,28 @@ import platform
 
 from playsound import playsound
 
-import flomo.config as config
+import flomo.conf as config
 import flomo.errors as errors
 
 
 def get_path(file_name: str, in_data: bool = False):
-    # TODO: Change data folder to documents folder (and the equivalent in other OSes).
+        
+    conf_path = os.path.expanduser("~/Documents") if platform.system().lower() == "windows" else os.path.expanduser("~/.config")
+
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     sign = "\\" if platform.system().lower() == "windows" else "/"
-    data_folder = f"{sign}data" if in_data else ""
+    data_folder = f"{sign}flomo" if in_data else ""
 
-    if in_data and not os.path.exists(dir_path + data_folder):
-        os.makedirs(dir_path + data_folder)
+    if in_data and not os.path.exists(conf_path + data_folder):
+        os.makedirs(conf_path + data_folder)
 
     file = f"{data_folder}{sign}{file_name}"
 
-    return os.path.join(dir_path + file)
+    if in_data:
+        return (os.path.join(conf_path + file))
+    else:
+        return (os.path.join(dir_path + file))
 
 
 def play_sound():
@@ -58,3 +63,6 @@ def format_time(seconds: int) -> str:
     mins, secs = divmod(remainder, 60)
 
     return f"{hours:02}:{mins:02}:{secs:02}"
+
+if __name__ == "__main__":
+    get_path("bruh", True)
