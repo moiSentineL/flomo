@@ -47,7 +47,7 @@ class UI:
 
     def generate_panel(self):
         # TODO: Fix UI resize issue?
-        stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{helpers.format_time(
+        stuff = f"{self.name}\n[{self.border_style}]{self.tag}[/{self.border_style}]\n\n{helpers.format_time(
             self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
