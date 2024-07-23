@@ -9,11 +9,16 @@ import flomo.errors as errors
 
 def get_path(file_name: str, in_data: bool = False):
     is_windows = platform.system().lower() == "windows"
+    is_mac = platform.system().lower() == "darwin"
 
     conf_path = (
-        os.path.expanduser("~\\Documents")
+        os.getenv("APPDATA") or os.getenv("LOCALAPPDATA")  # still have a bit of doubt
         if is_windows
-        else os.path.expanduser("~/.config")
+        else (
+            os.path.expanduser("~/Library/Application Support")
+            if is_mac
+            else os.path.expanduser("~/.config")
+        )
     )
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
