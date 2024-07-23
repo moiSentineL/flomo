@@ -5,7 +5,15 @@ VERSION = "1.0.0"
 SHORT_DESCRIPTION = "A Flowmodoro CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = "<nibir@nibirsan.org>"
 URL = "https://github.com/moiSentineL/flomo"
-INSTALL_REQUIRES = ["click", "blessed", "rich", "playsound==1.2.2", "click-aliases"]
+INSTALL_REQUIRES = [
+    "click",
+    "blessed",
+    "rich",
+    "playsound==1.2.2",
+    "click-aliases",
+    "pandas",
+    "tabulate",
+]
 PROJECT_URLS = {
     "Documentation": "https://github.com/moiSentineL/flomo#flomo",
     "Issue tracker": "https://github.com/moiSentineL/flomo/issues",
@@ -20,7 +28,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 3",
 ]
 
-with open("README.md", "r") as fh:
+with open("docs/README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
 
 if __name__ == "__main__":
