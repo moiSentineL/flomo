@@ -8,6 +8,11 @@ class NoConfigError(Exception):
         super().__init__("No config file found. Please run `flomo init`.")
 
 
+class InvalidConfigKeyError(Exception):
+    def __init__(self, key: str):
+        super().__init__(f"Invalid config key: {key}.")
+
+
 class NoSessionsError(Exception):
     def __init__(self):
         super().__init__("No sessions were found.")

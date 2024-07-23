@@ -9,6 +9,7 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
+import flomo.config as config
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 
@@ -26,11 +27,26 @@ class UI:
         self.close_live_panel = False
 
         self.title = "Flomo - " + ("FLOWING" if self.status == 0 else "CHILLIN")
-        self.border_style = "bold blue" if self.status == 0 else "bold red"
+        self.border_style = (
+            f"bold {self._border_color()}" if self.status == 0 else "bold red"
+        )
 
         self.terminal = blessed.Terminal()
 
+    def _border_color(self):
+        tag = self.tag.split("#")[1].lower()
+        tag_colors: dict[str, str] = {
+            k.lower(): v.lower()
+            for k, v in config.Config().get_config("tag_colors").items()
+        }
+
+        if tag in [i.lower() for i in tag_colors.keys()]:
+            return tag_colors[tag]
+
+        return "blue"
+
     def generate_panel(self):
+        # TODO: Fix UI resize issue?
         stuff = f"{self.name}\n[grey70]{self.tag}[/grey70]\n\n{helpers.format_time(
             self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
@@ -93,6 +109,7 @@ def main(tag: str, name: str, session_id: int):
 
             chilling_ui = UI(1, tag, name, int(chilling_time))
             chilling_ui.show_live_panel()
+            # TODO: Fix skipping break issue
             # chilling_panel_thread = threading.Thread(
             #     target=chilling_ui.show_live_panel, daemon=True)
             # chilling_panel_thread.start()
@@ -124,5 +141,5 @@ def main(tag: str, name: str, session_id: int):
         if isinstance(e, Exception):
             helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
     finally:
-        tracker.update_session(session_id)
+        tracker.end_session(session_id)
         sys.exit()

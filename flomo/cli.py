@@ -5,8 +5,12 @@ import click_aliases
 
 import flomo.config as config
 import flomo.errors as errors
+import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
+
+# TODO: Ability for users to see message.log file.
+# TODO: Change Config data from a Command
 
 
 @click.group(cls=click_aliases.ClickAliasedGroup)
@@ -30,9 +34,22 @@ def init():
     conf.create_config()
 
 
+default_tag, default_name = config.get_default_session_data()
+
+
 @flomo.command(aliases=["s"])
-@click.option("-t", "--tag", default="Default", help="Session tag name.")
-@click.option("-n", "--name", default="Work", help="Session Name")
+@click.option(
+    "-t",
+    "--tag",
+    help="Session tag name.",
+    default=default_tag,
+)
+@click.option(
+    "-n",
+    "--name",
+    help="Session Name",
+    default=default_name,
+)
 def start(tag: str, name: str):
     """
     Start a Flowmodoro session.
@@ -43,7 +60,12 @@ def start(tag: str, name: str):
         session_id = db.create_session(tag, name, datetime.datetime.now())
         db.conn.close()
         ui.main(tag.lower(), name, session_id)
-    except (errors.DBFileNotFoundError, errors.NoConfigError) as e:
+    except (
+        errors.DBFileNotFoundError,
+        errors.NoConfigError,
+        errors.InvalidConfigKeyError,
+    ) as e:
+        # TODO: print(e) isnt printing anything
         print(e)
 
 
@@ -59,6 +81,7 @@ def tracking():
         errors.NoSessionsError,
         errors.NoSessionError,
     ) as e:
+        helpers.message_log(str(e))
         print(e)
 
 
@@ -76,6 +99,27 @@ def delete(session_id: str):
         errors.DBFileNotFoundError,
         errors.NoSessionError,
     ) as e:
+        helpers.message_log(str(e))
+        print(e)
+
+
+@flomo.command(aliases=["ch"])
+@click.argument("session_id")
+@click.option("-t", "--tag", help="Session tag name.")
+@click.option("-n", "--name", help="Session Name")
+def change(session_id: str, tag: str | None, name: str | None):
+    """
+    Change session data.
+    """
+    try:
+        db = tracker.Tracker()
+        db.update_session(int(session_id), tag, name)
+        db.conn.close()
+    except (
+        errors.DBFileNotFoundError,
+        errors.NoSessionError,
+    ) as e:
+        helpers.message_log(str(e))
         print(e)
 
 
