@@ -12,7 +12,7 @@ def get_path(file_name: str, in_data: bool = False):
     is_mac = platform.system().lower() == "darwin"
 
     conf_path = (
-        os.getenv("APPDATA") or os.getenv("LOCALAPPDATA")  # still have a bit of doubt
+        str(os.getenv("APPDATA")) or str(os.getenv("LOCALAPPDATA"))
         if is_windows
         else (
             os.path.expanduser("~/Library/Application Support")
