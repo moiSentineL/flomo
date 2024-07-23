@@ -55,6 +55,10 @@ class Config:
         if file_exists and missing_keys == []:
             return
 
+        if not os.path.exists(self.path):
+            with open(self.path, "w") as f:
+                json.dump({}, f)
+
         with open(self.path, "r+") as f:
             data = json.load(f)
             for missing_key in missing_keys:
@@ -69,7 +73,6 @@ class Config:
             json.dump(data, f, indent=4)
 
     def get_config(self, key: str):
-        # TODO: If default_session_data is invalid in config, even init command doesnt work
         if key == "default_session_data" and not self._config_file_exists()[0]:
             return default_session_data
 
@@ -79,3 +82,11 @@ class Config:
                 return data[key]
         except KeyError:
             raise errors.InvalidConfigKeyError(key)
+
+
+def get_default_session_data():
+    try:
+        conf = Config(get_default_session_data=True).get_config("default_session_data")
+        return conf["tag"], conf["name"]
+    except errors.InvalidConfigKeyError:
+        return default_session_data["tag"], default_session_data["name"]

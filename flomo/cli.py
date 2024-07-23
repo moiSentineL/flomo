@@ -34,9 +34,7 @@ def init():
     conf.create_config()
 
 
-default_session_data = config.Config(get_default_session_data=True).get_config(
-    "default_session_data"
-)
+default_tag, default_name = config.get_default_session_data()
 
 
 @flomo.command(aliases=["s"])
@@ -44,13 +42,13 @@ default_session_data = config.Config(get_default_session_data=True).get_config(
     "-t",
     "--tag",
     help="Session tag name.",
-    default=default_session_data["tag"],
+    default=default_tag,
 )
 @click.option(
     "-n",
     "--name",
     help="Session Name",
-    default=default_session_data["name"],
+    default=default_name,
 )
 def start(tag: str, name: str):
     """
