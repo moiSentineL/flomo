@@ -30,8 +30,7 @@ def init():
     db.create_table()
     db.conn.close()
 
-    config_ = conf.Config(initializing=True)
-    config_.create_config()
+    conf.Config(initializing=True).create_config()
 
 
 default_tag, default_name = conf.get_default_session_data()
