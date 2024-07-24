@@ -12,8 +12,15 @@ import flomo.ui as ui
 # TODO: Ability for users to see message.log file.
 # TODO: Change Config data from a Command
 
+class OrderCommands(click.Group):
+  def list_commands(self, ctx: click.Context) -> list[str]:
+    return list(self.commands)
 
-@click.group(cls=click_aliases.ClickAliasedGroup)
+
+class MultiGroup(click_aliases.ClickAliasedGroup, OrderCommands):
+    pass
+
+@click.group(cls=MultiGroup)
 def flomo():
     """
     A Flowmodoro CLI for productivity enthusiasts.
