@@ -1,4 +1,6 @@
 import datetime
+from re import T
+from typing import Tuple
 
 import click
 import click_aliases
@@ -85,16 +87,15 @@ def tracking():
         print(e)
 
 
-# TODO: delete multiple sessions at once
 @flomo.command(aliases=["d"])
-@click.argument("session_id")
-def delete(session_id: str):
+@click.argument("session_ids", nargs=-1)
+def delete(session_ids: Tuple[str]):
     """
-    Delete a session.
+    Delete sessions.
     """
     try:
         db = tracker.Tracker()
-        db.delete_session(int(session_id))
+        db.delete_session(session_ids)
         db.conn.close()
     except (
         errors.DBFileNotFoundError,

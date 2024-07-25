@@ -1,5 +1,6 @@
 import datetime
 import sqlite3
+from typing import Tuple
 
 import pandas
 import tabulate
@@ -59,10 +60,18 @@ class Tracker:
         self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
         return self.cursor.fetchone()
 
-    def delete_session(self, session_id: int):
-        if not self.get_session(session_id):
-            raise errors.NoSessionError(session_id)
-        self.cursor.execute("DELETE FROM sessions WHERE id = ?", (session_id,))
+    def delete_session(self, session_ids: Tuple[str]):
+        for session_id in session_ids:
+            session_id = int(session_id)
+            if not self.get_session(session_id):
+                raise errors.NoSessionError(session_id)
+
+        self.cursor.execute(
+            "DELETE FROM sessions WHERE id IN ({seq})".format(
+                seq=",".join(["?"] * len(session_ids))
+            ),
+            session_ids,
+        )
         self.conn.commit()
 
     def update_session(self, session_id: int, tag: str | None, name: str | None):
