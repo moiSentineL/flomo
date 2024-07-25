@@ -74,7 +74,7 @@ def start(tag: str, name: str):
         errors.InvalidConfigKeyError,
         Exception,
     ) as e:
-        helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
+        helpers.error_log(f"{datetime.datetime.now()} - Error: {e}")
         print(e)
     finally:
         sys.exit()
@@ -92,7 +92,7 @@ def tracking():
         errors.NoSessionsError,
         errors.NoSessionError,
     ) as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
 
 
@@ -112,7 +112,7 @@ def delete(session_ids: Tuple):
         errors.DBFileNotFoundError,
         errors.NoSessionError,
     ) as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
 
 
@@ -132,7 +132,7 @@ def change(session_id: str, tag: str | None, name: str | None):
         errors.DBFileNotFoundError,
         errors.NoSessionError,
     ) as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
 
 
@@ -142,12 +142,32 @@ def config():
     Print config file path
     """
     # TODO: Change Config data from a Command
-    # TODO: Ability for users to see message.log file.
     try:
         print(helpers.get_path("config.json", True))
     except errors.NoConfigError as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
+
+
+@flomo.command(aliases=["er"])
+@click.option("-c", "--clear", is_flag=True, help="Clear the error log.")
+def error(clear: bool):
+    """
+    Show the error log.
+    """
+    try:
+        path = helpers.get_path("error.log", True)
+        if clear:
+            with open(path, "w") as f:
+                f.write("")
+            return print("Message log cleared.")
+
+        with open(path, "r") as f:
+            if not f.read():
+                return print("No errors found till now.")
+            print(f.read())
+    except FileNotFoundError:
+        print("No errors found till now.")
 
 
 if __name__ == "__main__":

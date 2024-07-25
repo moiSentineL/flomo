@@ -60,11 +60,11 @@ def play_sound():
         pass  # Error is already getting logged from ui.py
 
 
-def message_log(message: str):
-    path = get_path("message.log", in_data=True)
+def error_log(error: str):
+    path = get_path("error.log", in_data=True)
 
     with open(path, "a") as f:
-        f.write(message + "\n")
+        f.write(error + "\n")
 
 
 def format_time(seconds: int) -> str:
