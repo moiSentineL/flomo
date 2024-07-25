@@ -88,5 +88,5 @@ def get_default_session_data():
     try:
         conf = Config(get_default_session_data=True).get_config("default_session_data")
         return conf["tag"], conf["name"]
-    except errors.InvalidConfigKeyError:
+    except (errors.InvalidConfigKeyError, KeyError):
         return default_session_data["tag"], default_session_data["name"]

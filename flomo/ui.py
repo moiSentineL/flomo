@@ -1,5 +1,4 @@
 import datetime
-import sys
 import threading
 import time
 
@@ -126,7 +125,7 @@ def main(tag: str, name: str, session_id: int):
             # chilling_panel_thread.join()
 
             del chilling_ui
-    except (KeyboardInterrupt, Exception) as e:
+    except KeyboardInterrupt:
         if "flowing_ui" in locals() and flowing_ui is not None:
             flowing_ui.close_live_panel = True
         if "chilling_ui" in locals() and chilling_ui is not None:
@@ -137,9 +136,5 @@ def main(tag: str, name: str, session_id: int):
             play_sound_thread.join()
         # if 'chilling_panel_thread' in locals() and chilling_panel_thread.is_alive():
         #     chilling_panel_thread.join()
-
-        if isinstance(e, Exception):
-            helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
     finally:
         tracker.end_session(session_id)
-        sys.exit()

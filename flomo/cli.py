@@ -1,4 +1,5 @@
 import datetime
+import sys
 from typing import Tuple
 
 import click
@@ -9,9 +10,6 @@ import flomo.errors as errors
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
-
-# TODO: Ability for users to see message.log file.
-# TODO: Change Config data from a Command
 
 
 @click.group(cls=click_aliases.ClickAliasedGroup)
@@ -65,9 +63,12 @@ def start(tag: str, name: str):
         errors.DBFileNotFoundError,
         errors.NoConfigError,
         errors.InvalidConfigKeyError,
+        Exception,
     ) as e:
-        # TODO: print(e) isnt printing anything
+        helpers.message_log(f"{datetime.datetime.now()} - Error: {e}")
         print(e)
+    finally:
+        sys.exit()
 
 
 @flomo.command(aliases=["t"])
@@ -131,6 +132,8 @@ def config():
     """
     Print config file path
     """
+    # TODO: Change Config data from a Command
+    # TODO: Ability for users to see message.log file.
     try:
         print(helpers.get_path("config.json", True))
     except errors.NoConfigError as e:
