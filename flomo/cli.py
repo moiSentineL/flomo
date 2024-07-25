@@ -135,15 +135,26 @@ def change(session_id: str, tag: str | None, name: str | None):
         helpers.error_log(str(e))
         print(e)
 
+# TODO: Implement the config command with nested values.
+"""
+The Idea:
+Use options to set the values in the config file.
+Don't know how I want to achieve this for the nested values like tag_colors & default_session_data.
+"""
 
 @flomo.command(aliases=["cf"])
-def config():
+@click.option("-n", "--notification_priority", help="Set Notification Priority to 'off', 'normal', or 'high'.")
+def config(notification_priority: str):
     """
     Print config file path
     """
-    # TODO: Change Config data from a Command
     try:
-        print(helpers.get_path("config.json", True))
+        print(f"File Path: {helpers.get_path("config.json", True)}")
+
+        if notification_priority:
+            conf.Config().set_config("notification_priority", notification_priority)
+            print(f"Notification Priority set to {notification_priority}")
+
     except errors.NoConfigError as e:
         helpers.error_log(str(e))
         print(e)
@@ -157,6 +168,7 @@ def error(clear: bool):
     """
     try:
         path = helpers.get_path("error.log", True)
+        print(f"File Path: {path}")
         if clear:
             with open(path, "w") as f:
                 f.write("")
