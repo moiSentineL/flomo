@@ -151,7 +151,7 @@ def config(notification_priority: str):
         print(f"File Path: {helpers.get_path("config.json", True)}")
 
         if notification_priority:
-            conf.Config().set_config("notification_priority", notification_priority)
+            conf.Config().set_config(conf.NOTIFICATION_PRIORITY, notification_priority)
             print(f"Notification Priority set to {notification_priority}")
 
     except errors.NoConfigError as e:

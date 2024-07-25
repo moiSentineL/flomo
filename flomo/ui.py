@@ -36,7 +36,7 @@ class UI:
         tag = self.tag.split("#")[1].lower()
         tag_colors: dict[str, str] = {
             k.lower(): v.lower()
-            for k, v in config.Config().get_config("tag_colors").items()
+            for k, v in config.Config().get_config(config.TAG_COLORS).items()
         }
 
         if tag in [i.lower() for i in tag_colors.keys()]:

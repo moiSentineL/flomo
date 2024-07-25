@@ -41,7 +41,7 @@ def play_sound():
         path = get_path("beep.mp3")
         conf = config.Config()
 
-        notification_priority = str(conf.get_config("notification_priority"))
+        notification_priority = str(conf.get_config(config.NOTIFICATION_PRIORITY))
 
         if notification_priority.lower() == "off":
             return
