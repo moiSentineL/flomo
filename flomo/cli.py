@@ -1,5 +1,4 @@
 import datetime
-from re import T
 from typing import Tuple
 
 import click
@@ -89,14 +88,16 @@ def tracking():
 
 @flomo.command(aliases=["d"])
 @click.argument("session_ids", nargs=-1)
-def delete(session_ids: Tuple[str]):
+def delete(session_ids: Tuple):
     """
     Delete sessions.
     """
+    click.confirm("Are you sure you want to delete the session(s)?", abort=True)
     try:
         db = tracker.Tracker()
         db.delete_session(session_ids)
         db.conn.close()
+        print(f"Deleted session(s) {session_ids}")
     except (
         errors.DBFileNotFoundError,
         errors.NoSessionError,

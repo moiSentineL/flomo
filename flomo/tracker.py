@@ -60,7 +60,13 @@ class Tracker:
         self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
         return self.cursor.fetchone()
 
-    def delete_session(self, session_ids: Tuple[str]):
+    def delete_session(self, session_ids: Tuple[str] | Tuple):
+        if len(session_ids) == 0:
+            self.cursor.execute(
+                "DELETE FROM sessions WHERE id = (SELECT MAX(id) FROM sessions)"
+            )
+            self.conn.commit()
+
         for session_id in session_ids:
             session_id = int(session_id)
             if not self.get_session(session_id):
