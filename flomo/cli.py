@@ -115,7 +115,6 @@ def delete(session_ids: Tuple):
         helpers.error_log(str(e))
         print(e)
 
-
 @flomo.command(aliases=["ch"])
 @click.argument("session_id")
 @click.option("-t", "--tag", help="Session Tag")
@@ -143,7 +142,7 @@ Don't know how I want to achieve this for the nested values like tag_colors & de
 """
 
 @flomo.command(aliases=["cf"])
-@click.option("-n", "--notification_priority", help="Set Notification Priority to 'off', 'normal', or 'high'.")
+@click.option("-n", "--notification_priority", help="Set notification priority to 'off', 'normal', or 'high'.")
 def config(notification_priority: str):
     """
     Print config file path
