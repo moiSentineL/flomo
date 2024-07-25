@@ -12,7 +12,16 @@ import flomo.tracker as tracker
 import flomo.ui as ui
 
 
-@click.group(cls=click_aliases.ClickAliasedGroup)
+class OrderCommands(click.Group):
+    def list_commands(self, ctx: click.Context) -> list[str]:
+        return list(self.commands)
+
+
+class MultiClass(click_aliases.ClickAliasedGroup, OrderCommands):
+    pass
+
+
+@click.group(cls=MultiClass)
 def flomo():
     """
     A Flowmodoro CLI for productivity enthusiasts.
