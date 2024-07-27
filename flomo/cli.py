@@ -134,27 +134,31 @@ def change(session_id: str, tag: str | None, name: str | None):
         helpers.error_log(str(e))
         print(e)
 
-# TODO: Implement the config command with nested values.
-"""
-The Idea:
-Use options to set the values in the config file.
-Don't know how I want to achieve this for the nested values like tag_colors & default_session_data.
-"""
-
 @flomo.command(aliases=["cf"])
-@click.option("-n", "--notification_priority", help="Set notification priority to 'off', 'normal', or 'high'.")
-def config(notification_priority: str):
+@click.option("-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'.")
+@click.option("-tc", "--tag-color", nargs=2, help="Set or delete tag colors.")
+@click.option("-ds", "--default-session", nargs=2, help="Set default session data. (Tag, Name)")
+def config(notif: str, tag_color: Tuple[str, str] | Tuple[str], default_session: Tuple[str, str]):
     """
-    Print config file path
+    Change the config values or get the config file path.
     """
     try:
         print(f"File Path: {helpers.get_path("config.json", True)}")
 
-        if notification_priority and notification_priority.lower() in ["off", "normal", "high"]:
-            notification_priority = notification_priority.lower()
-            conf.Config().set_config(conf.NOTIFICATION_PRIORITY, notification_priority)
-            print(f"Notification Priority set to {notification_priority}")
+        if notif and (notif := notif.lower()) in ["off", "normal", "high"]:
+            conf.Config().set_config(conf.NOTIFICATION_PRIORITY, notif)
+            print(f"Notification Priority set to {notif}")
 
+        if tag_color and len(tag_color) == 2:
+            conf.Config().set_config(conf.TAG_COLORS, dict(tag_name=tag_color[0], color=tag_color[1]))
+            print(f"{tag_color[0]}'s Tag Color set to {tag_color[1]}")
+        elif tag_color and len(tag_color) == 1:
+            conf.Config().delete_tag_color(tag_color[0])
+            print(f"Deleted Tag Color for {tag_color[0]}")
+
+        if default_session and len(default_session) == 2:
+            conf.Config().set_config(conf.DEFAULT_SESSION_DATA, dict(tag=default_session[0], name=default_session[1]))
+            print(f"Default Session Data set to {default_session}")
     except errors.NoConfigError as e:
         helpers.error_log(str(e))
         print(e)

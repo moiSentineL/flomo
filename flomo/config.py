@@ -98,6 +98,16 @@ class Config:
             f.seek(0)
             json.dump(data, f, indent=4)
 
+    def delete_tag_color(self, tag_name: str):
+        with open(self.path, "r+") as f:
+            data = json.load(f)
+
+            key = [k for k, v in data[TAG_COLORS].items() if v.lower() == tag_name][0]
+            del data[TAG_COLORS][key]
+
+            f.seek(0)
+            json.dump(data, f, indent=4)
+
 
 def get_default_session_data():
     try:
