@@ -142,7 +142,7 @@ def change(session_id: str, tag: str | None, name: str | None):
 @click.option(
     "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'."
 )
-@click.option("-tc", "--tag-color", help="Set or delete tag colors.")
+@click.option("-tc", "--tag-color", help="Set or delete tag colors. (Tag Name, Color)")
 @click.option("-ds", "--default-session", help="Set default session data. (Tag, Name)")
 def config(notif: str, tag_color: str, default_session: str):
     """

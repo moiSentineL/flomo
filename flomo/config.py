@@ -109,12 +109,10 @@ class Config:
         # BUG: Sometimes, the config when changed ends up with a extra '}' at the end
         with open(self.path, "r+") as f:
             data = json.load(f)
-
             key = [
                 k for k, v in data[TAG_COLORS].items() if k.lower() == tag_name.lower()
             ][0]
             del data[TAG_COLORS][key]
-
             f.seek(0)
             json.dump(data, f, indent=4)
 
