@@ -75,6 +75,7 @@ class Config:
                     data[missing_key] = tag_colors
 
             f.seek(0)
+            f.truncate(0)
             json.dump(data, f, indent=4)
 
     def get_config(self, key: str):
@@ -89,7 +90,6 @@ class Config:
             raise errors.InvalidConfigKeyError(key)
 
     def set_config(self, key: str, value: str, nested_value: bool = False):
-        # BUG: Sometimes, the config when changed ends up with a extra '}' at the end
         with open(self.path, "r+") as f:
             data = json.load(f)
             if nested_value:
@@ -103,10 +103,10 @@ class Config:
             else:
                 data[key] = value
             f.seek(0)
+            f.truncate(0)
             json.dump(data, f, indent=4)
 
     def delete_tag_color(self, tag_name: str):
-        # BUG: Sometimes, the config when changed ends up with a extra '}' at the end
         with open(self.path, "r+") as f:
             data = json.load(f)
             key = [
@@ -114,6 +114,7 @@ class Config:
             ][0]
             del data[TAG_COLORS][key]
             f.seek(0)
+            f.truncate(0)
             json.dump(data, f, indent=4)
 
 
