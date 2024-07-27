@@ -145,33 +145,46 @@ def change(session_id: str, tag: str | None, name: str | None):
 @click.option("-tc", "--tag-color", help="Set or delete tag colors.")
 @click.option("-ds", "--default-session", help="Set default session data. (Tag, Name)")
 def config(notif: str, tag_color: str, default_session: str):
-    # TODO: Add validation for tag-color and default-session
     """
     Change the config values or get the config file path.
     """
     try:
         print(f"File Path: {helpers.get_path("config.json", True)}")
+        conf_ = conf.Config()
 
-        if notif and (notif := notif.lower()) in ["off", "normal", "high"]:
-            conf.Config().set_config(conf.NOTIFICATION_PRIORITY, notif)
-            print(f"Notification Priority set to {notif}")
+        if notif:
+            notif = notif.lower()
+            if notif.lower() in ["off", "normal", "high"]:
+                conf_.set_config(conf.NOTIFICATION_PRIORITY, notif)
+                print(f"Notification Priority set to {notif}")
+            else:
+                raise click.BadOptionUsage("notif", "Invalid input")
 
-        if tag_color and len(tc := tag_color.split(" ")) == 2:
-            conf.Config().set_config(conf.TAG_COLORS, tag_color, nested_value=True)
-            print(f"{tc[0]}'s Tag Color set to '{tc[1]}'")
-        elif tag_color and len(tc := tag_color.split(" ")) == 1:
-            conf.Config().delete_tag_color(tc[0])
-            print(f"Deleted Tag Color for '{tc[0]}'")
-        # elif tag_color and len(tc := tag_color.split(" ")) != 2 and tc[1]:
-        #     raise click.BadOptionUsage("tag-color", "Invalid input")
+        if tag_color:
+            tc = tag_color.split(" ")
+            if len(tc) == 2:
+                if not tc[1]:
+                    raise click.BadOptionUsage("tag-color", "Invalid input")
+                conf_.set_config(conf.TAG_COLORS, tag_color, nested_value=True)
+                print(f"{tc[0]}'s Tag Color set to '{tc[1]}'")
+            elif len(tc) == 1:
+                tag_colors = conf_.get_config(conf.TAG_COLORS)
+                if not tc[0] in list(tag_colors.keys()):
+                    raise click.BadOptionUsage("tag-color", "Invalid input")
+                conf_.delete_tag_color(tc[0])
+                print(f"Deleted Tag Color for '{tc[0]}'")
+            else:
+                raise click.BadOptionUsage("tag-color", "Invalid input")
 
-        if default_session and len(ds := default_session.split(" ")) == 2:
-            conf.Config().set_config(
-                conf.DEFAULT_SESSION_DATA, default_session, nested_value=True
-            )
-            print(f"Default Session Data set to Tag: {ds[0]} and Name: {ds[1]}")
-        # elif default_session and len(ds := default_session.split(" ")) != 2 and ds[1]:
-        #     raise click.BadOptionUsage("default-session", "Invalid input")
+        if default_session:
+            ds = default_session.split(" ")
+            if len(ds) == 2 and ds[0] and ds[1]:
+                conf_.set_config(
+                    conf.DEFAULT_SESSION_DATA, default_session, nested_value=True
+                )
+                print(f"Default Session Data set to Tag: {ds[0]} and Name: {ds[1]}")
+            else:
+                raise click.BadOptionUsage("default-session", "Invalid input")
     except errors.NoConfigError as e:
         helpers.error_log(str(e))
         print(e)

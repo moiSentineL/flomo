@@ -89,7 +89,7 @@ class Config:
             raise errors.InvalidConfigKeyError(key)
 
     def set_config(self, key: str, value: str, nested_value: bool = False):
-        # BUG: Sometimes, the config when changed ends up with a extra '}' at the end - only happpens when already existing key's value is changed
+        # BUG: Sometimes, the config when changed ends up with a extra '}' at the end
         with open(self.path, "r+") as f:
             data = json.load(f)
             if nested_value:
@@ -106,10 +106,13 @@ class Config:
             json.dump(data, f, indent=4)
 
     def delete_tag_color(self, tag_name: str):
+        # BUG: Sometimes, the config when changed ends up with a extra '}' at the end
         with open(self.path, "r+") as f:
             data = json.load(f)
 
-            key = [k for k, v in data[TAG_COLORS].items() if v.lower() == tag_name][0]
+            key = [
+                k for k, v in data[TAG_COLORS].items() if k.lower() == tag_name.lower()
+            ][0]
             del data[TAG_COLORS][key]
 
             f.seek(0)
