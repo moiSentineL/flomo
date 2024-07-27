@@ -11,6 +11,8 @@ import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
 
+# TODO: Setup Garbage Collection for the whole project
+
 
 class OrderCommands(click.Group):
     def list_commands(self, ctx: click.Context) -> list[str]:
@@ -115,6 +117,7 @@ def delete(session_ids: Tuple):
         helpers.error_log(str(e))
         print(e)
 
+
 @flomo.command(aliases=["ch"])
 @click.argument("session_id")
 @click.option("-t", "--tag", help="Session Tag")
@@ -134,11 +137,15 @@ def change(session_id: str, tag: str | None, name: str | None):
         helpers.error_log(str(e))
         print(e)
 
+
 @flomo.command(aliases=["cf"])
-@click.option("-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'.")
-@click.option("-tc", "--tag-color", nargs=2, help="Set or delete tag colors.")
-@click.option("-ds", "--default-session", nargs=2, help="Set default session data. (Tag, Name)")
-def config(notif: str, tag_color: Tuple[str, str] | Tuple[str], default_session: Tuple[str, str]):
+@click.option(
+    "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'."
+)
+@click.option("-tc", "--tag-color", help="Set or delete tag colors.")
+@click.option("-ds", "--default-session", help="Set default session data. (Tag, Name)")
+def config(notif: str, tag_color: str, default_session: str):
+    # TODO: Add validation for tag-color and default-session
     """
     Change the config values or get the config file path.
     """
@@ -149,16 +156,22 @@ def config(notif: str, tag_color: Tuple[str, str] | Tuple[str], default_session:
             conf.Config().set_config(conf.NOTIFICATION_PRIORITY, notif)
             print(f"Notification Priority set to {notif}")
 
-        if tag_color and len(tag_color) == 2:
-            conf.Config().set_config(conf.TAG_COLORS, dict(tag_name=tag_color[0], color=tag_color[1]))
-            print(f"{tag_color[0]}'s Tag Color set to {tag_color[1]}")
-        elif tag_color and len(tag_color) == 1:
-            conf.Config().delete_tag_color(tag_color[0])
-            print(f"Deleted Tag Color for {tag_color[0]}")
+        if tag_color and len(tc := tag_color.split(" ")) == 2:
+            conf.Config().set_config(conf.TAG_COLORS, tag_color, nested_value=True)
+            print(f"{tc[0]}'s Tag Color set to '{tc[1]}'")
+        elif tag_color and len(tc := tag_color.split(" ")) == 1:
+            conf.Config().delete_tag_color(tc[0])
+            print(f"Deleted Tag Color for '{tc[0]}'")
+        # elif tag_color and len(tc := tag_color.split(" ")) != 2 and tc[1]:
+        #     raise click.BadOptionUsage("tag-color", "Invalid input")
 
-        if default_session and len(default_session) == 2:
-            conf.Config().set_config(conf.DEFAULT_SESSION_DATA, dict(tag=default_session[0], name=default_session[1]))
-            print(f"Default Session Data set to {default_session}")
+        if default_session and len(ds := default_session.split(" ")) == 2:
+            conf.Config().set_config(
+                conf.DEFAULT_SESSION_DATA, default_session, nested_value=True
+            )
+            print(f"Default Session Data set to Tag: {ds[0]} and Name: {ds[1]}")
+        # elif default_session and len(ds := default_session.split(" ")) != 2 and ds[1]:
+        #     raise click.BadOptionUsage("default-session", "Invalid input")
     except errors.NoConfigError as e:
         helpers.error_log(str(e))
         print(e)

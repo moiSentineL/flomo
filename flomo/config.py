@@ -4,8 +4,6 @@ import os
 import flomo.errors as errors
 import flomo.helpers as helpers
 
-# BUG: Sometimes, the config when changed ends up with a extra '}' at the end
-
 default_session_data = {
     "tag": "Work",
     "name": "Working",
@@ -90,11 +88,20 @@ class Config:
         except KeyError:
             raise errors.InvalidConfigKeyError(key)
 
-    def set_config(self, key: str, value: str):
-        # TODO: Below Code only works for Notification Priority
+    def set_config(self, key: str, value: str, nested_value: bool = False):
+        # BUG: Sometimes, the config when changed ends up with a extra '}' at the end - only happpens when already existing key's value is changed
         with open(self.path, "r+") as f:
             data = json.load(f)
-            data[key] = value
+            if nested_value:
+                if key == DEFAULT_SESSION_DATA:
+                    tag, name = value.split(" ")
+                    data[key]["tag"] = tag
+                    data[key]["name"] = name
+                elif key == TAG_COLORS:
+                    key_, value_ = value.split(" ")
+                    data[key][key_] = value_
+            else:
+                data[key] = value
             f.seek(0)
             json.dump(data, f, indent=4)
 
