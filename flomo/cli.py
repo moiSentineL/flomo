@@ -1,4 +1,7 @@
 import datetime
+import gc
+import sys
+from typing import Tuple
 
 import click
 import click_aliases
@@ -8,9 +11,6 @@ import flomo.errors as errors
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
-
-# TODO: Ability for users to see message.log file.
-# TODO: Change Config data from a Command
 
 
 class OrderCommands(click.Group):
@@ -73,9 +73,12 @@ def start(tag: str, name: str):
         errors.DBFileNotFoundError,
         errors.NoConfigError,
         errors.InvalidConfigKeyError,
+        Exception,
     ) as e:
-        # TODO: print(e) isnt printing anything
+        helpers.error_log(f"{datetime.datetime.now()} - Error: {e}")
         print(e)
+    finally:
+        sys.exit()
 
 
 @flomo.command(aliases=["t"])
@@ -90,26 +93,32 @@ def tracking():
         errors.NoSessionsError,
         errors.NoSessionError,
     ) as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
 
 
-# TODO: delete multiple sessions at once
 @flomo.command(aliases=["d"])
-@click.argument("session_id")
-def delete(session_id: str):
+@click.argument("session_ids", nargs=-1)
+def delete(session_ids: Tuple):
     """
-    Delete a session.
+    Delete sessions.
     """
     try:
         db = tracker.Tracker()
-        db.delete_session(int(session_id))
+        if not db.get_sessions():
+            raise errors.NoSessionsError()
+        click.confirm("Are you sure you want to delete the session(s)?", abort=True)
+        db.delete_session(session_ids)
         db.conn.close()
+        if len(session_ids) == 0:
+            return print("Deleted the last session.")
+        print(f"Deleted session(s): {', '.join(map(str, session_ids))}")
     except (
         errors.DBFileNotFoundError,
         errors.NoSessionError,
+        errors.NoSessionsError
     ) as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
 
 
@@ -129,20 +138,84 @@ def change(session_id: str, tag: str | None, name: str | None):
         errors.DBFileNotFoundError,
         errors.NoSessionError,
     ) as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
 
 
 @flomo.command(aliases=["cf"])
-def config():
+@click.option(
+    "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'."
+)
+@click.option("-tc", "--tag-color", help="Set or delete tag colors. (tag_name, color)")
+@click.option("-ds", "--default-session", help="Set default session data. (tag, Name)")
+def config(notif: str, tag_color: str, default_session: str):
     """
-    Print config file path
+    Change the config values or get the config file path.
     """
     try:
-        print(helpers.get_path("config.json", True))
+        print(f"File Path: {helpers.get_path("config.json", True)}")
+        conf_ = conf.Config()
+
+        if notif:
+            notif = notif.lower()
+            if notif.lower() in ["off", "normal", "high"]:
+                conf_.set_config(conf.NOTIFICATION_PRIORITY, notif)
+                print(f"Notification Priority set to {notif}")
+            else:
+                raise click.BadOptionUsage("notif", "Invalid input")
+
+        if tag_color:
+            tag_color = tag_color.lower()
+            tc = tag_color.split(" ")
+            if len(tc) == 2:
+                if not tc[1]:
+                    raise click.BadOptionUsage("tag-color", "Invalid input")
+                conf_.set_config(conf.TAG_COLORS, tag_color, nested_value=True)
+                print(f"Tag {tc[0]}'s color set to '{tc[1]}'")
+            elif len(tc) == 1:
+                tag_colors = conf_.get_config(conf.TAG_COLORS)
+                if not tc[0] in list(tag_colors.keys()):
+                    raise click.BadOptionUsage("tag-color", "Invalid input")
+                conf_.delete_tag_color(tc[0])
+                print(f"Deleted color for tag '{tc[0]}'")
+            else:
+                raise click.BadOptionUsage("tag-color", "Invalid input")
+
+        if default_session:
+            ds = default_session.split(" ")
+            ds[0] = ds[0].lower()
+            if len(ds) == 2 and ds[0] and ds[1]:
+                conf_.set_config(
+                    conf.DEFAULT_SESSION_DATA, " ".join(ds), nested_value=True
+                )
+                print(f"Default Session Data set to Tag: {ds[0]} and Name: {ds[1]}")
+            else:
+                raise click.BadOptionUsage("default-session", "Invalid input")
     except errors.NoConfigError as e:
-        helpers.message_log(str(e))
+        helpers.error_log(str(e))
         print(e)
+
+
+@flomo.command(aliases=["er"])
+@click.option("-c", "--clear", is_flag=True, help="Clear the error log.")
+def error(clear: bool):
+    """
+    Show the error log.
+    """
+    try:
+        path = helpers.get_path("error.log", True)
+        print(f"File Path: {path}")
+        if clear:
+            with open(path, "w") as f:
+                f.write("")
+            return print("Message log cleared.")
+
+        with open(path, "r") as f:
+            if not f.read():
+                return print("No errors found till now.")
+            print(f.read())
+    except FileNotFoundError:
+        print("No errors found till now.")
 
 
 if __name__ == "__main__":

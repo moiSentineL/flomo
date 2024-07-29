@@ -93,15 +93,21 @@ flomo s -t work -n "math"
 
 ```
 flomo --help
-	Usage: flomo [OPTIONS] COMMAND [ARGS]...
+    Usage: flomo [OPTIONS] COMMAND [ARGS]...
 
     A Flowmodoro CLI for productivity enthusiasts.
 
-	Options:
- 		--help  Show this message and exit.
+    Options:
+    --help  Show this message and exit.
 
-	Commands:
-  		start (s)  Start a Flowmodoro session.
+    Commands:
+    init (i)      Initialize the required files for Flomo.
+    start (s)     Start a Flowmodoro session.
+    tracking (t)  Show the tracking history.
+    delete (d)    Delete sessions.
+    change (ch)   Change session data.
+    config (cf)   Print config file path
+    error (er)    Show the error log.
 ```
 
 #### Pro Tip for Linux Users

@@ -41,7 +41,7 @@ def play_sound():
         path = get_path("beep.mp3")
         conf = config.Config()
 
-        notification_priority = str(conf.get_config("notification_priority"))
+        notification_priority = str(conf.get_config(config.NOTIFICATION_PRIORITY))
 
         if notification_priority.lower() == "off":
             return
@@ -60,11 +60,11 @@ def play_sound():
         pass  # Error is already getting logged from ui.py
 
 
-def message_log(message: str):
-    path = get_path("message.log", in_data=True)
+def error_log(error: str):
+    path = get_path("error.log", in_data=True)
 
     with open(path, "a") as f:
-        f.write(message + "\n")
+        f.write(error + "\n")
 
 
 def format_time(seconds: int) -> str:
