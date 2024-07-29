@@ -100,13 +100,14 @@ def tracking():
 @flomo.command(aliases=["d"])
 @click.argument("session_ids", nargs=-1)
 def delete(session_ids: Tuple):
-    # TODO: Handling scenario where there is no session left to delete.
     """
     Delete sessions.
     """
-    click.confirm("Are you sure you want to delete the session(s)?", abort=True)
     try:
         db = tracker.Tracker()
+        if not db.get_sessions():
+            raise errors.NoSessionsError()
+        click.confirm("Are you sure you want to delete the session(s)?", abort=True)
         db.delete_session(session_ids)
         db.conn.close()
         if len(session_ids) == 0:
@@ -115,6 +116,7 @@ def delete(session_ids: Tuple):
     except (
         errors.DBFileNotFoundError,
         errors.NoSessionError,
+        errors.NoSessionsError
     ) as e:
         helpers.error_log(str(e))
         print(e)
