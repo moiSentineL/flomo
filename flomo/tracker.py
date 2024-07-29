@@ -30,6 +30,7 @@ class Tracker:
         self.conn.commit()
 
     def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> int:
+        # TODO: Better way of generating session_id
         session_id = int(start_time.timestamp() % 1000000)
         self.cursor.execute(
             "INSERT INTO sessions (id, date_time, tag, name) VALUES (?, ?, ?, ?)",

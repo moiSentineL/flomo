@@ -5,11 +5,11 @@ import flomo.errors as errors
 import flomo.helpers as helpers
 
 default_session_data = {
-    "tag": "Work",
+    "tag": "work",
     "name": "Working",
 }
 
-tag_colors = {"Work": "red", "Study": "blue", "Exercise": "green"}
+tag_colors = {"work": "red", "study": "blue", "exercise": "green"}
 
 
 DEFAULT_SESSION_DATA = "default_session_data"
@@ -109,9 +109,7 @@ class Config:
     def delete_tag_color(self, tag_name: str):
         with open(self.path, "r+") as f:
             data = json.load(f)
-            key = [
-                k for k, v in data[TAG_COLORS].items() if k.lower() == tag_name.lower()
-            ][0]
+            key = [k for k, v in data[TAG_COLORS].items() if k.lower() == tag_name][0]
             del data[TAG_COLORS][key]
             f.seek(0)
             f.truncate(0)

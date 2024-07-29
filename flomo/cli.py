@@ -1,4 +1,5 @@
 import datetime
+import gc
 import sys
 from typing import Tuple
 
@@ -10,8 +11,6 @@ import flomo.errors as errors
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
-
-# TODO: Setup Garbage Collection for the whole project
 
 
 class OrderCommands(click.Group):
@@ -101,6 +100,7 @@ def tracking():
 @flomo.command(aliases=["d"])
 @click.argument("session_ids", nargs=-1)
 def delete(session_ids: Tuple):
+    # TODO: Handling scenario where there is no session left to delete.
     """
     Delete sessions.
     """
@@ -109,7 +109,9 @@ def delete(session_ids: Tuple):
         db = tracker.Tracker()
         db.delete_session(session_ids)
         db.conn.close()
-        print(f"Deleted session(s) {session_ids}")
+        if len(session_ids) == 0:
+            return print("Deleted the last session.")
+        print(f"Deleted session(s): {', '.join(map(str, session_ids))}")
     except (
         errors.DBFileNotFoundError,
         errors.NoSessionError,
@@ -142,8 +144,8 @@ def change(session_id: str, tag: str | None, name: str | None):
 @click.option(
     "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'."
 )
-@click.option("-tc", "--tag-color", help="Set or delete tag colors. (Tag Name, Color)")
-@click.option("-ds", "--default-session", help="Set default session data. (Tag, Name)")
+@click.option("-tc", "--tag-color", help="Set or delete tag colors. (tag_name, color)")
+@click.option("-ds", "--default-session", help="Set default session data. (tag, Name)")
 def config(notif: str, tag_color: str, default_session: str):
     """
     Change the config values or get the config file path.
@@ -161,26 +163,28 @@ def config(notif: str, tag_color: str, default_session: str):
                 raise click.BadOptionUsage("notif", "Invalid input")
 
         if tag_color:
+            tag_color = tag_color.lower()
             tc = tag_color.split(" ")
             if len(tc) == 2:
                 if not tc[1]:
                     raise click.BadOptionUsage("tag-color", "Invalid input")
                 conf_.set_config(conf.TAG_COLORS, tag_color, nested_value=True)
-                print(f"{tc[0]}'s Tag Color set to '{tc[1]}'")
+                print(f"Tag {tc[0]}'s color set to '{tc[1]}'")
             elif len(tc) == 1:
                 tag_colors = conf_.get_config(conf.TAG_COLORS)
                 if not tc[0] in list(tag_colors.keys()):
                     raise click.BadOptionUsage("tag-color", "Invalid input")
                 conf_.delete_tag_color(tc[0])
-                print(f"Deleted Tag Color for '{tc[0]}'")
+                print(f"Deleted color for tag '{tc[0]}'")
             else:
                 raise click.BadOptionUsage("tag-color", "Invalid input")
 
         if default_session:
             ds = default_session.split(" ")
+            ds[0] = ds[0].lower()
             if len(ds) == 2 and ds[0] and ds[1]:
                 conf_.set_config(
-                    conf.DEFAULT_SESSION_DATA, default_session, nested_value=True
+                    conf.DEFAULT_SESSION_DATA, " ".join(ds), nested_value=True
                 )
                 print(f"Default Session Data set to Tag: {ds[0]} and Name: {ds[1]}")
             else:
