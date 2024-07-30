@@ -114,8 +114,9 @@ def end_session(session_id: str):
     db.end_session(session_id, datetime.datetime.now())
     db.conn.close()
 
+
 def show_sessions():
-    
+
     db = Tracker()
     sessions = db.get_sessions()
 
@@ -128,17 +129,13 @@ def show_sessions():
     table.add_column("Duration", style="red", justify="right")
 
     for session in sessions:
-        id, datetime, tag, name, duration = session
+        _id, datetime, tag, name, duration = session
         color = helpers.tag_color(tag)
         table.add_row(
-            str(id),
-            str(datetime),
-            f"[{color}]{tag}[/{color}]",
-            name,
-            str(duration)
+            str(_id), str(datetime), f"[{color}]{tag}[/{color}]", name, str(duration)
         )
 
     console = Console()
-    console.print(table)    
+    console.print(table)
 
     db.conn.close()
