@@ -1,5 +1,4 @@
 import datetime
-import gc
 import sys
 from typing import Tuple
 
@@ -107,16 +106,23 @@ def delete(session_ids: Tuple):
         db = tracker.Tracker()
         if not db.get_sessions():
             raise errors.NoSessionsError()
-        click.confirm("Are you sure you want to delete the session(s)?", abort=True)
+        session_1 = len(session_ids) == 1
+        session_0 = len(session_ids) == 0
+        click.confirm(
+            f"Are you sure you want to delete the {f'session{'' if session_1 else 's'}: {", ".join(session_ids)}' if not session_0 else 'last session'}?",
+            abort=True,
+        )
         db.delete_session(session_ids)
         db.conn.close()
-        if len(session_ids) == 0:
+        if session_0:
             return print("Deleted the last session.")
-        print(f"Deleted session(s): {', '.join(map(str, session_ids))}")
+        print(
+            f"Deleted session{'' if session_1 else 's'}: {', '.join(map(str, session_ids))}"
+        )
     except (
         errors.DBFileNotFoundError,
         errors.NoSessionError,
-        errors.NoSessionsError
+        errors.NoSessionsError,
     ) as e:
         helpers.error_log(str(e))
         print(e)
@@ -132,7 +138,7 @@ def change(session_id: str, tag: str | None, name: str | None):
     """
     try:
         db = tracker.Tracker()
-        db.update_session(int(session_id), tag, name)
+        db.update_session(session_id, tag, name)
         db.conn.close()
     except (
         errors.DBFileNotFoundError,

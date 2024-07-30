@@ -1,3 +1,4 @@
+import ctypes
 import datetime
 import sqlite3
 from typing import Tuple
@@ -7,6 +8,8 @@ import tabulate
 
 import flomo.errors as errors
 import flomo.helpers as helpers
+
+# TODO: Setup Dev & Prod Database Environments!
 
 
 class Tracker:
@@ -29,9 +32,18 @@ class Tracker:
         )
         self.conn.commit()
 
-    def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> int:
-        # TODO: Better way of generating session_id
-        session_id = int(start_time.timestamp() % 1000000)
+    def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> str:
+        lib = ctypes.CDLL(helpers.get_path("session_id.so"))
+
+        lib.encode_timestamp.argtypes = [ctypes.c_ulonglong]
+        lib.encode_timestamp.restype = ctypes.c_char_p
+        lib.decode_timestamp.argtypes = [ctypes.c_char_p]
+        lib.decode_timestamp.restype = ctypes.c_ulonglong
+
+        _session_id: bytes = lib.encode_timestamp(
+            ctypes.c_ulonglong(int(start_time.timestamp()))
+        )
+        session_id = _session_id.decode("utf-8")
         self.cursor.execute(
             "INSERT INTO sessions (id, date_time, tag, name) VALUES (?, ?, ?, ?)",
             (session_id, start_time.strftime("%Y-%m-%d %H:%M:%S"), tag, name),
@@ -39,7 +51,7 @@ class Tracker:
         self.conn.commit()
         return session_id
 
-    def end_session(self, session_id: int, end_time: datetime.datetime):
+    def end_session(self, session_id: str, end_time: datetime.datetime):
         date_time = self.get_session(session_id)[1]
         total_time = end_time - datetime.datetime.strptime(
             date_time, "%Y-%m-%d %H:%M:%S"
@@ -57,19 +69,18 @@ class Tracker:
         self.cursor.execute("SELECT * FROM sessions")
         return self.cursor.fetchall()
 
-    def get_session(self, session_id: int):
+    def get_session(self, session_id: str):
         self.cursor.execute("SELECT * FROM sessions WHERE id = ?", (session_id,))
         return self.cursor.fetchone()
 
     def delete_session(self, session_ids: Tuple[str] | Tuple):
         if len(session_ids) == 0:
             self.cursor.execute(
-                "DELETE FROM sessions WHERE id = (SELECT MAX(id) FROM sessions)"
+                "DELETE FROM sessions WHERE date_time = (SELECT MAX(date_time) FROM sessions)"
             )
             self.conn.commit()
 
         for session_id in session_ids:
-            session_id = int(session_id)
             if not self.get_session(session_id):
                 raise errors.NoSessionError(session_id)
 
@@ -81,7 +92,7 @@ class Tracker:
         )
         self.conn.commit()
 
-    def update_session(self, session_id: int, tag: str | None, name: str | None):
+    def update_session(self, session_id: str, tag: str | None, name: str | None):
         if not self.get_session(session_id):
             raise errors.NoSessionError(session_id)
 
@@ -98,7 +109,7 @@ class Tracker:
         self.conn.commit()
 
 
-def end_session(session_id: int):
+def end_session(session_id: str):
     db = Tracker()
     db.end_session(session_id, datetime.datetime.now())
     db.conn.close()
