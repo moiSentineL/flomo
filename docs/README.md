@@ -4,14 +4,18 @@
 
 # flomo
 
-`flomo` is a cross-platform TUI/CLI for using the Flowtime Technique a.k.a. **Flowmodoro** Technique. It is a task execution helper, or in other words, productivity booster. `flomo` allows you to work on tasks in a flow state and manage your work/break time.
+`flomo` is a cross-platform TUI/CLI for using the Flowtime Technique a.k.a. **Flowmodoro** Technique. It is a task execution helper, or in other words, productivity booster. `flomo` allows you to work on tasks in a flow state and manage your work/break time and track the sessions.
+
+Stuff used: [rich](https://github.com/Textualize/rich) & [blessed](https://github.com/jquast/blessed) (TUI), [click](https://click.palletsprojects.com/en/8.1.x/) (CLI), [notify-send](https://man.archlinux.org/man/notify-send.1) for linux notifs, [playsound](https://github.com/TaylorSMarks/playsound) (win+mac sound), [paplay](https://linux.die.net/man/1/paplay) (linux sound) , [sqlite3](https://www.sqlite.org) (database)
 
 ## Features
 
--   Cross-Platform
+-   **Cross-Platform**
 -   Stopwatch for Flow and Timer for Breaks
--   Notification (Linux only, for now.)
--   Nice and Clean UI
+-   Session tracker (date, duration, tag and session)
+-   Session manager: easily manipulate the sessions via CLI
+-   Customisable, Clean UI.
+-   Notifications (Linux only, for now.)
 -   Fairly easy-to-use, I suppose.
 -   (Potential) productivity booster.
 
@@ -45,8 +49,9 @@ This calls for extensive amount of discipline. Which means that you must have at
 
 ### Pre-requisites
 
--   [Python](https://www.python.org/)
+-   [Python](https://www.python.org/) ≥ 3.12
 -   [pip](https://pip.pypa.io/en/stable/installation/)
+-   [GCC Compiler](https://gcc.gnu.org/) **if** installing from source.
 
 ### Instructions
 
@@ -64,18 +69,12 @@ If you are on Linux, make sure you have `/home/user/.local/bin` in your `PATH
 git clone https://github.com/moiSentineL/flomo.git
 cd flomo
 pip install -r requirements.txt
-
 pip install -e .
+
+gcc -fPIC -shared -o flomo/session_id.so flomo/session_id.c
 ```
 
-## Usage
-
-### Known Issues
-
--   Skip doesn't work while on break (you can just make another session).
--   Might not work if you have attention span of a goldfish.
-
-### Getting Started
+## Getting Started
 
 Start a flow by:
 
@@ -86,42 +85,16 @@ flomo s
 Start a flow with tag `work` and `math` as session name:
 
 ```bash
-flomo s -t work -n "math"
+flomo s -t work -n math
 ```
 
-### Commands
-
-```
-flomo --help
-    Usage: flomo [OPTIONS] COMMAND [ARGS]...
-
-    A Flowmodoro CLI for productivity enthusiasts.
-
-    Options:
-    --help  Show this message and exit.
-
-    Commands:
-    init (i)      Initialize the required files for Flomo.
-    start (s)     Start a Flowmodoro session.
-    tracking (t)  Show the tracking history.
-    delete (d)    Delete sessions.
-    change (ch)   Change session data.
-    config (cf)   Print config file path
-    error (er)    Show the error log.
-```
-
-#### Pro Tip for Linux Users
-
-If you have to repeat working on certain tags (or sessions) and don't want to keep typing the commands every time, you can create a simple script like [study.sh](https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/study.sh), and set an alias to that script.
-
-For example, with _that_ script, I can simply enter `study math` (I've set "study" as the alias) in my terminal and it will start a session with the tag `study` (in my case) with `math` as the session name.
+### Check the [wiki](https://github.com/moiSentineL/flomo/wiki) for more info
 
 ## Roadmap
 
 -   [x] Add sound on timer/stopwatch start
 -   [x] Notification (only Linux for now)
--   [ ] Tracking data / time studied
--   [ ] Configure colors
+-   [x] Configure colors
 
 Check our [Kanban Board](https://github.com/users/moiSentineL/projects/2 "https://github.com/users/moiSentineL/projects/2")
 
