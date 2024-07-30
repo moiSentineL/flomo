@@ -24,6 +24,6 @@ jobs:
               env:
                   TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
               run: |
-                  gcc -fPIC -shared -o flomo\session_id.so flomo\session_id.c
+                  gcc -fPIC -shared -o flomo/session_id.so flomo/session_id.c
                   python setup.py sdist bdist_wheel
                   twine upload dist/*
