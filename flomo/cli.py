@@ -132,7 +132,7 @@ def change(session_id: str, tag: str | None, name: str | None):
     """
     try:
         db = tracker.Tracker()
-        db.update_session(int(session_id), tag, name)
+        db.update_session(session_id, tag, name)
         db.conn.close()
     except (
         errors.DBFileNotFoundError,
