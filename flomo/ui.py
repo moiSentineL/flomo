@@ -27,22 +27,10 @@ class UI:
 
         self.title = "Flomo - " + ("FLOWING" if self.status == 0 else "CHILLIN")
         self.border_style = (
-            f"bold {self._border_color()}" if self.status == 0 else "bold red"
+            f"bold {helpers.tag_color(self.tag)}" if self.status == 0 else "bold red"
         )
 
         self.terminal = blessed.Terminal()
-
-    def _border_color(self):
-        tag = self.tag.split("#")[1].lower()
-        tag_colors: dict[str, str] = {
-            k.lower(): v.lower()
-            for k, v in config.Config().get_config(config.TAG_COLORS).items()
-        }
-
-        if tag in [i.lower() for i in tag_colors.keys()]:
-            return tag_colors[tag]
-
-        return "blue"
 
     def generate_panel(self):
         # TODO: Fix UI resize issue?
