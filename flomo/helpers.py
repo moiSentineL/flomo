@@ -72,3 +72,13 @@ def format_time(seconds: int) -> str:
     mins, secs = divmod(remainder, 60)
 
     return f"{hours:02}:{mins:02}:{secs:02}"
+
+
+def tag_color(tag: str) -> str:
+    tag = tag.split("#")[1].lower() if "#" in tag else tag.lower()
+    tag_colors = {
+        k.lower(): v.lower()
+        for k, v in config.Config().get_config(config.TAG_COLORS).items()
+    }
+
+    return tag_colors.get(tag, "blue")

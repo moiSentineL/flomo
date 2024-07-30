@@ -3,8 +3,8 @@ import datetime
 import sqlite3
 from typing import Tuple
 
-import pandas
-import tabulate
+from rich.console import Console
+from rich.table import Table
 
 import flomo.errors as errors
 import flomo.helpers as helpers
@@ -116,16 +116,25 @@ def end_session(session_id: str):
 
 
 def show_sessions():
-    # TODO: Use a proper UI to show the sessions
     db = Tracker()
     sessions = db.get_sessions()
-    db.conn.close()
 
-    print(
-        tabulate.tabulate(
-            pandas.DataFrame(sessions),  # type: ignore
-            headers=["ID", "Session Date & Time", "Tag", "Name", "Duration"],
-            tablefmt="psql",
-            showindex=False,
+    table = Table(title="You like this?")
+
+    table.add_column("ID", style="cyan", justify="right")
+    table.add_column("Session Date & Time", style="magenta")
+    table.add_column("Tag", style="green")
+    table.add_column("Name", style="yellow")
+    table.add_column("Duration", style="red", justify="right")
+
+    for session in sessions:
+        _id, datetime, tag, name, duration = session
+        color = helpers.tag_color(tag)
+        table.add_row(
+            str(_id), str(datetime), f"[{color}]{tag}[/{color}]", name, str(duration)
         )
-    )
+
+    console = Console()
+    console.print(table)
+
+    db.conn.close()
