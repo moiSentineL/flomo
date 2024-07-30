@@ -124,7 +124,7 @@ def show_sessions():
     print(
         tabulate.tabulate(
             pandas.DataFrame(sessions),  # type: ignore
-            headers=["ID", "Session Date & Time", "Tag", "Name", "Total Time"],
+            headers=["ID", "Session Date & Time", "Tag", "Name", "Duration"],
             tablefmt="psql",
             showindex=False,
         )
