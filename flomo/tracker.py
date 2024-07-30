@@ -33,13 +33,13 @@ class Tracker:
     def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> str:
         lib = ctypes.CDLL(helpers.get_path("session_id.so"))
 
-        lib.encode_timestamp.argtypes = [ctypes.c_ulong]
+        lib.encode_timestamp.argtypes = [ctypes.c_ulonglong]
         lib.encode_timestamp.restype = ctypes.c_char_p
         lib.decode_timestamp.argtypes = [ctypes.c_char_p]
-        lib.decode_timestamp.restype = ctypes.c_ulong
+        lib.decode_timestamp.restype = ctypes.c_ulonglong
 
         _session_id: bytes = lib.encode_timestamp(
-            ctypes.c_ulong(int(start_time.timestamp()))
+            ctypes.c_ulonglong(int(start_time.timestamp()))
         )
         session_id = _session_id.decode("utf-8")
         self.cursor.execute(
@@ -73,9 +73,10 @@ class Tracker:
 
     def delete_session(self, session_ids: Tuple[str] | Tuple):
         if len(session_ids) == 0:
-            self.cursor.execute(
-                "DELETE FROM sessions WHERE id = (SELECT MAX(id) FROM sessions)"
-            )
+            # TODO: Fix the delete command as IDs are now alphanumeric
+            # self.cursor.execute(
+            #     "DELETE FROM sessions WHERE id = (SELECT MAX(id) FROM sessions)"
+            # )
             self.conn.commit()
 
         for session_id in session_ids:

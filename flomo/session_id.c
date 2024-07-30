@@ -5,10 +5,15 @@
 const char ALPHANUMERIC[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const int BASE = 62;
 
-char *encode_timestamp(unsigned long timestamp)
+char *encode_timestamp(unsigned long long timestamp)
 {
-    char *encoded = (char *)malloc(12);
+    char *encoded = (char *)malloc((sizeof(timestamp) * CHAR_BIT + 5) / 6 + 1);
     int index = 0;
+
+    if (timestamp == 0)
+    {
+        encoded[index++] = ALPHANUMERIC[0];
+    }
 
     do
     {
@@ -28,9 +33,9 @@ char *encode_timestamp(unsigned long timestamp)
     return encoded;
 }
 
-unsigned long decode_timestamp(const char *encoded)
+unsigned long long decode_timestamp(const char *encoded)
 {
-    unsigned long timestamp = 0;
+    unsigned long long timestamp = 0;
     size_t length = strlen(encoded);
 
     for (size_t i = 0; i < length; i++)
@@ -40,6 +45,11 @@ unsigned long decode_timestamp(const char *encoded)
         {
             int index = ptr - ALPHANUMERIC;
             timestamp = timestamp * BASE + index;
+        }
+        else
+        {
+            fprintf(stderr, "Error: Invalid character '%c' in encoded string.\n", encoded[i]);
+            return 0;
         }
     }
 
