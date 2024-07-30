@@ -9,6 +9,8 @@ import tabulate
 import flomo.errors as errors
 import flomo.helpers as helpers
 
+# Setup Dev & Prod Database Environments!
+
 
 class Tracker:
     def __init__(self, initializing: bool = False):
@@ -73,10 +75,9 @@ class Tracker:
 
     def delete_session(self, session_ids: Tuple[str] | Tuple):
         if len(session_ids) == 0:
-            # TODO: Fix the delete command as IDs are now alphanumeric
-            # self.cursor.execute(
-            #     "DELETE FROM sessions WHERE id = (SELECT MAX(id) FROM sessions)"
-            # )
+            self.cursor.execute(
+                "DELETE FROM sessions WHERE date_time = (SELECT MAX(date_time) FROM sessions)"
+            )
             self.conn.commit()
 
         for session_id in session_ids:
