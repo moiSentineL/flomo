@@ -1,6 +1,6 @@
+import ctypes
 import datetime
 import sqlite3
-import ctypes
 from typing import Tuple
 
 import pandas

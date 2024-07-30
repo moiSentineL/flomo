@@ -12,6 +12,7 @@ import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
 
+
 class OrderCommands(click.Group):
     def list_commands(self, ctx: click.Context) -> list[str]:
         return list(self.commands)
@@ -115,7 +116,7 @@ def delete(session_ids: Tuple):
     except (
         errors.DBFileNotFoundError,
         errors.NoSessionError,
-        errors.NoSessionsError
+        errors.NoSessionsError,
     ) as e:
         helpers.error_log(str(e))
         print(e)
