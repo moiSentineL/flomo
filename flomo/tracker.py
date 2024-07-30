@@ -116,7 +116,6 @@ def end_session(session_id: str):
 
 
 def show_sessions():
-
     db = Tracker()
     sessions = db.get_sessions()
 
