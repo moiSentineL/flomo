@@ -3,8 +3,8 @@ import datetime
 import sqlite3
 from typing import Tuple
 
-import pandas
-import tabulate
+from rich.console import Console
+from rich.table import Table
 
 import flomo.errors as errors
 import flomo.helpers as helpers
@@ -119,13 +119,19 @@ def show_sessions():
     # TODO: Use a proper UI to show the sessions
     db = Tracker()
     sessions = db.get_sessions()
-    db.conn.close()
 
-    print(
-        tabulate.tabulate(
-            pandas.DataFrame(sessions),  # type: ignore
-            headers=["ID", "Session Date & Time", "Tag", "Name", "Duration"],
-            tablefmt="psql",
-            showindex=False,
-        )
-    )
+    table = Table(title="You like this?")
+
+    table.add_column("ID", style="cyan", justify="right")
+    table.add_column("Session Date & Time", style="magenta")
+    table.add_column("Tag", style="green")
+    table.add_column("Name", style="yellow")
+    table.add_column("Duration", style="red", justify="right")
+
+    for session in sessions:
+        table.add_row(str(session[0]), str(session[1]), session[2], session[3], str(session[4]))
+
+    console = Console()
+    console.print(table)    
+
+    db.conn.close()
