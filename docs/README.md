@@ -69,12 +69,19 @@ If you are on Linux, make sure you have `/home/user/.local/bin` in your `PATH
 git clone https://github.com/moiSentineL/flomo.git
 cd flomo
 pip install -r requirements.txt
-pip install -e .
 
 gcc -fPIC -shared -o flomo/session_id.so flomo/session_id.c
+
+pip install -e .
 ```
 
 ## Getting Started
+
+Initialise flomo by:
+
+```bash
+flomo init
+```
 
 Start a flow by:
 
