@@ -81,9 +81,9 @@ def start(tag: str, name: str):
 
 
 @flomo.command(aliases=["t"])
-def tracking():
+def track():
     """
-    Show the tracking history.
+    Show the session history.
     """
     try:
         tracker.show_sessions()
