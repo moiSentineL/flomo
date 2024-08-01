@@ -13,8 +13,6 @@ INSTALL_REQUIRES = [
     "rich",
     "playsound==1.2.2",
     "click-aliases",
-    "pandas",
-    "tabulate",
 ]
 PROJECT_URLS = {
     "Documentation": "https://github.com/moiSentineL/flomo#flomo",
