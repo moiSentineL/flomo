@@ -221,5 +221,6 @@ $RECYCLE.BIN/
 
 *.db
 flomo/data/*
+wiki
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,python,visualstudiocode
