@@ -128,13 +128,13 @@ def delete(session_ids: Tuple):
         print(e)
 
 
-@flomo.command(aliases=["ch"])
+@flomo.command(aliases=["u"])
 @click.argument("session_id")
 @click.option("-t", "--tag", help="Session Tag")
 @click.option("-n", "--name", help="Session Name")
-def change(session_id: str, tag: str | None, name: str | None):
+def update(session_id: str, tag: str | None, name: str | None):
     """
-    Change session data.
+    Update session data.
     """
     try:
         db = tracker.Tracker()
@@ -148,7 +148,7 @@ def change(session_id: str, tag: str | None, name: str | None):
         print(e)
 
 
-@flomo.command(aliases=["cf"])
+@flomo.command(aliases=["c"])
 @click.option(
     "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'."
 )
@@ -202,7 +202,7 @@ def config(notif: str, tag_color: str, default_session: str):
         print(e)
 
 
-@flomo.command(aliases=["er"])
+@flomo.command(aliases=["e"])
 @click.option("-c", "--clear", is_flag=True, help="Clear the error log.")
 def error(clear: bool):
     """
