@@ -63,7 +63,7 @@ As developers, creators, and romantics, we often experience that state of "flow.
 This can be visualized with a graph:
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flow-graph.png" width="500">
+<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flow-graph.png" width="400">
 </p>
 
 We can take advantage of this by identifying the **right time** to take a break—when the "flow" is depleting. This is the Flowtime technique.
