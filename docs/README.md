@@ -21,7 +21,7 @@
   <img src="https://github.com/moiSentineL/flomo/actions/workflows/publish.yml/badge.svg" alt="Build Status">
   <img src="https://img.shields.io/github/license/moiSentineL/flomo" alt="License">
   <img src="https://img.shields.io/pypi/dm/flomodoro" alt="Downloads">
-  
+  <br>
   <img src="https://img.shields.io/github/issues/moiSentineL/flomo" alt="Issues">
   <img src="https://img.shields.io/github/forks/moiSentineL/flomo" alt="Forks">
   <img src="https://img.shields.io/github/stars/moiSentineL/flomo" alt="Stars">
