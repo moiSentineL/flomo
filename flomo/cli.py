@@ -132,13 +132,14 @@ def delete(session_ids: Tuple):
 @click.argument("session_id")
 @click.option("-t", "--tag", help="Session Tag")
 @click.option("-n", "--name", help="Session Name")
-def update(session_id: str, tag: str | None, name: str | None):
+@click.option("-d", "--duration", help="Total Duration")
+def update(session_id: str, tag: str | None, name: str | None, duration: str | None):
     """
     Update session data.
     """
     try:
         db = tracker.Tracker()
-        db.update_session(session_id, tag, name)
+        db.update_session(session_id, tag, name, duration)
         db.conn.close()
     except (
         errors.DBFileNotFoundError,
