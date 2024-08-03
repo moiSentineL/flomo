@@ -17,18 +17,18 @@
 </div>
 
 <div align="center" styles="padding-top: 1em">
-  <img src="https://img.shields.io/pypi/v/flomodoro" alt="PyPI Version">
-  <img src="https://github.com/moiSentineL/flomo/actions/workflows/publish.yml/badge.svg" alt="Build Status">
-  <img src="https://img.shields.io/github/license/moiSentineL/flomo" alt="License">
-  <img src="https://img.shields.io/pypi/dm/flomodoro" alt="Downloads">
+	  <img src="https://img.shields.io/pypi/v/flomodoro?style=flat-square" alt="PyPI Version">
+  <img src="https://github.com/moiSentineL/flomo/actions/workflows/publish.yml/badge.svg?style=plastic" alt="Build Status">
+  <img src="https://img.shields.io/github/license/moiSentineL/flomo?style=flat-square" alt="License">
+  <img src="https://img.shields.io/pypi/dm/flomodoro?style=flat-square" alt="Downloads">
   <br>
-  <img src="https://img.shields.io/github/issues/moiSentineL/flomo" alt="Issues">
-  <img src="https://img.shields.io/github/forks/moiSentineL/flomo" alt="Forks">
-  <img src="https://img.shields.io/github/stars/moiSentineL/flomo" alt="Stars">
+  <img src="https://img.shields.io/github/issues/moiSentineL/flomo?style=flat-square" alt="Issues">
+  <img src="https://img.shields.io/github/forks/moiSentineL/flomo?style=flat-square" alt="Forks">
+  <img src="https://img.shields.io/github/stars/moiSentineL/flomo?style=flat-square" alt="Stars">
 </div>
 
 ---
-
+	
 `flomo` is a crossplatform TUI/CLI for using the Flowtime Technique, also known as the **Flowmodoro** Technique. It's a task execution helper, or in other words, a productivity booster! 🚀
 
 `flomo` allows you to work on tasks in a flow state, manage your work/break time, and track your sessions.
@@ -38,7 +38,7 @@ Built with: [rich](https://github.com/Textualize/rich) & [blessed](https://githu
 ## ✨ Features
 
 -   **Cross-Platform** 🌐
--   Stopwatch for Flow and Timer for Breaks ⏱️
+-   Stopwatch for Flow and Timer for Breaks ⏱️ 
 -   Session tracker (date, duration, tag, and session) 🗓️
 -   Session manager: easily manipulate the sessions via CLI ⚙️
 -   Customizable, Clean UI 🎨
