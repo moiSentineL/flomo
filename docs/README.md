@@ -1,9 +1,21 @@
-<p align="center" >
+<!-- <p align="center" >
 <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto">
+<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="auto">
 <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto">
+</p> -->
+<!-- <div align="center">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto" style="display: inline-block;">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="auto" style="display: inline-block;">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto" style="display: inline-block;">
+</div> -->
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto" style="margin-right: 10px;">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="auto" style="margin-right: 10px;">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto">
 </p>
 
-# 🌊 flomo
+---
 
 <div align="center">
   <a href="https://github.com/moiSentineL/flomo#-installation">Installation</a> | 
