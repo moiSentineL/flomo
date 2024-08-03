@@ -29,7 +29,7 @@
 
 ---
 
-`flomo` is a crosslatform TUI/CLI for using the Flowtime Technique, also known as the **Flowmodoro** Technique. It's a task execution helper, or in other words, a productivity booster! 🚀
+`flomo` is a crossplatform TUI/CLI for using the Flowtime Technique, also known as the **Flowmodoro** Technique. It's a task execution helper, or in other words, a productivity booster! 🚀
 
 `flomo` allows you to work on tasks in a flow state, manage your work/break time, and track your sessions.
 
