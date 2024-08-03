@@ -1,7 +1,9 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="300" style="margin-right: 10px; vertical-align: middle">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="200" style="margin-right: 10px; vertical-align: middle">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="300" style="margin-right: 10px; vertical-align: middle">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="300" style="margin-right: 10px; vertical-align: middle">
+</p>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="400" style="margin-right: 10px; vertical-align: middle">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="400" style="margin-right: 10px; vertical-align: middle">
 </p>
 
 ---
