@@ -5,6 +5,26 @@
 
 # 🌊 flomo
 
+<div align="center">
+  <a href="https://github.com/moiSentineL/flomo#-installation">Installation</a> | 
+  <a href="https://github.com/moiSentineL/flomo#-getting-started">Getting Started</a> | 
+  <a href="https://github.com/moiSentineL/flomo/wiki">Wiki</a>
+</div>
+
+<div align="center">
+  <img src="https://img.shields.io/pypi/v/flomodoro" alt="PyPI Version">
+  <img src="https://github.com/moiSentineL/flomo/actions/workflows/build.yml/badge.svg" alt="Build Status">
+  <img src="https://img.shields.io/github/license/moiSentineL/flomo" alt="License">
+  <img src="https://img.shields.io/pypi/dm/flomodoro" alt="Downloads">
+  <img src="https://img.shields.io/pypi/pyversions/flomodoro" alt="Python Versions">
+  <img src="https://img.shields.io/github/contributors/moiSentineL/flomo" alt="Contributors">
+  <img src="https://img.shields.io/github/issues/moiSentineL/flomo" alt="Issues">
+  <img src="https://img.shields.io/github/forks/moiSentineL/flomo" alt="Forks">
+  <img src="https://img.shields.io/github/stars/moiSentineL/flomo" alt="Stars">
+</div>
+
+---
+	
 `flomo` is a cross-platform TUI/CLI for using the Flowtime Technique, also known as the **Flowmodoro** Technique. It's a task execution helper, or in other words, a productivity booster! 🚀 
 
 `flomo` allows you to work on tasks in a flow state, manage your work/break time, and track your sessions.
