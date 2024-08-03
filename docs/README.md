@@ -1,18 +1,7 @@
-<!-- <p align="center" >
-<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto">
-<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="auto">
-<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto">
-</p> -->
-<!-- <div align="center">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto" style="display: inline-block;">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="auto" style="display: inline-block;">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto" style="display: inline-block;">
-</div> -->
-
 <p align="center">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto" style="margin-right: 10px;">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="auto" style="margin-right: 10px;">
-  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="275" style="margin-right: 10px; vertical-align: middle">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-logo.png" width="300" style="margin-right: 10px; vertical-align: middle">
+  <img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="275" style="margin-right: 10px; vertical-align: middle">
 </p>
 
 ---
@@ -30,7 +19,6 @@
   <img src="https://github.com/moiSentineL/flomo/actions/workflows/publish.yml/badge.svg" alt="Build Status">
   <img src="https://img.shields.io/github/license/moiSentineL/flomo" alt="License">
   <img src="https://img.shields.io/pypi/dm/flomodoro" alt="Downloads">
-  <img src="https://img.shields.io/pypi/pyversions/flomodoro" alt="Python Versions">
   <img src="https://img.shields.io/github/contributors/moiSentineL/flomo" alt="Contributors">
   <img src="https://img.shields.io/github/issues/moiSentineL/flomo" alt="Issues">
   <img src="https://img.shields.io/github/forks/moiSentineL/flomo" alt="Forks">
@@ -39,7 +27,7 @@
 
 ---
 
-`flomo` is a cross-platform TUI/CLI for using the Flowtime Technique, also known as the **Flowmodoro** Technique. It's a task execution helper, or in other words, a productivity booster! 🚀
+`flomo` is a crosslatform TUI/CLI for using the Flowtime Technique, also known as the **Flowmodoro** Technique. It's a task execution helper, or in other words, a productivity booster! 🚀
 
 `flomo` allows you to work on tasks in a flow state, manage your work/break time, and track your sessions.
 
