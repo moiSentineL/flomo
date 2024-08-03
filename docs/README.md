@@ -1,5 +1,6 @@
-<p align="center">
-<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-speed.gif" width="500">
+<p align="center" >
+<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-new.gif" width="auto">
+<img src="https://raw.githubusercontent.com/moiSentineL/flomo/main/docs/assets/flomo-track.gif" width="auto">
 </p>
 
 # 🌊 flomo
@@ -8,6 +9,8 @@
   <a href="https://github.com/moiSentineL/flomo#-installation">Installation</a> | 
   <a href="https://github.com/moiSentineL/flomo#-getting-started">Getting Started</a> | 
   <a href="https://github.com/moiSentineL/flomo/wiki">Wiki</a>
+  <br>
+  <br>
 </div>
 
 <div align="center" styles="padding-top: 1em">
