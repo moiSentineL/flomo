@@ -44,8 +44,9 @@ jobs:
             - name: Compile (Windows)
               if: runner.os == 'Windows'
               run: |
-                  call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-                  cl.exe /LD /Fe${{ matrix.output }} flomo/session_id.c
+                  $vsPath = &(Join-Path ${env:ProgramFiles(x86)} "\Microsoft Visual Studio\Installer\vswhere.exe") -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+                  $vcvarsall = Join-Path $vsPath "VC\Auxiliary\Build\vcvarsall.bat"
+                  cmd /c "call `"$vcvarsall`" x64 && cl.exe /LD /Fe${{ matrix.output }} flomo\session_id.c"
 
             - name: Upload artifact
               uses: actions/upload-artifact@v2
