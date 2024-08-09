@@ -32,7 +32,7 @@ def get_path(file_name: str, in_data: bool = False, lib: bool = False):
             os.makedirs(conf_path + data_folder)
         return os.path.join(conf_path + file)
     elif lib:
-        lib_path = (
+        return (
             os.path.join(dir_path + f"{sign}session_id.dll")
             if is_windows
             else (
@@ -41,7 +41,6 @@ def get_path(file_name: str, in_data: bool = False, lib: bool = False):
                 else os.path.join(dir_path + f"{sign}session_id.so")
             )
         )
-        return lib_path
     else:
         return os.path.join(dir_path + file)
 
