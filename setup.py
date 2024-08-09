@@ -28,7 +28,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 3",
 ]
 
-with open("docs/README.md", "r") as fh:
+with open("docs/README.md", "r", encoding='utf-8') as fh:
     LONG_DESCRIPTION = fh.read()
 
 if __name__ == "__main__":
