@@ -43,7 +43,9 @@ jobs:
 
             - name: Compile (Windows)
               if: runner.os == 'Windows'
-              run: cl.exe /LD /Fe${{ matrix.output }} flomo/session_id.c
+              run: |
+                  call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+                  cl.exe /LD /Fe${{ matrix.output }} flomo/session_id.c
 
             - name: Upload artifact
               uses: actions/upload-artifact@v2
