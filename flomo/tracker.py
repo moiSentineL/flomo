@@ -33,7 +33,7 @@ class Tracker:
         self.conn.commit()
 
     def create_session(self, tag: str, name: str, start_time: datetime.datetime) -> str:
-        lib = ctypes.CDLL(helpers.get_path("session_id.so"))
+        lib = ctypes.CDLL(helpers.get_path("placeholder", lib=True))
 
         lib.encode_timestamp.argtypes = [ctypes.c_ulonglong]
         lib.encode_timestamp.restype = ctypes.c_char_p
