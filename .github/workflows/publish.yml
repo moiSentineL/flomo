@@ -14,8 +14,10 @@ jobs:
                 include:
                     - os: ubuntu-latest
                       output: flomo/session_id.so
+                      compile_command: gcc -fPIC -shared -o
                     - os: macos-latest
                       output: flomo/session_id.dylib
+                      compile_command: clang -fPIC -shared -o
                     - os: windows-latest
                       output: flomo/session_id.dll
 
@@ -29,7 +31,7 @@ jobs:
 
             - name: Set up GCC
               uses: egor-tensin/setup-gcc@v1
-              if: runner.os != 'Windows'
+              if: runner.os == 'Linux'
 
             - name: Set up MSVC
               uses: microsoft/setup-msbuild@v1.0.2
@@ -37,7 +39,7 @@ jobs:
 
             - name: Compile (Unix)
               if: runner.os != 'Windows'
-              run: gcc -fPIC -shared -o ${{ matrix.output }} flomo/session_id.c
+              run: ${{ matrix.compile_command }} ${{ matrix.output }} flomo/session_id.c
 
             - name: Compile (Windows)
               if: runner.os == 'Windows'
@@ -49,37 +51,37 @@ jobs:
                   name: ${{ runner.os }}-library
                   path: ${{ matrix.output }}
 
-    publish:
-        needs: build
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
+        publish:
+            needs: build
+            runs-on: ubuntu-latest
+            steps:
+                - uses: actions/checkout@v2
 
-            - name: Set up Python
-              uses: actions/setup-python@v2
-              with:
-                  python-version: "3.12.3"
+                - name: Set up Python
+                  uses: actions/setup-python@v2
+                  with:
+                      python-version: "3.12.3"
 
-            - name: Download all artifacts
-              uses: actions/download-artifact@v2
-              with:
-                  path: ./artifacts
+                - name: Download all artifacts
+                  uses: actions/download-artifact@v2
+                  with:
+                      path: ./artifacts
 
-            - name: Move artifacts to correct locations
-              run: |
-                  mkdir -p flomo
-                  mv artifacts/Linux-library/session_id.so flomo/
-                  mv artifacts/macOS-library/session_id.dylib flomo/
-                  mv artifacts/Windows-library/session_id.dll flomo/
+                - name: Move artifacts to correct locations
+                  run: |
+                      mkdir -p flomo
+                      mv artifacts/Linux-library/session_id.so flomo/
+                      mv artifacts/macOS-library/session_id.dylib flomo/
+                      mv artifacts/Windows-library/session_id.dll flomo/
 
-            - name: Install dependencies
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install setuptools wheel twine
+                - name: Install dependencies
+                  run: |
+                      python -m pip install --upgrade pip
+                      pip install setuptools wheel twine
 
-            - name: Build and Publish
-              env:
-                  TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-              run: |
-                  python setup.py sdist bdist_wheel
-                  twine upload dist/*
+                - name: Build and Publish
+                  env:
+                      TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+                  run: |
+                      python setup.py sdist bdist_wheel
+                      twine upload dist/*
