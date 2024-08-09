@@ -7,34 +7,42 @@ import flomo.config as config
 import flomo.errors as errors
 
 
-def get_path(file_name: str, in_data: bool = False):
+def get_path(file_name: str, in_data: bool = False, lib: bool = False):
     is_windows = platform.system().lower() == "windows"
     is_mac = platform.system().lower() == "darwin"
-
-    conf_path = (
-        str(os.getenv("APPDATA")) or str(os.getenv("LOCALAPPDATA"))
-        if is_windows
-        else (
-            os.path.expanduser("~/Library/Application Support")
-            if is_mac
-            else os.path.expanduser("~/.config")
-        )
-    )
+    
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     sign = "\\" if is_windows else "/"
     data_folder = f"{sign}{'Flomo' if is_windows else 'flomo'}" if in_data else ""
 
-    if in_data and not os.path.exists(conf_path + data_folder):
-        os.makedirs(conf_path + data_folder)
-
     file = f"{data_folder}{sign}{file_name}"
 
     if in_data:
+        conf_path = (
+            str(os.getenv("APPDATA")) or str(os.getenv("LOCALAPPDATA"))
+            if is_windows
+            else (
+                os.path.expanduser("~/Library/Application Support")
+                if is_mac
+                else os.path.expanduser("~/.config")
+            )
+        )
+        if not os.path.exists(conf_path + data_folder):
+            os.makedirs(conf_path + data_folder)
         return os.path.join(conf_path + file)
+    elif lib:
+        return (
+            os.path.join(dir_path + f"{sign}session_id.dll")
+            if is_windows
+            else (
+                os.path.join(dir_path + f"{sign}session_id.dylib")
+                if is_mac
+                else os.path.join(dir_path + f"{sign}session_id.so")
+            )
+        )
     else:
         return os.path.join(dir_path + file)
-
 
 def play_sound():
     try:
