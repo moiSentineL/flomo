@@ -47,9 +47,18 @@ jobs:
                   $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
                   $vsPath = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
                   $vcvarsall = Join-Path $vsPath "VC\Auxiliary\Build\vcvarsall.bat"
-                  $compileCommand = "& '$vcvarsall' x64 && cl.exe /LD /Fe$($env:GITHUB_WORKSPACE)\${{ matrix.output }} $($env:GITHUB_WORKSPACE)\flomo\session_id.c"
-                  cmd /c $compileCommand
-
+                            
+                  $batchFile = New-TemporaryFile
+                  $batchFile = Rename-Item -Path $batchFile -NewName "$($batchFile.BaseName).bat" -PassThru
+                          
+                  $batchContent = @"
+                  call "$vcvarsall" x64
+                  cl.exe /LD /Fe$($env:GITHUB_WORKSPACE)\${{ matrix.output }} $($env:GITHUB_WORKSPACE)\flomo\session_id.c
+                  "@
+                            
+                  Set-Content -Path $batchFile -Value $batchContent
+                            
+                  Start-Process -FilePath $batchFile -Wait -NoNewWindow
             - name: Upload artifact
               uses: actions/upload-artifact@v2
               with:
