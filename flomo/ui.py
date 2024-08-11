@@ -31,6 +31,7 @@ class UI:
             f"bold {self.tag_color}" if self.status == 0 else "bold red"
         )
 
+        self.out = helpers.get_path("bruh", in_data=True)
 
         self.terminal = blessed.Terminal()
 
@@ -58,10 +59,14 @@ class UI:
                 time.sleep(1)
                 if self.status == 0:
                     self.stopwatch += 1
+                    with open(self.out, "w") as f:
+                         f.write(f"{helpers.format_time(self.stopwatch)} - flowing")   
                 elif self.status == 1 and self.chilling_time:
                     if not (self.chilling_time > 1):
                         break
                     self.chilling_time -= 1
+                    with open(self.out, "w") as f:
+                         f.write(f"{helpers.format_time(self.chilling_time)} - chillin")   
                 _live.update(self.generate_panel())
 
     def get_input(self):
