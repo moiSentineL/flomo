@@ -1,6 +1,7 @@
 import datetime
 import threading
 import time
+import os
 
 import blessed
 from rich.align import Align
@@ -133,3 +134,4 @@ def main(tag: str, name: str, session_id: str):
         #     chilling_panel_thread.join()
     finally:
         tracker.end_session(session_id)
+        os.remove(UI("","","").out)
