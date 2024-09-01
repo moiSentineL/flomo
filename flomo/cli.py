@@ -11,6 +11,7 @@ import flomo.helpers as helpers
 import flomo.tracker as tracker
 import flomo.ui as ui
 
+# TODO: Use Pomodoro when starting and change to Flomodoro after 1 Session
 
 class OrderCommands(click.Group):
     def list_commands(self, ctx: click.Context) -> list[str]:
