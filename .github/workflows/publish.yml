@@ -19,8 +19,8 @@ jobs:
                       output: flomo/session_id.dylib
                       compile_command: clang -fPIC -shared -o
                     - os: windows-latest
-                      compile_command: gcc -fPIC -shared -o
                       output: flomo/session_id.dll
+                      compile_command: gcc -fPIC -shared -o
 
         steps:
             - uses: actions/checkout@v2
