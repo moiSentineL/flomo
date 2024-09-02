@@ -40,12 +40,7 @@ jobs:
                 platform: x64
               if: runner.os == 'Windows'
 
-            - name: Compile (Unix)
-              if: runner.os != 'Windows'
-              run: ${{ matrix.compile_command }} ${{ matrix.output }} flomo/session_id.c
-
-            - name: Compile (Windows)
-              if: runner.os == 'Windows'
+            - name: Compile
               run: ${{ matrix.compile_command }} ${{ matrix.output }} flomo/session_id.c
 
             - name: Upload artifact
