@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 AUTHOR = "Dark Circles"
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 SHORT_DESCRIPTION = "A Flowmodoro Timer CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = (
     "<nibir@nibirsan.org>, <jonakadiptakalita@gmail.com>, <anubhavnath60@gmail.com>"
@@ -28,7 +28,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 3",
 ]
 
-with open("docs/README.md", "r", encoding='utf-8') as fh:
+with open("docs/README.md", "r", encoding="utf-8") as fh:
     LONG_DESCRIPTION = fh.read()
 
 if __name__ == "__main__":

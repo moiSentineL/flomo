@@ -19,6 +19,7 @@ jobs:
                       output: flomo/session_id.dylib
                       compile_command: clang -fPIC -shared -o
                     - os: windows-latest
+                      compile_command: gcc -fPIC -shared -o
                       output: flomo/session_id.dll
 
         steps:
@@ -33,8 +34,10 @@ jobs:
               uses: egor-tensin/setup-gcc@v1
               if: runner.os == 'Linux'
 
-            - name: Set up MSVC
-              uses: microsoft/setup-msbuild@v1.0.2
+            - name: Set up MinGW
+              uses: egor-tensin/setup-mingw@v2.2.0
+              with:
+                platform: x64
               if: runner.os == 'Windows'
 
             - name: Compile (Unix)
@@ -43,22 +46,8 @@ jobs:
 
             - name: Compile (Windows)
               if: runner.os == 'Windows'
-              run: |
-                  $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-                  $vsPath = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-                  $vcvarsall = Join-Path $vsPath "VC\Auxiliary\Build\vcvarsall.bat"
+              run: ${{ matrix.compile_command }} ${{ matrix.output }} flomo/session_id.c
 
-                  $batchFile = New-TemporaryFile
-                  $batchFile = Rename-Item -Path $batchFile -NewName "$($batchFile.BaseName).bat" -PassThru
-
-                  $batchContent = @"
-                  call "$vcvarsall" x64
-                  cl.exe /LD /Fe$($env:GITHUB_WORKSPACE)\${{ matrix.output }} $($env:GITHUB_WORKSPACE)\flomo\session_id.c
-                  "@
-
-                  Set-Content -Path $batchFile -Value $batchContent
-
-                  Start-Process -FilePath $batchFile -Wait -NoNewWindow
             - name: Upload artifact
               uses: actions/upload-artifact@v2
               with:
