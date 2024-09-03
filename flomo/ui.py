@@ -29,7 +29,6 @@ class UI:
             f"bold {self.tag_color}" if self.status == 0 else "bold red"
         )
 
-
         self.terminal = blessed.Terminal()
 
     def generate_panel(self):
