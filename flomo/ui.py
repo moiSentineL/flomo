@@ -63,7 +63,7 @@ class UI:
 
     def get_input(self):
         with self.terminal.cbreak(), self.terminal.hidden_cursor():
-            return self.terminal.inkey(timeout=0.00001).lower()
+            return self.terminal.inkey(timeout=1).lower()
 
 
 def main(tag: str, name: str, session_id: str):
