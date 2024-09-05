@@ -64,6 +64,10 @@ def start(tag: str, name: str):
     """
     try:
         tag = tag.lower()
+        if tag not in conf.Config().get_config(conf.TAG_COLORS):
+            conf.Config().set_config(
+                conf.TAG_COLORS, f"{tag} aquamarine3", nested_value=True
+            )
         db = tracker.Tracker()
         db.create_table()
         session_id = db.create_session(tag, name, datetime.datetime.now())

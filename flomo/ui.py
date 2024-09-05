@@ -1,4 +1,3 @@
-import datetime
 import threading
 import time
 
@@ -8,7 +7,6 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-import flomo.config as config
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 
@@ -30,7 +28,6 @@ class UI:
         self.border_style = (
             f"bold {self.tag_color}" if self.status == 0 else "bold red"
         )
-
 
         self.terminal = blessed.Terminal()
 
@@ -66,7 +63,7 @@ class UI:
 
     def get_input(self):
         with self.terminal.cbreak(), self.terminal.hidden_cursor():
-            return self.terminal.inkey().lower()
+            return self.terminal.inkey(timeout=0.1).lower()
 
 
 def main(tag: str, name: str, session_id: str):
@@ -97,22 +94,18 @@ def main(tag: str, name: str, session_id: str):
             del flowing_ui
 
             chilling_ui = UI(1, tag, name, int(chilling_time))
-            chilling_ui.show_live_panel()
-            # TODO: Fix skipping break issue
-            # chilling_panel_thread = threading.Thread(
-            #     target=chilling_ui.show_live_panel, daemon=True)
-            # chilling_panel_thread.start()
 
-            # while True:
-            #     if chilling_ui.chilling_time == 1:
-            #         break
-            #     helpers.message_log(str(chilling_ui.chilling_time))
-            #     inp = chilling_ui.get_input()
-            #     if inp == "q":
-            #         break
+            chilling_panel_thread = threading.Thread(
+                target=chilling_ui.show_live_panel, daemon=True)
+            chilling_panel_thread.start()
+
+            while chilling_ui.chilling_time > 1: # type: ignore
+                inp = chilling_ui.get_input()
+                if inp == "q":
+                    break
 
             chilling_ui.close_live_panel = True
-            # chilling_panel_thread.join()
+            chilling_panel_thread.join()
 
             del chilling_ui
     except KeyboardInterrupt:
@@ -124,7 +117,7 @@ def main(tag: str, name: str, session_id: str):
             flowing_panel_thread.join()
         if "play_sound_thread" in locals() and play_sound_thread.is_alive():
             play_sound_thread.join()
-        # if 'chilling_panel_thread' in locals() and chilling_panel_thread.is_alive():
-        #     chilling_panel_thread.join()
+        if 'chilling_panel_thread' in locals() and chilling_panel_thread.is_alive():
+            chilling_panel_thread.join()
     finally:
         tracker.end_session(session_id)
