@@ -131,7 +131,7 @@ flomo s -t work -n math
 -   ✅ Configure colors
 -   ✅ Track sessions
 -   ✅ Configure colors
--   🟧 Skipping Break
+-   ✅ Skipping Break
 -   🟧 Chart Generation / Statistics
 
 Check our [Kanban Board](https://github.com/users/moiSentineL/projects/2).
