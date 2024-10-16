@@ -92,7 +92,7 @@ class Tracker:
         )
         self.conn.commit()
 
-    def update_session(self, session_id: str, tag: str | None, name: str | None):
+    def update_session(self, session_id: str, tag: str | None, name: str | None, duration: str | None):
         if not self.get_session(session_id):
             raise errors.NoSessionError(session_id)
 
@@ -106,6 +106,11 @@ class Tracker:
                 "UPDATE sessions SET name = ? WHERE id = ?", (name, session_id)
             )
             print(f'Name updated to "{name}" for session {session_id}')
+        if duration:
+            self.cursor.execute(
+                "UPDATE sessions SET total_time = ? WHERE id = ?", (duration, session_id)
+            )
+            print(f'Duration updated to "{duration}" for session {session_id}')
         self.conn.commit()
 
 
