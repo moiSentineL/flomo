@@ -90,3 +90,11 @@ def tag_color(tag: str) -> str:
     }
 
     return tag_colors.get(tag, "blue")
+
+def outfile(status: str, file: str, time: int) -> str:
+
+    with open(file, "w") as f:
+        f.write(f"{format_time(time)} - {status}")   
+
+if __name__ == "__main__":
+    outfile(1, "tst", 22)
