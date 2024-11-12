@@ -13,7 +13,7 @@ import flomo.tracker as tracker
 
 class UI:
     def __init__(
-        self, status: int, tag: str, name: str, chilling_time: int | None = None
+        self, status: int, tag: str, name: str, chilling_time: int, timer_time: int | None = None
     ):
         self.tag = f"#{tag}"
         self.tag_color = helpers.tag_color(self.tag)
@@ -21,6 +21,8 @@ class UI:
         self.status = status
 
         self.chilling_time = round(chilling_time) if chilling_time else None
+        self.timer_time = round(timer_time) if timer else None
+
         self.stopwatch = 0
         self.close_live_panel = False
 
@@ -34,7 +36,7 @@ class UI:
     def generate_panel(self):
         # TODO: Fix UI resize issue?
         stuff = f"{self.name}\n[{self.tag_color}]{self.tag}[/{self.tag_color}]\n\n{helpers.format_time(
-            self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
+            self.stopwatch if (self.status == 0) else (self.chilling_time or 0 if (self.status == 1) else self.timer_time or 0)) }\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
             Panel(
@@ -59,6 +61,10 @@ class UI:
                     if not (self.chilling_time > 1):
                         break
                     self.chilling_time -= 1
+                elif self.status == 2 and self.timer_time:
+                    if not (self.timer_time > 1):
+                        break
+                    self.timer_time -=1
                 _live.update(self.generate_panel())
 
     def get_input(self):
@@ -66,32 +72,53 @@ class UI:
             return self.terminal.inkey(timeout=0.1).lower()
 
 
-def main(tag: str, name: str, session_id: str):
+def main(tag: str, name: str, session_id: str, timer=False):
     # TODO: Do something with the Terminal close issue
     try:
         while True:
             play_sound_thread = threading.Thread(target=helpers.play_sound, daemon=True)
             play_sound_thread.start()
 
-            flowing_ui = UI(0, tag, name)
-            flowing_panel_thread = threading.Thread(
-                target=flowing_ui.show_live_panel, daemon=True
-            )
-            flowing_panel_thread.start()
+            if timer:
+                timer_ui = UI(2, tag, name, timer_time=6000)
+                timer_panel_thread = threading.Thread(
+                    target=timer_ui.show_live_panel, daemon=True
+                )
+                timer_panel_thread.start()
 
-            inp = ""
-            while flowing_ui.stopwatch == 0 or not (
-                flowing_ui.stopwatch != 0 and inp == "q"
-            ):
-                inp = flowing_ui.get_input()
+                inp = ""
+                while timer_ui.stopwatch == 0 or not (
+                    timer_ui.stopwatch != 0 and inp == "q"
+                ):
+                    inp = timer_ui.get_input()
 
-            chilling_time = flowing_ui.stopwatch / 5
+                chilling_time = timer_ui.stopwatch / 5
 
-            flowing_ui.close_live_panel = True
-            flowing_panel_thread.join()
-            play_sound_thread.join()
+                timer_ui.close_live_panel = True
+                timer_panel_thread.join()
+                play_sound_thread.join()
 
-            del flowing_ui
+                del timer_ui
+            else:
+                flowing_ui = UI(0, tag, name)
+                flowing_panel_thread = threading.Thread(
+                    target=flowing_ui.show_live_panel, daemon=True
+                )
+                flowing_panel_thread.start()
+
+                inp = ""
+                while flowing_ui.stopwatch == 0 or not (
+                    flowing_ui.stopwatch != 0 and inp == "q"
+                ):
+                    inp = flowing_ui.get_input()
+
+                chilling_time = flowing_ui.stopwatch / 5
+
+                flowing_ui.close_live_panel = True
+                flowing_panel_thread.join()
+                play_sound_thread.join()
+
+                del flowing_ui
 
             chilling_ui = UI(1, tag, name, int(chilling_time))
 
