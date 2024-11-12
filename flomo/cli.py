@@ -72,7 +72,7 @@ def start(tag: str, name: str):
         db.create_table()
         session_id = db.create_session(tag, name, datetime.datetime.now())
         db.conn.close()
-        ui.main(tag, name, session_id)
+        ui.main(tag, name, session_id, timer=True)
     except (
         errors.DBFileNotFoundError,
         errors.NoConfigError,
