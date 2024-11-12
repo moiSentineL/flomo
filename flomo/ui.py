@@ -80,19 +80,20 @@ def main(tag: str, name: str, session_id: str, timer=False):
             play_sound_thread.start()
 
             if timer:
-                timer_ui = UI(2, tag, name, timer_time=6000)
+                print("bruh")
+                timer_ui = UI(2, tag, name, timer_time=6000, chilling_time=60)
                 timer_panel_thread = threading.Thread(
                     target=timer_ui.show_live_panel, daemon=True
                 )
                 timer_panel_thread.start()
 
                 inp = ""
-                while timer_ui.stopwatch == 0 or not (
-                    timer_ui.stopwatch != 0 and inp == "q"
+                while timer_ui.timer_time == 0 or not (
+                    timer_ui.timer_time != 0 and inp == "q"
                 ):
                     inp = timer_ui.get_input()
 
-                chilling_time = timer_ui.stopwatch / 5
+                chilling_time = timer_ui.timer_time / 5
 
                 timer_ui.close_live_panel = True
                 timer_panel_thread.join()
