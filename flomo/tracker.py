@@ -138,3 +138,23 @@ def show_sessions():
     console.print(table)
 
     db.conn.close()
+
+def export_to_csv(self, file_path: str):
+        """
+        Exports all sessions in the database to a CSV file.
+
+        Args:
+            file_path (str): The path to save the CSV file.
+        """
+        # Fetch all sessions from the database
+    sessions = self.get_sessions()
+
+        # Define the column headers
+    headers = ["id", "date_time", "tag", "name", "total_time"]
+
+        # Write to CSV
+    with open(file_path, mode="w", newline="", encoding="utf-8") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(headers)  # Write headers
+        writer.writerows(sessions)  # Write session rows
+
