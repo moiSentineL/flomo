@@ -152,8 +152,8 @@ def update(session_id: str, tag: str | None, name: str | None):
         helpers.error_log(str(e))
         print(e)
 
-@flomo.command(aliases=["e"])
-@click.argument("file_path", default="sessions_export.csv")
+@flomo.command(aliases=["x"])
+@click.argument('file_path')
 def export(file_path: str):
     """
     Export all sessions to a CSV file.
@@ -163,7 +163,7 @@ def export(file_path: str):
     """
     try:
         db = tracker.Tracker()
-        db.export_to_csv(file_path)
+        db.export(file_path)
         db.conn.close()
         print(f"Exported sessions to {file_path}")
     except Exception as e:
