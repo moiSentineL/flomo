@@ -143,7 +143,7 @@ def delete(session_ids: Tuple):
 @flomo.command(aliases=["u"])
 @click.argument("session_id")
 @click.option("-t", "--tag", help="Session Tag")
-@click.option("-n", "--name", help="Session Name")
+@click.option("-n", "--name", help="Session Name") 
 def update(session_id: str, tag: str | None, name: str | None):
     """
     Update session data.
@@ -162,7 +162,7 @@ def update(session_id: str, tag: str | None, name: str | None):
 
 @flomo.command(aliases=["c"])
 @click.option(
-    "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'."
+    "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'." 
 )
 @click.option("-tc", "--tag-color", help="Set or delete tag colors. (tag_name, color)")
 @click.option("-ds", "--default-session", help="Set default session data. (tag, Name)")
