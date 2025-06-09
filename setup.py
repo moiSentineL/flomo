@@ -4,7 +4,7 @@ AUTHOR = "Dark Circles"
 VERSION = "1.1.0"
 SHORT_DESCRIPTION = "A Flowmodoro Timer CLI for producitivity enthusiasts."
 AUTHOR_EMAIL = (
-    "<nibir@nibirsan.org>, <jonakadiptakalita@gmail.com>, <anubhavnath60@gmail.com>"
+    "<nibir@nibirsan.org>, <jonakadiptakalita@gmail.com>, <anubhavnath65@gmail.com>"
 )
 URL = "https://github.com/moiSentineL/flomo"
 INSTALL_REQUIRES = [
