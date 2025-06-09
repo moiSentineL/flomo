@@ -42,7 +42,7 @@ def init():
     conf.Config(initializing=True).create_config()
 
 
-default_tag, default_name = conf.get_default_session_data()
+default_tag, default_name, default_ratio = conf.get_default_session_data()
 
 
 @flomo.command(aliases=["s"])
@@ -62,7 +62,7 @@ default_tag, default_name = conf.get_default_session_data()
     "-r",
     "--ratio",
     help="Session Break time Ratio",
-    default=5,
+    default=default_ratio,
 )
 def start(tag: str, name: str, ratio: int):
     """
@@ -165,7 +165,7 @@ def update(session_id: str, tag: str | None, name: str | None):
     "-n", "--notif", help="Set notification priority to 'off', 'normal', or 'high'." 
 )
 @click.option("-tc", "--tag-color", help="Set or delete tag colors. (tag_name, color)")
-@click.option("-ds", "--default-session", help="Set default session data. (tag, Name)")
+@click.option("-ds", "--default-session", help="Set default session data. (tag, Name, Ratio[NUMBER!])")
 def config(notif: str, tag_color: str, default_session: str):
     """
     Change the config values or get the config file path.
@@ -202,13 +202,14 @@ def config(notif: str, tag_color: str, default_session: str):
         if default_session:
             ds = default_session.split(" ")
             ds[0] = ds[0].lower()
-            if len(ds) == 2 and ds[0] and ds[1]:
+            if len(ds) == 3 and ds[0] and ds[1] and ds[2]:
                 conf_.set_config(
                     conf.DEFAULT_SESSION_DATA, " ".join(ds), nested_value=True
                 )
-                print(f"Default Session Data set to Tag: {ds[0]} and Name: {ds[1]}")
+                print(f"Default Session Data set to Tag: {ds[0]} , Name: {ds[1]} and Ratio: {ds[2]}")
             else:
                 raise click.BadOptionUsage("default-session", "Invalid input")
+            
     except errors.NoConfigError as e:
         helpers.error_log(str(e))
         print(e)
