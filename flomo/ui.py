@@ -10,7 +10,6 @@ from rich.text import Text
 import flomo.helpers as helpers
 import flomo.tracker as tracker
 
-
 class UI:
     def __init__(
         self, status: int, tag: str, name: str, chilling_time: int | None = None
@@ -32,9 +31,21 @@ class UI:
         self.terminal = blessed.Terminal()
 
     def generate_panel(self):
-        # TODO: Fix UI resize issue?
-        stuff = f"{self.name}\n[{self.tag_color}]{self.tag}[/{self.tag_color}]\n\n{helpers.format_time(
-            self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"
+    
+    # TODO: Fix UI resize issue?
+
+        time_display = helpers.format_time(
+            self.stopwatch if self.status == 0 else self.chilling_time or 0
+        )
+        action_text = "break" if self.status == 0 else "skip?"
+
+        stuff = (
+            f"{self.name}\n"
+            f"[{self.tag_color}]{self.tag}[/{self.tag_color}]\n\n"
+            f"{time_display}\n\n"
+            f"\\[q] - {action_text}    [Ctrl+C] - quit"
+        )
+
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
             Panel(
@@ -48,7 +59,7 @@ class UI:
             vertical="middle",
             height=self.terminal.height,
         )
-
+    
     def show_live_panel(self):
         with Live(self.generate_panel(), refresh_per_second=4, screen=True) as _live:
             while not self.close_live_panel:
@@ -66,7 +77,7 @@ class UI:
             return self.terminal.inkey(timeout=0.1).lower()
 
 
-def main(tag: str, name: str, session_id: str):
+def main(tag: str, name: str, ratio: int, session_id: str):
     # TODO: Do something with the Terminal close issue
     try:
         while True:
@@ -85,7 +96,7 @@ def main(tag: str, name: str, session_id: str):
             ):
                 inp = flowing_ui.get_input()
 
-            chilling_time = flowing_ui.stopwatch / 5
+            chilling_time = flowing_ui.stopwatch / ratio
 
             flowing_ui.close_live_panel = True
             flowing_panel_thread.join()

@@ -58,7 +58,13 @@ default_tag, default_name = conf.get_default_session_data()
     help="Session Name",
     default=default_name,
 )
-def start(tag: str, name: str):
+@click.option(
+    "-r",
+    "--ratio",
+    help="Session Break time Ratio",
+    default=5,
+)
+def start(tag: str, name: str, ratio: int):
     """
     Start a Flowmodoro session.
     """
@@ -72,7 +78,7 @@ def start(tag: str, name: str):
         db.create_table()
         session_id = db.create_session(tag, name, datetime.datetime.now())
         db.conn.close()
-        ui.main(tag, name, session_id)
+        ui.main(tag, name, ratio, session_id)
     except (
         errors.DBFileNotFoundError,
         errors.NoConfigError,
@@ -101,6 +107,7 @@ def track():
         print(e)
 
 
+
 @flomo.command(aliases=["d"])
 @click.argument("session_ids", nargs=-1)
 def delete(session_ids: Tuple):
@@ -114,7 +121,7 @@ def delete(session_ids: Tuple):
         session_1 = len(session_ids) == 1
         session_0 = len(session_ids) == 0
         click.confirm(
-            f"Are you sure you want to delete the {f'session{'' if session_1 else 's'}: {", ".join(session_ids)}' if not session_0 else 'last session'}?",
+            f"""Are you sure you want to delete the {f'session{"" if session_1 else "s"}: {", ".join(session_ids)}' if not session_0 else 'last session'}?""",
             abort=True,
         )
         db.delete_session(session_ids)
@@ -164,7 +171,7 @@ def config(notif: str, tag_color: str, default_session: str):
     Change the config values or get the config file path.
     """
     try:
-        print(f"File Path: {helpers.get_path("config.json", True)}")
+        print(f'File Path: {helpers.get_path("config.json", True)}')
         conf_ = conf.Config()
 
         if notif:
