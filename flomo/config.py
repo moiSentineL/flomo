@@ -7,6 +7,7 @@ import flomo.helpers as helpers
 default_session_data = {
     "tag": "work",
     "name": "Working",
+    "ratio": 5
 }
 
 tag_colors = {"work": "red", "study": "blue", "exercise": "green"}
@@ -94,9 +95,10 @@ class Config:
             data = json.load(f)
             if nested_value:
                 if key == DEFAULT_SESSION_DATA:
-                    tag, name = value.split(" ")
+                    tag, name, ratio = value.split(" ")
                     data[key]["tag"] = tag
                     data[key]["name"] = name
+                    data[key]['ratio'] = int(ratio)
                 elif key == TAG_COLORS:
                     key_, value_ = value.split(" ")
                     data[key][key_] = value_
@@ -119,6 +121,6 @@ class Config:
 def get_default_session_data():
     try:
         conf = Config(get_default_session_data=True).get_config(DEFAULT_SESSION_DATA)
-        return conf["tag"], conf["name"]
+        return conf["tag"], conf["name"], conf["ratio"]
     except (errors.InvalidConfigKeyError, KeyError):
-        return default_session_data["tag"], default_session_data["name"]
+        return default_session_data["tag"], default_session_data["name"], default_session_data["ratio"]
