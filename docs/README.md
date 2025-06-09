@@ -97,7 +97,11 @@ git clone https://github.com/moiSentineL/flomo.git
 cd flomo
 pip install -r requirements.txt
 
+# For Linux Users:
 gcc -fPIC -shared -o flomo/session_id.so flomo/session_id.c
+
+# For Windows Users:
+gcc -shared -o flomo/session_id.dll flomo/session_id.c
 
 pip install -e .
 ```
