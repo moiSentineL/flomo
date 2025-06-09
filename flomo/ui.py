@@ -31,20 +31,9 @@ class UI:
         self.terminal = blessed.Terminal()
 
     def generate_panel(self):
-    
     # TODO: Fix UI resize issue?
-
-        time_display = helpers.format_time(
-            self.stopwatch if self.status == 0 else self.chilling_time or 0
-        )
-        action_text = "break" if self.status == 0 else "skip?"
-
-        stuff = (
-            f"{self.name}\n"
-            f"[{self.tag_color}]{self.tag}[/{self.tag_color}]\n\n"
-            f"{time_display}\n\n"
-            f"\\[q] - {action_text}    [Ctrl+C] - quit"
-        )
+        stuff = f"""{self.name}\n[{self.tag_color}]{self.tag}[/{self.tag_color}]\n\n{helpers.format_time(
+            self.stopwatch if (self.status == 0) else self.chilling_time or 0)}\n\n\\[q] - {'break' if self.status == 0 else 'skip?'}    [Ctrl+C] - quit"""
 
         content = Text.from_markup(stuff, justify="center", style="yellow")
         return Align.center(
