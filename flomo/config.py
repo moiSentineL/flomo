@@ -98,7 +98,7 @@ class Config:
                     tag, name, ratio = value.split(" ")
                     data[key]["tag"] = tag
                     data[key]["name"] = name
-                    data[key]['ratio'] = float(ratio)
+                    data[key]['ratio'] = int(ratio)
                 elif key == TAG_COLORS:
                     key_, value_ = value.split(" ")
                     data[key][key_] = value_
