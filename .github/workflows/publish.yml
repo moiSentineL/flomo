@@ -20,7 +20,7 @@ jobs:
                       compile_command: clang -fPIC -shared -o
                     - os: windows-latest
                       output: flomo/session_id.dll
-                      compile_command: gcc -fPIC -shared -o
+                      compile_command: gcc -shared -o
 
         steps:
             - uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
               run: ${{ matrix.compile_command }} ${{ matrix.output }} flomo/session_id.c
 
             - name: Upload artifact
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
                   name: ${{ runner.os }}-library
                   path: ${{ matrix.output }}
@@ -57,7 +57,7 @@ jobs:
                   python-version: "3.12.3"
 
             - name: Download all artifacts
-              uses: actions/download-artifact@v2
+              uses: actions/download-artifact@v4
               with:
                   path: ./artifacts
 
