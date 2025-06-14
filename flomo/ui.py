@@ -85,7 +85,7 @@ def main(tag: str, name: str, ratio: int, session_id: str):
             ):
                 inp = flowing_ui.get_input()
 
-            chilling_time = flowing_ui.stopwatch / ratio
+            chilling_time = flowing_ui.stopwatch / int(ratio)
 
             flowing_ui.close_live_panel = True
             flowing_panel_thread.join()
